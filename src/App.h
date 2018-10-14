@@ -5,10 +5,11 @@
  *      Author: gantzm
  */
 
-#include <wx/wx.h>
+#pragma once
 
-#ifndef APP_H_
-#define APP_H_
+#include "ArgumentParser.h"
+
+#include <wx/wx.h>
 
 namespace gg {
 namespace envsel {
@@ -18,9 +19,16 @@ public:
     App();
     virtual ~App();
     virtual bool OnInit();
+    virtual int OnRun();
+
+private:
+    Command m_command;
+
+    bool runSelect();
+    bool runEdit();
+    bool runCheck();
 };
 
 } /* namespace envsel */
 } /* namespace gg */
 
-#endif /* APP_H_ */

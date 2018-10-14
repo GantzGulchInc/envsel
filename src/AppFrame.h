@@ -5,10 +5,9 @@
  *      Author: gantzm
  */
 
-#include <wx/wx.h>
+#pragma once
 
-#ifndef APPFRAME_H_
-#define APPFRAME_H_
+#include <wx/wx.h>
 
 namespace gg {
 namespace envsel {
@@ -33,4 +32,3 @@ enum {
 } /* namespace envsel */
 } /* namespace gg */
 
-#endif /* APPFRAME_H_ */
