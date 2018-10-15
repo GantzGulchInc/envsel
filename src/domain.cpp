@@ -7,6 +7,10 @@
 
 #include "domain.h"
 
+#include <iostream>
+
+using nlohmann::json;
+
 namespace gg {
 namespace envsel {
 
@@ -101,12 +105,42 @@ Environment::~Environment() {
 
 }
 
+void operator<<(Environment & environment, const json & jsonValue) {
+
+    std::cout << "jsonValue = " << jsonValue << std::endl;
+
+    environment.m_id = jsonValue["id"];
+    environment.m_name = jsonValue["name"];
+}
+
+//
+// Environments
+//
+
 Environments::Environments() :
         m_applications { 10 }, m_scripts { 30 }, m_environments { 20 } {
 
 }
 
 Environments::~Environments() {
+
+}
+
+void operator<<(Environments & environments, const json & jsonValue) {
+
+    json environmentArray = jsonValue["environments"];
+
+    if (environmentArray.is_array()) {
+
+        for (auto & environmentJson : environmentArray) {
+
+            std::unique_ptr<Environment> env(new Environment { });
+
+            *(env.get()) << environmentJson;
+
+            environments.m_environments.push_back(std::move(env));
+        }
+    }
 
 }
 

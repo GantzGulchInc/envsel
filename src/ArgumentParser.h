@@ -10,31 +10,34 @@
 #include "CLI/CLI.hpp"
 
 #include <string>
+#include <functional>
 
 namespace gg {
 namespace envsel {
 
-enum Command {
-    NONE = 0,
-    SELECT,
-    EDIT,
-    CHECK
-};
+typedef std::function<void(const std::string & filename, const std::string & output)> SelectFunc;
+typedef std::function<void(const std::string & filename)> EditFunc;
+typedef std::function<void(const std::string & filename)> CheckFunc;
 
 /**
  * Argument Parser
  */
 class ArgumentParser {
 public:
-    ArgumentParser(const std::string & name);
+    ArgumentParser(const std::string & name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc, CheckFunc checkFunc);
     virtual ~ArgumentParser();
 
-    Command parse(int argc, const char *const *argv);
+    void parse();
 
 private:
     CLI::App m_app;
 
-    Command m_selected;
+    int m_argc;
+    const char * const * m_argv;
+
+    SelectFunc m_selFunc;
+    EditFunc m_editFunc;
+    CheckFunc m_checkFunc;
 
     CLI::App * m_selectCommand;
     std::string m_selectFilename;

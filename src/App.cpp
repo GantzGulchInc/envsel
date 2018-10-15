@@ -1,14 +1,19 @@
 #include "App.h"
 #include "ArgumentParser.h"
 #include "AppFrame.h"
+#include "domain.h"
+
+#include <nlohmann/json.hpp>
 
 #include <string>
+#include <iostream>
+#include <fstream>
 
 namespace gg {
 namespace envsel {
 
 App::App() :
-        m_command{ Command::NONE } {
+        m_parsedArgs { false } {
 
 }
 
@@ -17,53 +22,72 @@ App::~App() {
 
 bool App::OnInit() {
 
-    ArgumentParser argParser { "Environment Selector" };
+    SelectFunc selFunc = std::bind(&App::runSelect, this, std::placeholders::_1, std::placeholders::_2);
+    EditFunc editFunc = std::bind(&App::runEdit, this, std::placeholders::_1);
+    CheckFunc checkFunc = std::bind(&App::runCheck, this, std::placeholders::_1);
 
-    m_command = argParser.parse(argc, argv);
+    ArgumentParser argParser { "Environment Selector", argc, argv, selFunc, editFunc, checkFunc };
 
-    switch (m_command) {
-    case Command::SELECT:
-        runSelect();
-        break;
-    case Command::EDIT:
-        runEdit();
-        break;
-    case Command::CHECK:
-        runCheck();
-        break;
-    default:
-        // Uh-oh, bad things are afoot.
-        break;
+    argParser.parse();
+
+    return true;
+
+}
+
+bool App::runSelect(const std::string & filename, const std::string & output) {
+
+    std::cout << "funSelect: filename: " << filename << std::endl;
+
+    try {
+        std::ifstream jsonFile;
+        jsonFile.open("environments.json");
+
+        nlohmann::json json;
+
+        std::cout << "Reading file..." << std::endl;
+
+        jsonFile >> json;
+
+        jsonFile.close();
+
+        Environments envs;
+
+        std::cout << "Parsing json..." << std::endl;
+
+        envs << json;
+
+    } catch (std::exception & e) {
+        std::cout << e.what() << std::endl;
     }
 
-    return true;
+    m_parsedArgs = true;
 
-}
-
-bool App::runSelect() {
-
-    AppFrame * frame = new AppFrame("Hello World", wxPoint(50, 50), wxSize(450, 340));
+    AppFrame * frame = new AppFrame("Select", wxPoint(50, 50), wxSize(450, 340));
     frame->Show();
     return true;
 }
 
-bool App::runEdit() {
+bool App::runEdit(const std::string & filename) {
 
-    AppFrame * frame = new AppFrame("Hello World", wxPoint(50, 50), wxSize(450, 340));
+    m_parsedArgs = true;
+
+    AppFrame * frame = new AppFrame("Edit", wxPoint(50, 50), wxSize(450, 340));
     frame->Show();
     return true;
 }
 
-bool App::runCheck() {
+bool App::runCheck(const std::string & filename) {
 
-    AppFrame * frame = new AppFrame("Hello World", wxPoint(50, 50), wxSize(450, 340));
+    m_parsedArgs = true;
+
+    AppFrame * frame = new AppFrame("Check", wxPoint(50, 50), wxSize(450, 340));
     frame->Show();
     return true;
 }
 
 int App::OnRun() {
 
-    if( m_command != Command::NONE ){
+    if (m_parsedArgs) {
         return wxApp::OnRun();
     }
 

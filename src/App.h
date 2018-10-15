@@ -22,11 +22,11 @@ public:
     virtual int OnRun();
 
 private:
-    Command m_command;
+    bool m_parsedArgs;
 
-    bool runSelect();
-    bool runEdit();
-    bool runCheck();
+    bool runSelect(const std::string & filename, const std::string & output);
+    bool runEdit(const std::string & filename);
+    bool runCheck(const std::string & filename);
 };
 
 } /* namespace envsel */

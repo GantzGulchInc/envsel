@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <nlohmann/json.hpp>
+
 #include <string>
 #include <vector>
 #include <memory>
@@ -107,6 +109,8 @@ public:
     Environment();
     virtual ~Environment();
 
+    friend void operator<<(Environment & environment, const nlohmann::json & jsonValue);
+
 private:
     std::string m_id;
     std::string m_name;
@@ -121,11 +125,14 @@ public:
     Environments();
     virtual ~Environments();
 
+    friend void operator<<(Environments & environments, const nlohmann::json & jsonValue);
+
 private:
     std::vector<std::unique_ptr<Application>> m_applications;
     std::vector<std::unique_ptr<Script>> m_scripts;
     std::vector<std::unique_ptr<Environment>> m_environments;
 };
+
 
 }
 }

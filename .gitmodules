@@ -1,3 +1,6 @@
 [submodule "ThirdParty/CLI11"]
 	path = ThirdParty/CLI11
 	url = git@github.com:CLIUtils/CLI11.git
+[submodule "ThirdParty/json"]
+	path = ThirdParty/json
+	url = git@github.com:nlohmann/json.git
