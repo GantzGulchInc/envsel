@@ -7,7 +7,10 @@
 
 #pragma once
 
+#include "NonCopyable.h"
+
 #include <nlohmann/json.hpp>
+#include <easylogging++.h>
 
 #include <string>
 #include <vector>
@@ -20,9 +23,10 @@ namespace envsel {
 /**
  * ScriptVariable
  */
-class ScriptVariable {
+class ScriptVariable : public NonCopyable {
 public:
     ScriptVariable();
+
     virtual ~ScriptVariable();
 
 private:
@@ -34,9 +38,10 @@ private:
 /**
  * ApplicationInstallation
  */
-class ApplicationInstallation {
+class ApplicationInstallation : public NonCopyable {
 public:
     ApplicationInstallation();
+
     virtual ~ApplicationInstallation();
 
 private:
@@ -49,9 +54,10 @@ private:
 /**
  * Application
  */
-class Application {
+class Application : public NonCopyable {
 public:
     Application();
+
     virtual ~Application();
 
 private:
@@ -63,9 +69,10 @@ private:
 /**
  * ScriptOperation
  */
-class ScriptOperation {
+class ScriptOperation : public NonCopyable {
 public:
     ScriptOperation();
+
     virtual ~ScriptOperation();
 
 private:
@@ -76,9 +83,10 @@ private:
 /**
  * Script
  */
-class Script {
+class Script : public NonCopyable {
 public:
     Script();
+
     virtual ~Script();
 
 private:
@@ -91,9 +99,10 @@ private:
 /**
  * EnvironmentApp
  */
-class EnvironmentApp {
+class EnvironmentApp : public NonCopyable {
 public:
     EnvironmentApp();
+
     virtual ~EnvironmentApp();
 
 private:
@@ -104,12 +113,17 @@ private:
 /**
  * Environment
  */
-class Environment {
+class Environment : public NonCopyable {
 public:
     Environment();
+
     virtual ~Environment();
 
-    friend void operator<<(Environment & environment, const nlohmann::json & jsonValue);
+    std::string name() const;
+
+    friend void operator<<(Environment &environment, const nlohmann::json &jsonValue);
+
+    friend std::ostream &operator<<(std::ostream &stream, const Environment &environment);
 
 private:
     std::string m_id;
@@ -120,14 +134,24 @@ private:
 /**
  * Something
  */
-class Environments {
+class Environments : public NonCopyable {
 public:
+
     Environments();
+
     virtual ~Environments();
 
-    friend void operator<<(Environments & environments, const nlohmann::json & jsonValue);
+    std::string filename() const;
+
+    Environments &filename(const std::string &filename);
+
+
+    friend void operator<<(Environments &environments, const nlohmann::json &jsonValue);
+
+    friend std::ostream &operator<<(std::ostream &stream, const Environments &environments);
 
 private:
+    std::string m_filename;
     std::vector<std::unique_ptr<Application>> m_applications;
     std::vector<std::unique_ptr<Script>> m_scripts;
     std::vector<std::unique_ptr<Environment>> m_environments;

@@ -10,12 +10,13 @@
 namespace gg {
 namespace envsel {
 
-wxBEGIN_EVENT_TABLE(AppFrame, wxFrame) EVT_MENU(ID_Hello, AppFrame::OnHello)
-EVT_MENU(wxID_EXIT, AppFrame::OnExit)
-EVT_MENU(wxID_ABOUT, AppFrame::OnAbout)
+wxBEGIN_EVENT_TABLE(AppFrame, wxFrame)
+                EVT_MENU(ID_Hello, AppFrame::OnHello)
+                EVT_MENU(wxID_EXIT, AppFrame::OnExit)
+                EVT_MENU(wxID_ABOUT, AppFrame::OnAbout)
 wxEND_EVENT_TABLE()
 
-AppFrame::AppFrame(const wxString& title, const wxPoint& pos, const wxSize& size) :
+AppFrame::AppFrame(const wxString &title, const wxPoint &pos, const wxSize &size) :
         wxFrame(NULL, wxID_ANY, title, pos, size) {
 
     wxMenu *menuFile = new wxMenu;
@@ -40,15 +41,17 @@ AppFrame::AppFrame(const wxString& title, const wxPoint& pos, const wxSize& size
 AppFrame::~AppFrame() {
 }
 
-void AppFrame::OnExit(wxCommandEvent& event) {
+void AppFrame::OnExit(wxCommandEvent &event) {
     Close(true);
 }
-void AppFrame::OnAbout(wxCommandEvent& event) {
+
+void AppFrame::OnAbout(wxCommandEvent &event) {
     wxMessageBox("This is a wxWidgets' Hello world sample", "About Hello World", wxOK | wxICON_INFORMATION);
 }
-void AppFrame::OnHello(wxCommandEvent& event) {
+
+void AppFrame::OnHello(wxCommandEvent &event) {
     wxLogMessage
-    ("Hello world from wxWidgets!");
+        ("Hello world from wxWidgets!");
 }
 
 } /* namespace envsel */

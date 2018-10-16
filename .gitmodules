@@ -4,3 +4,6 @@
 [submodule "ThirdParty/json"]
 	path = ThirdParty/json
 	url = git@github.com:nlohmann/json.git
+[submodule "ThirdParty/easyloggingpp"]
+	path = ThirdParty/easyloggingpp
+	url = git@github.com:muflihun/easyloggingpp.git

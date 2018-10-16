@@ -15,15 +15,18 @@ include( "${wxWidgets_USE_FILE}" )
 #
 include_directories( "ThirdParty/CLI11/include" )
 include_directories( "ThirdParty/json/single_include" )
+include_directories( "ThirdParty/easyloggingpp/src" )
 
 #
 # Sources
 #
-file(GLOB SOURCES "src/*.cpp")
-set( E_SOURCES ${SOURCES} )
+# file(GLOB SOURCES "src/*.cpp")
+set( L_SOURCES ThirdParty/easyloggingpp/src/easylogging++.cc)
+
+set( E_SOURCES src/App.cpp src/AppFrame.cpp src/ArgumentParser.cpp src/Domain.cpp src/EnvironmentSelector.cpp src/IO.cpp src/NonCopyable.cpp src/NonCopyable.h)
 
 
-add_executable(EnvironmentSelector ${E_SOURCES} )
+add_executable(EnvironmentSelector ${E_SOURCES} ${L_SOURCES})
 
 target_link_libraries( ${PROJECT_NAME} ${wxWidgets_LIBRARIES} )
 
