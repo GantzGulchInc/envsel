@@ -15,7 +15,7 @@ using nlohmann::json;
 namespace gg {
 namespace envsel {
 
-static const char * TAG = "Domain";
+static const char *TAG = "Domain";
 
 //
 // Script Variable
@@ -116,7 +116,7 @@ void operator<<(Environment &environment, const json &jsonValue) {
 
     CLOG(TRACE, TAG) << "jsonValue = " << jsonValue;
 
-    environment.m_id = jsonValue[ "id"];
+    environment.m_id = jsonValue["id"];
     environment.m_name = jsonValue["name"];
 }
 
