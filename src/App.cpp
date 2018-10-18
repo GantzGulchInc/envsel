@@ -58,6 +58,13 @@ void App::loadEnvironments(const std::string &filename) {
     m_envs.filename(filename);
 
     CLOG(TRACE, TAG) << "Parsed: " << m_envs;
+
+    nlohmann::json outputJson;
+
+    outputJson << m_envs;
+
+    CLOG(TRACE, TAG) << "Output Json: " << outputJson.dump();
+
 }
 
 bool App::runSelect(const std::string &filename, const std::string &output) {

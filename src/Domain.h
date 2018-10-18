@@ -27,9 +27,11 @@ class ScriptVariable : public NonCopyable {
 public:
 
     ScriptVariable();
+
     virtual ~ScriptVariable();
 
     friend void operator<<(ScriptVariable &scriptVariable, const nlohmann::json &jsonValue);
+
     friend std::ostream &operator<<(std::ostream &stream, const ScriptVariable &scriptVariable);
 
 private:
@@ -45,9 +47,11 @@ class ApplicationInstallation : public NonCopyable {
 public:
 
     ApplicationInstallation();
+
     virtual ~ApplicationInstallation();
 
     friend void operator<<(ApplicationInstallation &applicationInstallation, const nlohmann::json &jsonValue);
+
     friend std::ostream &operator<<(std::ostream &stream, const ApplicationInstallation &applicationInstallation);
 
 private:
@@ -64,9 +68,11 @@ class Application : public NonCopyable {
 public:
 
     Application();
+
     virtual ~Application();
 
     friend void operator<<(Application &application, const nlohmann::json &jsonValue);
+
     friend std::ostream &operator<<(std::ostream &stream, const Application &application);
 
 private:
@@ -82,9 +88,11 @@ class ScriptOperation : public NonCopyable {
 public:
 
     ScriptOperation();
+
     virtual ~ScriptOperation();
 
     friend void operator<<(ScriptOperation &scriptOperation, const nlohmann::json &jsonValue);
+
     friend std::ostream &operator<<(std::ostream &stream, const ScriptOperation &scriptOperation);
 
 private:
@@ -99,9 +107,11 @@ class Script : public NonCopyable {
 public:
 
     Script();
+
     virtual ~Script();
 
     friend void operator<<(Script &script, const nlohmann::json &jsonValue);
+
     friend std::ostream &operator<<(std::ostream &stream, const Script &script);
 
 private:
@@ -118,9 +128,13 @@ class EnvironmentApp : public NonCopyable {
 public:
 
     EnvironmentApp();
+
     virtual ~EnvironmentApp();
 
     friend void operator<<(EnvironmentApp &environmentApp, const nlohmann::json &jsonValue);
+
+    friend void operator<<(nlohmann::json &jsonValue, const EnvironmentApp &environmentApp);
+
     friend std::ostream &operator<<(std::ostream &stream, const EnvironmentApp &environmentApp);
 
 private:
@@ -135,11 +149,15 @@ class Environment : public NonCopyable {
 public:
 
     Environment();
+
     virtual ~Environment();
 
     std::string name() const;
 
     friend void operator<<(Environment &environment, const nlohmann::json &jsonValue);
+
+    friend void operator<<(nlohmann::json &jsonValue, const Environment &environment);
+
     friend std::ostream &operator<<(std::ostream &stream, const Environment &environment);
 
 private:
@@ -155,13 +173,18 @@ class Environments : public NonCopyable {
 public:
 
     Environments();
+
     virtual ~Environments();
 
     std::string filename() const;
+
     Environments &filename(const std::string &filename);
 
 
     friend void operator<<(Environments &environments, const nlohmann::json &jsonValue);
+
+    friend void operator<<(nlohmann::json &jsonValue, const Environments &environments);
+
     friend std::ostream &operator<<(std::ostream &stream, const Environments &environments);
 
 private:
