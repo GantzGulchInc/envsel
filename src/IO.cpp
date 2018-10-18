@@ -26,6 +26,26 @@ nlohmann::json readJsonFile(const std::string &filename) {
     return json;
 }
 
+std::ostream &operator<<(std::ostream &stream, const std::vector<std::string> & vec) {
+
+    bool addSep = false;
+
+    for (auto &value : vec) {
+
+        if( addSep ){
+            stream << ",";
+        }else{
+            addSep = true;
+        }
+
+        stream << value;
+
+    }
+
+    return stream;
+}
+
+
 
 }
 }

@@ -296,6 +296,7 @@
 	"scripts": [
 		{
 			"id": "script-emacs",
+			"name": "Emacs",
 			"ifSet": "",
 			"instructions": [
 				{
@@ -308,6 +309,7 @@
 		},
 		{
 			"id": "script-java",
+			"name": "Java",
 			"ifSet": "JAVA_HOME",
 			"instructions": [
 				{
@@ -322,6 +324,7 @@
 		},
 		{
 			"id": "script-maven",
+			"name": "Maven",
 			"ifSet": "MAVEN_HOME",
 			"instructions": [
 				{
@@ -335,6 +338,7 @@
 		},
 		{
 			"id": "script-maven-opts",
+			"name": "Maven Options",
 			"ifSet": "MAVEN_OPTS",
 			"instructions": [
 				{
@@ -347,6 +351,7 @@
 		},
 		{
 			"id": "script-ant",
+			"name": "Apache ANT",
 			"ifSet": "ANT_HOME",
 			"instructions": [
 				{
@@ -360,6 +365,7 @@
 		},
 		{
 			"id": "script-eclipse",
+			"name": "Eclipse",
 			"ifSet": "ECLIPSE_HOME",
 			"instructions": [
 				{
@@ -373,6 +379,7 @@
 		},
 		{
 			"id": "script-nodejs",
+			"name": "NodeJS",
 			"ifSet": "NODEJS_HOME",
 			"instructions": [
 				{
@@ -386,6 +393,7 @@
 		},
 		{
 			"id": "script-westorm",
+			"name": "WebStorm",
 			"ifSet": "WEBSTORM_HOME",
 			"instructions": [
 				{

@@ -35,6 +35,9 @@ std::ostream &operator<<(std::ostream &stream, const std::vector<std::unique_ptr
 }
 
 
+std::ostream &operator<<(std::ostream &stream, const std::vector<std::string> & vec);
+
+
 
 }
 }

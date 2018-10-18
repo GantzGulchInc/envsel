@@ -20,14 +20,17 @@ namespace gg {
 namespace envsel {
 
 
-/**
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ScriptVariable
- */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class ScriptVariable : public NonCopyable {
 public:
-    ScriptVariable();
 
+    ScriptVariable();
     virtual ~ScriptVariable();
+
+    friend void operator<<(ScriptVariable &scriptVariable, const nlohmann::json &jsonValue);
+    friend std::ostream &operator<<(std::ostream &stream, const ScriptVariable &scriptVariable);
 
 private:
     std::string m_name;
@@ -35,14 +38,17 @@ private:
 
 };
 
-/**
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ApplicationInstallation
- */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class ApplicationInstallation : public NonCopyable {
 public:
-    ApplicationInstallation();
 
+    ApplicationInstallation();
     virtual ~ApplicationInstallation();
+
+    friend void operator<<(ApplicationInstallation &applicationInstallation, const nlohmann::json &jsonValue);
+    friend std::ostream &operator<<(std::ostream &stream, const ApplicationInstallation &applicationInstallation);
 
 private:
     std::string m_id;
@@ -51,14 +57,17 @@ private:
 
 };
 
-/**
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Application
- */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class Application : public NonCopyable {
 public:
-    Application();
 
+    Application();
     virtual ~Application();
+
+    friend void operator<<(Application &application, const nlohmann::json &jsonValue);
+    friend std::ostream &operator<<(std::ostream &stream, const Application &application);
 
 private:
     std::string m_id;
@@ -66,28 +75,34 @@ private:
     std::vector<std::unique_ptr<ApplicationInstallation>> m_installations;
 };
 
-/**
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ScriptOperation
- */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class ScriptOperation : public NonCopyable {
 public:
-    ScriptOperation();
 
+    ScriptOperation();
     virtual ~ScriptOperation();
+
+    friend void operator<<(ScriptOperation &scriptOperation, const nlohmann::json &jsonValue);
+    friend std::ostream &operator<<(std::ostream &stream, const ScriptOperation &scriptOperation);
 
 private:
     std::string m_operation;
     std::vector<std::string> m_arguments;
 };
 
-/**
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Script
- */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class Script : public NonCopyable {
 public:
-    Script();
 
+    Script();
     virtual ~Script();
+
+    friend void operator<<(Script &script, const nlohmann::json &jsonValue);
+    friend std::ostream &operator<<(std::ostream &stream, const Script &script);
 
 private:
     std::string m_id;
@@ -96,33 +111,35 @@ private:
     std::vector<std::unique_ptr<ScriptOperation>> m_operations;
 };
 
-/**
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * EnvironmentApp
- */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class EnvironmentApp : public NonCopyable {
 public:
-    EnvironmentApp();
 
+    EnvironmentApp();
     virtual ~EnvironmentApp();
+
+    friend void operator<<(EnvironmentApp &environmentApp, const nlohmann::json &jsonValue);
+    friend std::ostream &operator<<(std::ostream &stream, const EnvironmentApp &environmentApp);
 
 private:
     std::string m_applicationId;
     std::string m_applicationInstallationId;
 };
 
-/**
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Environment
- */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class Environment : public NonCopyable {
 public:
-    Environment();
 
+    Environment();
     virtual ~Environment();
 
     std::string name() const;
 
     friend void operator<<(Environment &environment, const nlohmann::json &jsonValue);
-
     friend std::ostream &operator<<(std::ostream &stream, const Environment &environment);
 
 private:
@@ -131,23 +148,20 @@ private:
     std::vector<std::unique_ptr<EnvironmentApp>> m_environmentApps;
 };
 
-/**
- * Something
- */
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Environments
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class Environments : public NonCopyable {
 public:
 
     Environments();
-
     virtual ~Environments();
 
     std::string filename() const;
-
     Environments &filename(const std::string &filename);
 
 
     friend void operator<<(Environments &environments, const nlohmann::json &jsonValue);
-
     friend std::ostream &operator<<(std::ostream &stream, const Environments &environments);
 
 private:
