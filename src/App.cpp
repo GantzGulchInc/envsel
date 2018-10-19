@@ -50,19 +50,7 @@ bool App::OnInit() {
 
 void App::loadEnvironments(const std::string &filename) {
 
-    CLOG(TRACE, TAG) << "loadEnvironments: filename: " << filename;
-
-    CLOG(TRACE, TAG) << "Reading & parsing file...";
-
-    nlohmann::json json = readJsonFile(filename);
-
-    CLOG(TRACE, TAG) << "Converting json...";
-
-    json.get_to( m_envs );
-
-    m_envs.filename(filename);
-
-    CLOG(TRACE, TAG) << "Parsed: " << m_envs;
+    m_envs.load(filename);
 
     nlohmann::json outputJson = m_envs;
 

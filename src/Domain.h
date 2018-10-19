@@ -246,6 +246,8 @@ public:
 
     const EnvironmentList &environments() const;
 
+    void load(const std::string & filename);
+
     std::vector<std::string> executeScripts(const std::map<std::string, std::string> &variables);
 
     friend void from_json(const nlohmann::json &json, Environments &item);

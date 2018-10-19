@@ -499,6 +499,27 @@ const EnvironmentList &Environments::environments() const {
 }
 
 
+void Environments::load(const std::string & filename) {
+
+    CLOG(TRACE, TAG) << "filename: " << filename;
+
+    CLOG(TRACE, TAG) << "Reading & parsing file...";
+
+    nlohmann::json json = readJsonFile(filename);
+
+    CLOG(TRACE, TAG) << "Converting json...";
+
+    json.get_to( *this );
+
+    m_filename = filename;
+
+    CLOG(TRACE, TAG) << "Parsed: " << *this;
+
+    // nlohmann::json outputJson = m_envs;
+
+    // CLOG(TRACE, TAG) << "Output Json: " << std::endl << outputJson.dump(4);
+}
+
 
 std::vector<std::string> Environments::executeScripts(const std::map<std::string, std::string> &variables) {
 
