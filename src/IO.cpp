@@ -17,9 +17,7 @@ nlohmann::json readJsonFile(const std::string &filename) {
         throw std::ios_base::failure("Error opening file: " + filename);
     }
 
-    nlohmann::json json;
-
-    jsonFile >> json;
+    nlohmann::json json = nlohmann::json::parse(jsonFile);
 
     jsonFile.close();
 

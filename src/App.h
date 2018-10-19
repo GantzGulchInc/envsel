@@ -15,6 +15,10 @@
 namespace gg {
 namespace envsel {
 
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * App
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 class App : public wxApp {
 public:
     App();
@@ -31,11 +35,11 @@ private:
 
     void loadEnvironments(const std::string &filename);
 
-    bool runSelect(const std::string &filename, const std::string &output);
+    bool runSelect(const Arguments & args);
 
-    bool runEdit(const std::string &filename);
+    bool runEdit(const Arguments & args);
 
-    bool runCheck(const std::string &filename);
+    bool runCheck(const Arguments & args);
 };
 
 } /* namespace envsel */

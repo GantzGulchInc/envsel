@@ -7,6 +7,7 @@
 
 #include "Domain.h"
 #include "IO.h"
+#include "JsonHelper.h"
 
 #include <iostream>
 
@@ -32,13 +33,20 @@ ScriptVariable::~ScriptVariable() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-void operator<<(ScriptVariable &scriptVariable, const nlohmann::json &jsonValue) {
+void from_json(const nlohmann::json &json, ScriptVariable &item) {
 
-    CLOG(TRACE, TAG) << "jsonValue = " << jsonValue;
+    json.at("name").get_to(item.m_name);
+    json.at("value").get_to(item.m_value);
 
-    scriptVariable.m_name = jsonValue.at("name");
-    scriptVariable.m_value = jsonValue.at("value");
+}
 
+
+void to_json(nlohmann::json &j, const ScriptVariable &item) {
+
+    j = {
+            {"name",  item.m_name},
+            {"value", item.m_value}
+    };
 }
 
 std::ostream &operator<<(std::ostream &stream, const ScriptVariable &scriptVariable) {
@@ -66,27 +74,29 @@ ApplicationInstallation::~ApplicationInstallation() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-void operator<<(ApplicationInstallation &applicationInstallation, const nlohmann::json &jsonValue) {
+const std::string &ApplicationInstallation::id() {
+    return m_id;
+}
 
-    CLOG(TRACE, TAG) << "jsonValue = " << jsonValue;
+const std::string &ApplicationInstallation::name() {
+    return m_name;
+}
 
-    applicationInstallation.m_id = jsonValue.at("id");
-    applicationInstallation.m_name = jsonValue.at("name");
+void from_json(const nlohmann::json &json, ApplicationInstallation &item) {
 
-    json scriptVariablesJson = jsonValue.at("variables");
+    json.at("id").get_to(item.m_id);
+    json.at("name").get_to(item.m_name);
 
-    if (!scriptVariablesJson.is_array()) {
-        throw std::domain_error("variables is not an array.");
-    }
+    JsonHelper::from_json(json.at("variables"), item.m_variables);
+}
 
-    for (auto &variableJson : scriptVariablesJson) {
+void to_json(nlohmann::json &j, const ApplicationInstallation &item) {
 
-        std::unique_ptr<ScriptVariable> ptr(new ScriptVariable{});
-
-        *ptr << variableJson;
-
-        applicationInstallation.m_variables.push_back(std::move(ptr));
-    }
+    j = {
+            {"id",        item.m_id},
+            {"name",      item.m_name},
+            {"variables", JsonHelper::to_json(item.m_variables)}
+    };
 }
 
 std::ostream &operator<<(std::ostream &stream, const ApplicationInstallation &applicationInstallation) {
@@ -115,27 +125,34 @@ Application::~Application() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-void operator<<(Application &application, const nlohmann::json &jsonValue) {
+const std::string &Application::id() const {
+    return m_id;
+}
 
-    CLOG(TRACE, TAG) << "jsonValue = " << jsonValue;
+const std::string &Application::name() const {
+    return m_name;
+}
 
-    application.m_id = jsonValue.at("id");
-    application.m_name = jsonValue.at("name");
+const ApplicationInstallationList &Application::installations() const {
+    return m_installations;
+}
 
-    json installationJson = jsonValue.at("installed");
+void from_json(const nlohmann::json &json, Application &item) {
 
-    if (!installationJson.is_array()) {
-        throw std::domain_error("installed is not an array.");
-    }
+    json.at("id").get_to(item.m_id);
+    json.at("name").get_to(item.m_name);
 
-    for (auto &instJson : installationJson) {
+    JsonHelper::from_json(json.at("installed"), item.m_installations);
+}
 
-        std::unique_ptr<ApplicationInstallation> ptr(new ApplicationInstallation{});
+void to_json(nlohmann::json &j, const Application &item) {
 
-        *ptr << instJson;
+    j = {
+            {"id",        item.m_id},
+            {"name",      item.m_name},
+            {"installed", JsonHelper::to_json(item.m_installations)}
+    };
 
-        application.m_installations.push_back(std::move(ptr));
-    }
 }
 
 std::ostream &operator<<(std::ostream &stream, const Application &application) {
@@ -165,17 +182,19 @@ ScriptOperation::~ScriptOperation() {
     CLOG(TRACE, TAG) << "Called";
 }
 
+void from_json(const nlohmann::json &json, ScriptOperation &item) {
 
-void operator<<(ScriptOperation &scriptOperation, const nlohmann::json &jsonValue) {
+    json.at("op").get_to(item.m_operation);
+    json.at("args").get_to(item.m_arguments);
 
-    CLOG(TRACE, TAG) << "jsonValue = " << jsonValue;
+}
 
-    scriptOperation.m_operation = jsonValue.at("op");
+void to_json(nlohmann::json &j, const ScriptOperation &item) {
 
-    for (auto &argJson : jsonValue.at("args")) {
-        std::string arg = argJson;
-        scriptOperation.m_arguments.push_back(arg);
-    }
+    j = {
+            {"op",   item.m_operation},
+            {"args", item.m_arguments}
+    };
 }
 
 std::ostream &operator<<(std::ostream &stream, const ScriptOperation &scriptOperation) {
@@ -203,29 +222,25 @@ Script::~Script() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-void operator<<(Script &script, const nlohmann::json &jsonValue) {
+void from_json(const nlohmann::json &json, Script &item) {
 
-    CLOG(TRACE, TAG) << "jsonValue = " << jsonValue;
+    CLOG(TRACE, TAG) << "Parsing a script.";
 
-    script.m_id = jsonValue.at("id");
-    script.m_name = jsonValue.at("name");
-    script.m_ifSet = jsonValue.at("ifSet");
+    json.at("id").get_to(item.m_id);
+    json.at("name").get_to(item.m_name);
+    json.at("ifSet").get_to(item.m_ifSet);
 
-    json opsJson = jsonValue.at("instructions");
+    JsonHelper::from_json(json.at("instructions"), item.m_operations);
+}
 
-    if (!opsJson.is_array()) {
-        throw std::domain_error("instructions is not an array.");
-    }
+void to_json(nlohmann::json &j, const Script &item) {
 
-    for (auto &opJson : opsJson) {
-
-        std::unique_ptr<ScriptOperation> ptr(new ScriptOperation{});
-
-        *ptr << opJson;
-
-        script.m_operations.push_back(std::move(ptr));
-    }
-
+    j = {
+            {"id",           item.m_id},
+            {"name",         item.m_name},
+            {"ifSet",        item.m_ifSet},
+            {"instructions", JsonHelper::to_json(item.m_operations)}
+    };
 
 }
 
@@ -257,20 +272,29 @@ EnvironmentApp::~EnvironmentApp() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-void operator<<(EnvironmentApp &environmentApp, const nlohmann::json &jsonValue) {
+const std::string &EnvironmentApp::applicationId() const {
 
-    CLOG(TRACE, TAG) << "jsonValue = " << jsonValue;
+    return m_applicationId;
+}
 
-    environmentApp.m_applicationId = jsonValue.at("id");
-    environmentApp.m_applicationInstallationId = jsonValue.at("default");
 
+const std::string &EnvironmentApp::installationId() const {
+    return m_applicationInstallationId;
+}
+
+void from_json(const nlohmann::json &json, EnvironmentApp &item) {
+
+    json.at("id").get_to(item.m_applicationId);
+    json.at("default").get_to(item.m_applicationInstallationId);
 
 }
 
-void operator<<(nlohmann::json &jsonValue, const EnvironmentApp &environmentApp) {
+void to_json(nlohmann::json &j, const EnvironmentApp &item) {
 
-    jsonValue["id"] = environmentApp.m_applicationId;
-    jsonValue["default"] = environmentApp.m_applicationInstallationId;
+    j = {
+            {"id",      item.m_applicationId},
+            {"default", item.m_applicationInstallationId}
+    };
 
 }
 
@@ -299,56 +323,30 @@ Environment::~Environment() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-std::string Environment::name() const {
+const std::string &Environment::name() const {
     return m_name;
 }
 
-void operator<<(Environment &environment, const json &jsonValue) {
-
-    CLOG(TRACE, TAG) << "jsonValue = " << jsonValue;
-
-    environment.m_id = jsonValue.at("id");
-    environment.m_name = jsonValue.at("name");
-
-
-    json appsJson = jsonValue.at("apps");
-
-    if (!appsJson.is_array()) {
-        throw std::domain_error("apps is not an array.");
-    }
-
-    for (auto &appJson : appsJson) {
-
-        std::unique_ptr<EnvironmentApp> ptr(new EnvironmentApp{});
-
-        EnvironmentApp *app = ptr.get();
-
-        *(app) << appJson;
-
-        environment.m_environmentApps.push_back(std::move(ptr));
-    }
-
-
+const EnvironmentAppList &Environment::apps() const {
+    return m_environmentApps;
 }
 
-void operator<<(nlohmann::json &jsonValue, const Environment &environment) {
+void from_json(const nlohmann::json &json, Environment &item) {
 
-    jsonValue["id"] = environment.m_id;
-    jsonValue["name"] = environment.m_name;
+    json.at("id").get_to(item.m_id);
+    json.at("name").get_to(item.m_name);
 
+    JsonHelper::from_json(json.at("apps"), item.m_environmentApps);
+}
 
-    jsonValue["apps"] = nlohmann::json::array();
+void to_json(nlohmann::json &j, const Environment &item) {
 
-    nlohmann::json &appsArray = jsonValue.at("apps");
+    j = {
+            {"id",   item.m_id},
+            {"name", item.m_name},
+            {"apps", JsonHelper::to_json(item.m_environmentApps)}
+    };
 
-    for (auto &app : environment.m_environmentApps) {
-
-        nlohmann::json appJson;
-
-        appJson << *app;
-
-        appsArray.push_back(appJson);
-    }
 }
 
 std::ostream &operator<<(std::ostream &stream, const Environment &environment) {
@@ -366,8 +364,6 @@ std::ostream &operator<<(std::ostream &stream, const Environment &environment) {
 // Environments
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
-
 Environments::Environments() {
     CLOG(TRACE, TAG) << "Called";
 }
@@ -377,7 +373,7 @@ Environments::~Environments() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-std::string Environments::filename() const {
+const std::string &Environments::filename() const {
     return m_filename;
 }
 
@@ -386,79 +382,42 @@ Environments &Environments::filename(const std::string &filename) {
     return *this;
 }
 
-void operator<<(Environments &environments, const json &jsonValue) {
+Application *Environments::findApplication(const std::string &applicationId) const {
 
-    //
-    // Environments
-    //
-    const json & environmentsJson = jsonValue.at("environments");
+    for (auto &app : m_applications) {
 
-    if (!environmentsJson.is_array()) {
-        throw std::domain_error("environments is not an array.");
+        if (app->id() == applicationId) {
+            return app.get();
+        }
+
     }
 
-    for (auto &environmentJson : environmentsJson) {
+    return nullptr;
+}
 
-        std::unique_ptr<Environment> ptr(new Environment{});
-        *ptr << environmentJson;
-        environments.m_environments.push_back(std::move(ptr));
-    }
 
-    //
-    // Scripts
-    //
-    const json & scriptsJson = jsonValue.at("scripts");
+const EnvironmentList &Environments::environments() const {
+    return m_environments;
+}
 
-    if (!scriptsJson.is_array()) {
-        throw std::domain_error("scripts is not an array.");
-    }
+void from_json(const nlohmann::json &json, Environments &item) {
 
-    for (auto &scriptJson : scriptsJson) {
+    CLOG(TRACE, TAG) << "called.";
 
-        std::unique_ptr<Script> ptr(new Script{});
-        *ptr << scriptJson;
-        environments.m_scripts.push_back(std::move(ptr));
-    }
-
-    //
-    // Applications
-    //
-    const json & applicationsJson = jsonValue.at("applications");
-
-    if (!applicationsJson.is_array()) {
-        throw std::domain_error("applications is not an array.");
-    }
-
-    for (auto &applicationJson : applicationsJson) {
-
-        std::unique_ptr<Application> ptr(new Application{});
-        *ptr << applicationJson;
-        environments.m_applications.push_back(std::move(ptr));
-    }
+    JsonHelper::from_json(json.at("environments"), item.m_environments);
+    JsonHelper::from_json(json.at("scripts"), item.m_scripts);
+    JsonHelper::from_json(json.at("applications"), item.m_applications);
 
 }
 
-void operator<<(nlohmann::json &jsonValue, const Environments &environments) {
+void to_json(nlohmann::json &j, const Environments &item) {
 
+    j = {
+            {"environments", JsonHelper::to_json(item.m_environments)},
+            {"scripts",      JsonHelper::to_json(item.m_scripts)},
+            {"applications", JsonHelper::to_json(item.m_applications)}
 
-    jsonValue["environments"] = nlohmann::json::array();
-
-    nlohmann::json &envArray = jsonValue.at("environments");
-
-    for (auto &env : environments.m_environments) {
-
-        nlohmann::json envJson;
-
-        envJson << *env;
-
-        envArray.push_back(envJson);
-    }
-
-    nlohmann::json scriptArray = nlohmann::json::array();
-    jsonValue["scripts"] = scriptArray;
-
-    nlohmann::json appArray = nlohmann::json::array();
-    jsonValue["applications"] = appArray;
+    };
 
 }
 

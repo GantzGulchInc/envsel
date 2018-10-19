@@ -15,13 +15,43 @@
 namespace gg {
 namespace envsel {
 
-typedef std::function<void(const std::string &filename, const std::string &output)> SelectFunc;
-typedef std::function<void(const std::string &filename)> EditFunc;
-typedef std::function<void(const std::string &filename)> CheckFunc;
+// Forward declaration.
 
-/**
- * Argument Parser
- */
+class ArgumentParser;
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Arguments
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+class Arguments {
+public:
+    Arguments();
+
+    virtual ~Arguments();
+
+    Arguments &inputFilename(const std::string &inputFilename);
+
+    const std::string &inputFilename() const;
+
+    Arguments &outputFilename(const std::string &outputFilename);
+
+    const std::string &outputFilename() const;
+
+    friend ArgumentParser;
+
+private:
+
+    std::string m_inputFilename;
+    std::string m_outputFilename;
+
+};
+
+typedef std::function<void(const Arguments &args)> SelectFunc;
+typedef std::function<void(const Arguments &args)> EditFunc;
+typedef std::function<void(const Arguments &args)> CheckFunc;
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * ArgumentParser
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class ArgumentParser {
 public:
     ArgumentParser(const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc, CheckFunc checkFunc);
@@ -40,16 +70,7 @@ private:
     EditFunc m_editFunc;
     CheckFunc m_checkFunc;
 
-    CLI::App *m_selectCommand;
-    std::string m_selectFilename;
-    std::string m_selectOutput;
-
-    CLI::App *m_editCommand;
-    std::string m_editFilename;
-
-    CLI::App *m_checkCommand;
-    std::string m_checkFilename;
-
+    Arguments m_arguments;
 };
 
 } /* namespace envsel */

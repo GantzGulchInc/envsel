@@ -30,7 +30,9 @@ public:
 
     virtual ~ScriptVariable();
 
-    friend void operator<<(ScriptVariable &scriptVariable, const nlohmann::json &jsonValue);
+    friend void from_json(const nlohmann::json &json, ScriptVariable &item);
+
+    friend void to_json(nlohmann::json &j, const ScriptVariable &item);
 
     friend std::ostream &operator<<(std::ostream &stream, const ScriptVariable &scriptVariable);
 
@@ -39,6 +41,8 @@ private:
     std::string m_value;
 
 };
+
+typedef std::vector<std::unique_ptr<ScriptVariable>> ScriptVariableList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ApplicationInstallation
@@ -50,16 +54,24 @@ public:
 
     virtual ~ApplicationInstallation();
 
-    friend void operator<<(ApplicationInstallation &applicationInstallation, const nlohmann::json &jsonValue);
+    const std::string &id();
+
+    const std::string &name();
+
+    friend void from_json(const nlohmann::json &json, ApplicationInstallation &item);
+
+    friend void to_json(nlohmann::json &j, const ApplicationInstallation &item);
 
     friend std::ostream &operator<<(std::ostream &stream, const ApplicationInstallation &applicationInstallation);
 
 private:
     std::string m_id;
     std::string m_name;
-    std::vector<std::unique_ptr<ScriptVariable>> m_variables;
+    ScriptVariableList m_variables;
 
 };
+
+typedef std::vector<std::unique_ptr<ApplicationInstallation>> ApplicationInstallationList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Application
@@ -71,15 +83,25 @@ public:
 
     virtual ~Application();
 
-    friend void operator<<(Application &application, const nlohmann::json &jsonValue);
+    const std::string &id() const;
+
+    const std::string &name() const;
+
+    const ApplicationInstallationList & installations() const;
+
+    friend void from_json(const nlohmann::json &json, Application &item);
+
+    friend void to_json(nlohmann::json &j, const Application &item);
 
     friend std::ostream &operator<<(std::ostream &stream, const Application &application);
 
 private:
     std::string m_id;
     std::string m_name;
-    std::vector<std::unique_ptr<ApplicationInstallation>> m_installations;
+    ApplicationInstallationList m_installations;
 };
+
+typedef std::vector<std::unique_ptr<Application>> ApplicationList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ScriptOperation
@@ -91,7 +113,9 @@ public:
 
     virtual ~ScriptOperation();
 
-    friend void operator<<(ScriptOperation &scriptOperation, const nlohmann::json &jsonValue);
+    friend void from_json(const nlohmann::json &json, ScriptOperation &item);
+
+    friend void to_json(nlohmann::json &j, const ScriptOperation &item);
 
     friend std::ostream &operator<<(std::ostream &stream, const ScriptOperation &scriptOperation);
 
@@ -99,6 +123,8 @@ private:
     std::string m_operation;
     std::vector<std::string> m_arguments;
 };
+
+typedef std::vector<std::unique_ptr<ScriptOperation>> ScriptOperationList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Script
@@ -110,7 +136,9 @@ public:
 
     virtual ~Script();
 
-    friend void operator<<(Script &script, const nlohmann::json &jsonValue);
+    friend void from_json(const nlohmann::json &json, Script &item);
+
+    friend void to_json(nlohmann::json &j, const Script &item);
 
     friend std::ostream &operator<<(std::ostream &stream, const Script &script);
 
@@ -118,8 +146,10 @@ private:
     std::string m_id;
     std::string m_name;
     std::string m_ifSet;
-    std::vector<std::unique_ptr<ScriptOperation>> m_operations;
+    ScriptOperationList m_operations;
 };
+
+typedef std::vector<std::unique_ptr<Script>> ScriptList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * EnvironmentApp
@@ -131,9 +161,13 @@ public:
 
     virtual ~EnvironmentApp();
 
-    friend void operator<<(EnvironmentApp &environmentApp, const nlohmann::json &jsonValue);
+    const std::string &applicationId() const;
 
-    friend void operator<<(nlohmann::json &jsonValue, const EnvironmentApp &environmentApp);
+    const std::string &installationId() const;
+
+    friend void from_json(const nlohmann::json &json, EnvironmentApp &item);
+
+    friend void to_json(nlohmann::json &j, const EnvironmentApp &item);
 
     friend std::ostream &operator<<(std::ostream &stream, const EnvironmentApp &environmentApp);
 
@@ -141,6 +175,8 @@ private:
     std::string m_applicationId;
     std::string m_applicationInstallationId;
 };
+
+typedef std::vector<std::unique_ptr<EnvironmentApp>> EnvironmentAppList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Environment
@@ -152,19 +188,23 @@ public:
 
     virtual ~Environment();
 
-    std::string name() const;
+    const std::string &name() const;
 
-    friend void operator<<(Environment &environment, const nlohmann::json &jsonValue);
+    const EnvironmentAppList &apps() const;
 
-    friend void operator<<(nlohmann::json &jsonValue, const Environment &environment);
+    friend void from_json(const nlohmann::json &json, Environment &item);
+
+    friend void to_json(nlohmann::json &j, const Environment &item);
 
     friend std::ostream &operator<<(std::ostream &stream, const Environment &environment);
 
 private:
     std::string m_id;
     std::string m_name;
-    std::vector<std::unique_ptr<EnvironmentApp>> m_environmentApps;
+    EnvironmentAppList m_environmentApps;
 };
+
+typedef std::vector<std::unique_ptr<Environment>> EnvironmentList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Environments
@@ -176,22 +216,25 @@ public:
 
     virtual ~Environments();
 
-    std::string filename() const;
+    const std::string &filename() const;
 
     Environments &filename(const std::string &filename);
 
+    Application *findApplication(const std::string &applicationId) const;
 
-    friend void operator<<(Environments &environments, const nlohmann::json &jsonValue);
+    const EnvironmentList &environments() const;
 
-    friend void operator<<(nlohmann::json &jsonValue, const Environments &environments);
+    friend void from_json(const nlohmann::json &json, Environments &item);
+
+    friend void to_json(nlohmann::json &j, const Environments &item);
 
     friend std::ostream &operator<<(std::ostream &stream, const Environments &environments);
 
 private:
     std::string m_filename;
-    std::vector<std::unique_ptr<Application>> m_applications;
-    std::vector<std::unique_ptr<Script>> m_scripts;
-    std::vector<std::unique_ptr<Environment>> m_environments;
+    ApplicationList m_applications;
+    ScriptList m_scripts;
+    EnvironmentList m_environments;
 };
 
 
