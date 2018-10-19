@@ -4,7 +4,9 @@
 
 #pragma once
 
+
 #include "Domain.h"
+#include "Model.h"
 
 #include "ArgumentParser.h"
 
@@ -20,13 +22,13 @@ namespace envsel {
 class SelectionTab : public wxPanel {
 
 public:
-    SelectionTab(const Arguments & args, wxWindow *parent, wxWindowID winid, const wxString &name, Environments & environments, Environment & currentEnvironment);
+    SelectionTab(Model & model, wxWindow *parent, wxWindowID winid, const wxString &name, Environment & currentEnvironment);
 
     virtual ~SelectionTab();
 
 private:
-    const Arguments & m_args;
-    Environments & m_environments;
+    Model & m_model;
+
     Environment & m_currentEnvironment;
 
     wxSizer * m_panelSizer;

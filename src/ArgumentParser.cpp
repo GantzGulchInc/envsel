@@ -47,7 +47,8 @@ const std::string &Arguments::outputFilename() const {
 // ArgumentParser
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-ArgumentParser::ArgumentParser(const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc, CheckFunc checkFunc) :
+ArgumentParser::ArgumentParser(Arguments & args, const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc, CheckFunc checkFunc) :
+        m_arguments(args), //
         m_app{name},  //
         m_argc{argc}, //
         m_argv{argv}, //
@@ -58,6 +59,7 @@ ArgumentParser::ArgumentParser(const std::string &name, int argc, const char *co
     m_app.require_subcommand(1);
 
     CLI::App *m_selectCommand = m_app.add_subcommand("select", "Select an environment.");
+
     m_selectCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to use.")->required(true)->type_name("FILENAME");
     m_selectCommand->add_option("-o,--output", m_arguments.m_outputFilename, "Script filename to write.")->required(true)->type_name("OUTPUT_FILENAME");
 
@@ -66,6 +68,7 @@ ArgumentParser::ArgumentParser(const std::string &name, int argc, const char *co
     });
 
     CLI::App *m_editCommand = m_app.add_subcommand("edit", "Edit an environment file.");
+
     m_editCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to edit.")->required(true);
 
     m_editCommand->callback([this]() {
@@ -73,6 +76,7 @@ ArgumentParser::ArgumentParser(const std::string &name, int argc, const char *co
     });
 
     CLI::App *m_checkCommand = m_app.add_subcommand("check", "Check an environment file.");
+
     m_checkCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to check.")->required(true);
 
     m_checkCommand->callback([this]() {

@@ -9,6 +9,7 @@
 
 #include "ArgumentParser.h"
 #include "Domain.h"
+#include "Model.h"
 
 #include <wx/wx.h>
 
@@ -32,10 +33,9 @@ public:
 private:
     bool m_parsedArgs;
 
-    ArgumentParser * m_argumentsParser;
-    Environments m_envs;
+    Model & m_model;
 
-    void loadEnvironments(const std::string &filename);
+    ArgumentParser * m_argumentsParser;
 
     bool runSelect(const Arguments & args);
 

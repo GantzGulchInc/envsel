@@ -2,6 +2,7 @@
 #include "ArgumentParser.h"
 #include "SelectFrame.h"
 #include "Domain.h"
+#include "Model.h"
 #include "IO.h"
 
 #include <nlohmann/json.hpp>
@@ -21,7 +22,7 @@ static const char * TAG = "App";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 App::App() :
-        m_parsedArgs{false} {
+        m_parsedArgs{false}, m_model(Model::instance()) {
 
 }
 
@@ -36,7 +37,7 @@ bool App::OnInit() {
         EditFunc editFunc = std::bind(&App::runEdit, this, std::placeholders::_1);
         CheckFunc checkFunc = std::bind(&App::runCheck, this, std::placeholders::_1);
 
-        m_argumentsParser = new ArgumentParser{"Environment Selector", argc, argv, selFunc, editFunc, checkFunc};
+        m_argumentsParser = new ArgumentParser{m_model.m_args, "Environment Selector", argc, argv, selFunc, editFunc, checkFunc};
 
         m_argumentsParser->parse();
 
@@ -47,48 +48,37 @@ bool App::OnInit() {
 
 }
 
-
-void App::loadEnvironments(const std::string &filename) {
-
-    m_envs.load(filename);
-
-    nlohmann::json outputJson = m_envs;
-
-    CLOG(TRACE, TAG) << "Output Json: " << std::endl << outputJson.dump(4);
-
-}
-
 bool App::runSelect(const Arguments & args) {
 
-    loadEnvironments(args.inputFilename());
+    m_model.m_environments.load(args.inputFilename());
 
     CLOG(TRACE,TAG) << "runSelect: " << args.outputFilename();
 
     m_parsedArgs = true;
 
-    SelectFrame *frame = new SelectFrame(args, m_envs, "Select", wxPoint(50, 50), wxSize(450, 340));
+    SelectFrame *frame = new SelectFrame(m_model, "Select", wxPoint(50, 50), wxSize(450, 340));
     frame->Show();
     return true;
 }
 
 bool App::runEdit(const Arguments & args) {
 
-    loadEnvironments(args.inputFilename());
+    m_model.m_environments.load(args.inputFilename());
 
     m_parsedArgs = true;
 
-    SelectFrame *frame = new SelectFrame(args, m_envs, "Edit", wxPoint(50, 50), wxSize(450, 340));
+    SelectFrame *frame = new SelectFrame(m_model, "Edit", wxPoint(50, 50), wxSize(450, 340));
     frame->Show();
     return true;
 }
 
 bool App::runCheck(const Arguments & args) {
 
-    loadEnvironments(args.inputFilename());
+    m_model.m_environments.load(args.inputFilename());
 
     m_parsedArgs = true;
 
-    SelectFrame *frame = new SelectFrame(args, m_envs, "Check", wxPoint(50, 50), wxSize(450, 340));
+    SelectFrame *frame = new SelectFrame(m_model, "Check", wxPoint(50, 50), wxSize(450, 340));
     frame->Show();
     return true;
 }

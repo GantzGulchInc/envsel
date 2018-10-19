@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Domain.h"
+#include "Model.h"
 #include "ArgumentParser.h"
 
 #include "SelectionTab.h"
@@ -27,13 +28,12 @@ namespace envsel {
 
 class SelectFrame : public wxFrame {
 public:
-    SelectFrame(const Arguments & args, Environments &environments, const wxString &title, const wxPoint &pos, const wxSize &size);
+    SelectFrame(Model & model, const wxString &title, const wxPoint &pos, const wxSize &size);
 
     virtual ~SelectFrame();
 
 private:
-    const Arguments & m_args;
-    Environments &m_environments;
+    Model & m_model;
 
     wxPanel *m_panel;
     wxNotebook *m_notebook;

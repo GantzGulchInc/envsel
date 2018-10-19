@@ -19,15 +19,14 @@ static const char *TAG = "View";
 // SelectionTab
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SelectionTab::SelectionTab(const Arguments & args, wxWindow *parent, wxWindowID winId, const wxString &name, Environments &environments, Environment &currentEnvironment) :
+SelectionTab::SelectionTab(Model & model, wxWindow *parent, wxWindowID winId, const wxString &name, Environment &currentEnvironment) :
         wxPanel(parent, winId, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxNO_BORDER, name), //
-        m_args(args), //
-        m_environments(environments), //
+        m_model(model), //
         m_currentEnvironment(currentEnvironment) {
 
     int rows = currentEnvironment.apps().size();
 
-    CLOG(TRACE, TAG) << "SelectinoTab:ctor: outputFilename: " << m_args.outputFilename();
+    CLOG(TRACE, TAG) << "SelectinoTab:ctor: outputFilename: " << m_model.m_args.outputFilename();
 
     m_panelSizer = new wxBoxSizer(wxVERTICAL);
     m_flexGridSizer = new wxFlexGridSizer(rows, 2, 10, 10);
@@ -35,7 +34,7 @@ SelectionTab::SelectionTab(const Arguments & args, wxWindow *parent, wxWindowID 
 
     for (auto &envApp : currentEnvironment.apps()) {
 
-        Application *app = environments.findApplication(envApp->applicationId());
+        Application *app = m_model.m_environments.findApplication(envApp->applicationId());
 
         if (app) {
 
@@ -133,7 +132,7 @@ void SelectionTab::onSelect(wxCommandEvent &event) {
 
     std::vector<std::string> output;
 
-    output = m_environments.executeScripts( variables );
+    output = m_model.m_environments.executeScripts( variables );
 
     CLOG(TRACE, TAG) << "Output:";
 
@@ -141,9 +140,9 @@ void SelectionTab::onSelect(wxCommandEvent &event) {
         CLOG(TRACE, TAG) << "    : " << sl;
     }
 
-    CLOG(TRACE, TAG) << " ouputFilename: " << m_args.outputFilename();
+    CLOG(TRACE, TAG) << " ouputFilename: " << m_model.m_args.outputFilename();
 
-    writeOutput(m_args.outputFilename(), output);
+    writeOutput(m_model.m_args.outputFilename(), output);
 
     CLOG(TRACE, TAG) << "Finished writing script.";
 }

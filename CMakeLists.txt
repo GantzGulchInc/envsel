@@ -23,7 +23,7 @@ include_directories( "ThirdParty/easyloggingpp/src" )
 # file(GLOB SOURCES "src/*.cpp")
 set( L_SOURCES ThirdParty/easyloggingpp/src/easylogging++.cc)
 
-set( E_SOURCES src/App.cpp src/SelectFrame.cpp src/ArgumentParser.cpp src/Domain.cpp src/Main.cpp src/IO.cpp src/NonCopyable.cpp src/NonCopyable.h src/SelectionTab.cpp src/SelectionTab.h)
+set( E_SOURCES src/App.cpp src/SelectFrame.cpp src/ArgumentParser.cpp src/Domain.cpp src/Main.cpp src/IO.cpp src/NonCopyable.cpp src/NonCopyable.h src/SelectionTab.cpp src/SelectionTab.h src/Model.cpp src/Model.h)
 
 
 add_executable(EnvironmentSelector ${E_SOURCES} ${L_SOURCES})

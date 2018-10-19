@@ -56,7 +56,7 @@ typedef std::function<void(const Arguments &args)> CheckFunc;
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class ArgumentParser  : public NonCopyable {
 public:
-    ArgumentParser(const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc, CheckFunc checkFunc);
+    ArgumentParser(Arguments & args, const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc, CheckFunc checkFunc);
 
     virtual ~ArgumentParser();
 
@@ -72,7 +72,7 @@ private:
     EditFunc m_editFunc;
     CheckFunc m_checkFunc;
 
-    Arguments m_arguments;
+    Arguments & m_arguments;
 };
 
 } /* namespace envsel */

@@ -5,9 +5,10 @@
  *      Author: gantzm
  */
 
+#include "SelectFrame.h"
+
 #include "SelectionTab.h"
 
-#include "SelectFrame.h"
 
 namespace gg {
 namespace envsel {
@@ -23,8 +24,8 @@ wxEND_EVENT_TABLE()
 // SelectFrame
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SelectFrame::SelectFrame(const Arguments & args, Environments &environments, const wxString &title, const wxPoint &pos, const wxSize &size) :
-        wxFrame(NULL, wxID_ANY, title, pos, size), m_args(args), m_environments(environments) {
+SelectFrame::SelectFrame(Model & model, const wxString &title, const wxPoint &pos, const wxSize &size) :
+        wxFrame(NULL, wxID_ANY, title, pos, size), m_model(model) {
 
     m_panel = new wxPanel(this);
 
@@ -32,9 +33,9 @@ SelectFrame::SelectFrame(const Arguments & args, Environments &environments, con
 
     bool first{true};
 
-    for (auto &p : environments.environments()) {
+    for (auto &p : m_model.m_environments.environments()) {
 
-        SelectionTab *tab = new SelectionTab(m_args,m_notebook, wxID_ANY, "Tab1", m_environments, *p);
+        SelectionTab *tab = new SelectionTab(m_model,m_notebook, wxID_ANY, "Tab1", *p);
 
         m_tabs.push_back(std::pair<SelectionTab *, Environment &>(tab, *p));
 

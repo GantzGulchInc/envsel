@@ -16,11 +16,10 @@ int main(int argc, char *argv[])  {
     el::Loggers::getLogger("IO");
 
     wxEntryStart( argc, argv );
+    
     wxTheApp->CallOnInit();
     wxTheApp->OnRun();
 
     return 0;
 }
-
-// wxIMPLEMENT_APP(gg::envsel::App);
 
