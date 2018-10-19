@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "NonCopyable.h"
+
 #include "CLI/CLI.hpp"
 
 #include <string>
@@ -22,7 +24,7 @@ class ArgumentParser;
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Arguments
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class Arguments {
+class Arguments : public NonCopyable {
 public:
     Arguments();
 
@@ -52,7 +54,7 @@ typedef std::function<void(const Arguments &args)> CheckFunc;
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ArgumentParser
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class ArgumentParser {
+class ArgumentParser  : public NonCopyable {
 public:
     ArgumentParser(const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc, CheckFunc checkFunc);
 

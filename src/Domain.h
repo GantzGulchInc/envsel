@@ -30,6 +30,10 @@ public:
 
     virtual ~ScriptVariable();
 
+    const std::string &name();
+
+    const std::string &value();
+
     friend void from_json(const nlohmann::json &json, ScriptVariable &item);
 
     friend void to_json(nlohmann::json &j, const ScriptVariable &item);
@@ -54,9 +58,11 @@ public:
 
     virtual ~ApplicationInstallation();
 
-    const std::string &id();
+    const std::string &id() const;
 
-    const std::string &name();
+    const std::string &name() const;
+
+    const ScriptVariableList &variables() const;
 
     friend void from_json(const nlohmann::json &json, ApplicationInstallation &item);
 
@@ -87,7 +93,7 @@ public:
 
     const std::string &name() const;
 
-    const ApplicationInstallationList & installations() const;
+    const ApplicationInstallationList &installations() const;
 
     friend void from_json(const nlohmann::json &json, Application &item);
 
@@ -113,6 +119,12 @@ public:
 
     virtual ~ScriptOperation();
 
+    const std::string &operation() const;
+
+    const std::vector<std::string> &arguments() const;
+
+    void execute(const std::map<std::string, std::string> &variables, std::vector<std::string> &output) const;
+
     friend void from_json(const nlohmann::json &json, ScriptOperation &item);
 
     friend void to_json(nlohmann::json &j, const ScriptOperation &item);
@@ -135,6 +147,16 @@ public:
     Script();
 
     virtual ~Script();
+
+    const std::string &id() const;
+
+    const std::string &name() const;
+
+    const std::string &ifSet() const;
+
+    const ScriptOperationList &operations() const;
+
+    void execute(const std::map<std::string, std::string> &variables, std::vector<std::string> &output) const;
 
     friend void from_json(const nlohmann::json &json, Script &item);
 
@@ -223,6 +245,8 @@ public:
     Application *findApplication(const std::string &applicationId) const;
 
     const EnvironmentList &environments() const;
+
+    std::vector<std::string> executeScripts(const std::map<std::string, std::string> &variables);
 
     friend void from_json(const nlohmann::json &json, Environments &item);
 

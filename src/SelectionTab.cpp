@@ -4,6 +4,11 @@
 
 #include "SelectionTab.h"
 
+#include "IO.h"
+
+#include <iomanip>
+#include <map>
+
 namespace gg {
 namespace envsel {
 
@@ -14,12 +19,15 @@ static const char *TAG = "View";
 // SelectionTab
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SelectionTab::SelectionTab(wxWindow *parent, wxWindowID winId, const wxString &name, Environments &environments, Environment &currentEnvironment) :
-        wxPanel(parent, winId, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxNO_BORDER, name), m_environments(environments),
+SelectionTab::SelectionTab(const Arguments & args, wxWindow *parent, wxWindowID winId, const wxString &name, Environments &environments, Environment &currentEnvironment) :
+        wxPanel(parent, winId, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxNO_BORDER, name), //
+        m_args(args), //
+        m_environments(environments), //
         m_currentEnvironment(currentEnvironment) {
 
     int rows = currentEnvironment.apps().size();
 
+    CLOG(TRACE, TAG) << "SelectinoTab:ctor: outputFilename: " << m_args.outputFilename();
 
     m_panelSizer = new wxBoxSizer(wxVERTICAL);
     m_flexGridSizer = new wxFlexGridSizer(rows, 2, 10, 10);
@@ -66,20 +74,20 @@ SelectionTab::~SelectionTab() {
 }
 
 
-wxComboBox * SelectionTab::createComboBox(wxWindow *parent, const std::string & selectedId, const ApplicationInstallationList & installedApps) {
+wxComboBox *SelectionTab::createComboBox(wxWindow *parent, const std::string &selectedId, const ApplicationInstallationList &installedApps) {
 
-    wxComboBox * cb = new wxComboBox{parent, wxID_ANY};
+    wxComboBox *cb = new wxComboBox{parent, wxID_ANY};
 
     int count{1};
     int selected{0};
 
-    cb->Append("None", (void *)nullptr);
+    cb->Append("None", (void *) nullptr);
 
-    for( auto & installedApp : installedApps){
+    for (auto &installedApp : installedApps) {
 
         cb->Append(installedApp->name(), installedApp.get());
 
-        if( installedApp->id() == selectedId ){
+        if (installedApp->id() == selectedId) {
             selected = count;
         }
 
@@ -92,26 +100,55 @@ wxComboBox * SelectionTab::createComboBox(wxWindow *parent, const std::string & 
 }
 
 
-void SelectionTab::onSelect(wxCommandEvent &event){
+
+void SelectionTab::onSelect(wxCommandEvent &event) {
 
     CLOG(TRACE, TAG) << "Called.";
 
-    for( auto a : m_comboBoxes) {
+    std::map<std::string,std::string> variables;
 
-        ApplicationInstallation * installation = reinterpret_cast<ApplicationInstallation*>(a->GetClientData(a->GetSelection()));
+    for (auto a : m_comboBoxes) {
 
-        if( installation ){
+        ApplicationInstallation *installation = reinterpret_cast<ApplicationInstallation *>(a->GetClientData(a->GetSelection()));
+
+        if (installation) {
 
             CLOG(TRACE, TAG) << "Selected: " << *installation;
+
+            for(auto & v : installation->variables()) {
+                variables[v->name()] = v->value();
+            }
+
         } else {
 
             CLOG(TRACE, TAG) << "Selected: None";
         }
     }
 
+    CLOG(TRACE, TAG) << "Variables:";
+
+    for(auto e : variables) {
+        CLOG(TRACE, TAG) << "    Name: " << std::setw(20) << std::left << e.first << " Value: " << e.second;
+    }
+
+    std::vector<std::string> output;
+
+    output = m_environments.executeScripts( variables );
+
+    CLOG(TRACE, TAG) << "Output:";
+
+    for(auto sl : output) {
+        CLOG(TRACE, TAG) << "    : " << sl;
+    }
+
+    CLOG(TRACE, TAG) << " ouputFilename: " << m_args.outputFilename();
+
+    writeOutput(m_args.outputFilename(), output);
+
+    CLOG(TRACE, TAG) << "Finished writing script.";
 }
 
-void SelectionTab::onCancel(wxCommandEvent &event){
+void SelectionTab::onCancel(wxCommandEvent &event) {
 
     CLOG(TRACE, TAG) << "Called.";
 

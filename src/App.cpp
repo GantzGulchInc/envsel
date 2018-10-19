@@ -36,9 +36,10 @@ bool App::OnInit() {
         EditFunc editFunc = std::bind(&App::runEdit, this, std::placeholders::_1);
         CheckFunc checkFunc = std::bind(&App::runCheck, this, std::placeholders::_1);
 
-        ArgumentParser argParser{"Environment Selector", argc, argv, selFunc, editFunc, checkFunc};
+        m_argumentsParser = new ArgumentParser{"Environment Selector", argc, argv, selFunc, editFunc, checkFunc};
 
-        argParser.parse();
+        m_argumentsParser->parse();
+
     } catch (std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
@@ -72,6 +73,8 @@ void App::loadEnvironments(const std::string &filename) {
 bool App::runSelect(const Arguments & args) {
 
     loadEnvironments(args.inputFilename());
+
+    CLOG(TRACE,TAG) << "runSelect: " << args.outputFilename();
 
     m_parsedArgs = true;
 

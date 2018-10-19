@@ -13,6 +13,7 @@ int main(int argc, char *argv[])  {
     el::Loggers::getLogger("Domain");
     el::Loggers::getLogger("App");
     el::Loggers::getLogger("View");
+    el::Loggers::getLogger("IO");
 
     wxEntryStart( argc, argv );
     wxTheApp->CallOnInit();

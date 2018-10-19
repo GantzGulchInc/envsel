@@ -31,6 +31,8 @@ public:
 
 private:
     bool m_parsedArgs;
+
+    ArgumentParser * m_argumentsParser;
     Environments m_envs;
 
     void loadEnvironments(const std::string &filename);

@@ -10,7 +10,7 @@
 					"variables": [
 						{
 							"name": "JAVA_HOME",
-							"value": "/workspace/apps/jdk-11-28"
+							"value": "/workspace/apps/jdk/11-28"
 						}
 					]
 				},
@@ -20,7 +20,7 @@
 					"variables": [
 						{
 							"name": "JAVA_HOME",
-							"value": "/workspace/apps/jdk-1.8.0_161"
+							"value": "/workspace/apps/jdk/1.8.0_161"
 						}
 					]
 				},
@@ -30,7 +30,7 @@
 					"variables": [
 						{
 							"name": "JAVA_HOME",
-							"value": "/workspace/apps/jdk-1.7.0_71"
+							"value": "/workspace/apps/jdk/1.7.0_71"
 						}
 					]
 				},
@@ -40,7 +40,7 @@
 					"variables": [
 						{
 							"name": "JAVA_HOME",
-							"value": "/workspace/apps/jdk-1.6.0_32"
+							"value": "/workspace/apps/jdk/1.6.0_32"
 						}
 					]
 				}
@@ -56,7 +56,7 @@
 					"variables": [
 						{
 							"name": "MAVEN_HOME",
-							"value": "/workspace/apps/apache-maven-3.5.4"
+							"value": "/workspace/apps/apache-maven/3.5.4"
 						},
 						{
 							"name": "MAVEN_OPTS",
@@ -70,7 +70,7 @@
 					"variables": [
 						{
 							"name": "MAVEN_HOME",
-							"value": "/workspace/apps/apache-maven-3.3.9"
+							"value": "/workspace/apps/apache-maven/3.3.9"
 						},
 						{
 							"name": "MAVEN_OPTS",
@@ -84,7 +84,7 @@
 					"variables": [
 						{
 							"name": "MAVEN_HOME",
-							"value": "/workspace/apps/apache-maven-3.2.5"
+							"value": "/workspace/apps/apache-maven/3.2.5"
 						},
 						{
 							"name": "MAVEN_OPTS",
@@ -98,7 +98,7 @@
 					"variables": [
 						{
 							"name": "MAVEN_HOME",
-							"value": "/workspace/apps/apache-maven-3.0.4"
+							"value": "/workspace/apps/apache-maven/3.0.4"
 						},
 						{
 							"name": "MAVEN_OPTS",
@@ -118,7 +118,7 @@
 					"variables": [
 						{
 							"name": "ANT_HOME",
-							"value": "/workspace/apps/apache-ant-1.9.7"
+							"value": "/workspace/apps/apache-ant/1.9.7"
 						}
 					]
 				},
@@ -128,7 +128,7 @@
 					"variables": [
 						{
 							"name": "ANT_HOME",
-							"value": "/workspace/apps/apache-ant-1.8.4"
+							"value": "/workspace/apps/apache-ant/1.8.4"
 						}
 					]
 				}
@@ -230,7 +230,7 @@
 					"variables": [
 						{
 							"name": "WEBSTORM_HOME",
-							"value": "/workspace/apps/WebStorm"
+							"value": "/workspace/apps/WebStorm/2017.3"
 						}
 					]
 				},
@@ -240,7 +240,7 @@
 					"variables": [
 						{
 							"name": "WEBSTORM_HOME",
-							"value": "/workspace/apps/WebStorm-162.1121.31"
+							"value": "/workspace/apps/WebStorm/162.1121.31"
 						}
 					]
 				}
@@ -256,7 +256,7 @@
 					"variables": [
 						{
 							"name": "NODEJS_HOME",
-							"value": "/workspace/apps/node-v8.9.3-linux-x64"
+							"value": "/workspace/apps/node/8.9.3"
 						}
 					]
 				},
@@ -266,7 +266,7 @@
 					"variables": [
 						{
 							"name": "NODEJS_HOME",
-							"value": "/workspace/apps/node-v6.10.1-linux-x64"
+							"value": "/workspace/apps/node/6.10.1"
 						}
 					]
 				},
@@ -276,7 +276,7 @@
 					"variables": [
 						{
 							"name": "NODEJS_HOME",
-							"value": "/workspace/apps/node-v4.5.0-linux-x64"
+							"value": "/workspace/apps/node/4.5.0"
 						}
 					]
 				},
@@ -286,7 +286,7 @@
 					"variables": [
 						{
 							"name": "NODEJS_HOME",
-							"value": "/workspace/apps/node-v4.4.7-linux-x64"
+							"value": "/workspace/apps/node/4.4.7"
 						}
 					]
 				}
@@ -315,9 +315,9 @@
 				{
 					"op": "print",
 					"args": [
-						"export JAVA_HOME={JAVA_HOME}",
-						"export JRE_HOME={JAVA_HOME}",
-						"export PATH={JAVA_HOME}/bin:${{PATH}}"
+						"export JAVA_HOME=#{JAVA_HOME}",
+						"export JRE_HOME=#{JAVA_HOME}",
+						"export PATH=#{JAVA_HOME}/bin:${PATH}"
 					]
 				}
 			]
@@ -330,8 +330,8 @@
 				{
 					"op": "print",
 					"args": [
-						"export MAVEN_HOME={MAVEN_HOME}",
-						"export PATH={MAVEN_HOME}/bin:${{PATH}}"
+						"export MAVEN_HOME=#{MAVEN_HOME}",
+						"export PATH=#{MAVEN_HOME}/bin:${PATH}"
 					]
 				}
 			]
@@ -344,7 +344,7 @@
 				{
 					"op": "print",
 					"args": [
-						"export MAVEN_OPTS={MAVEN_OPTS}"
+						"export MAVEN_OPTS=#{MAVEN_OPTS}"
 					]
 				}
 			]
@@ -357,8 +357,8 @@
 				{
 					"op": "print",
 					"args": [
-						"export ANT_HOME={ANT_HOME}",
-						"export PATH={ANT_HOME}/bin:${{PATH}}"
+						"export ANT_HOME=#{ANT_HOME}",
+						"export PATH=#{ANT_HOME}/bin:${PATH}"
 					]
 				}
 			]
@@ -371,8 +371,8 @@
 				{
 					"op": "print",
 					"args": [
-						"export ECLIPSE_HOME={ECLIPSE_HOME}",
-						"export PATH={ECLIPSE_HOME}:${{PATH}}"
+						"export ECLIPSE_HOME=#{ECLIPSE_HOME}",
+						"export PATH=#{ECLIPSE_HOME}:${PATH}"
 					]
 				}
 			]
@@ -385,8 +385,8 @@
 				{
 					"op": "print",
 					"args": [
-						"export NODEJS_HOME={NODEJS_HOME}",
-						"export PATH={NODEJS_HOME}/bin:${{PATH}}"
+						"export NODEJS_HOME=#{NODEJS_HOME}",
+						"export PATH=#{NODEJS_HOME}/bin:${PATH}"
 					]
 				}
 			]
@@ -399,8 +399,8 @@
 				{
 					"op": "print",
 					"args": [
-						"export WEBSTORM_HOME={WEBSTORM_HOME}",
-						"export PATH={WEBSTORM_HOME}/bin:${{PATH}}"
+						"export WEBSTORM_HOME=#{WEBSTORM_HOME}",
+						"export PATH=#{WEBSTORM_HOME}/bin:${PATH}"
 					]
 				}
 			]

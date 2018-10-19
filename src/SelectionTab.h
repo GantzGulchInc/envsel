@@ -6,6 +6,8 @@
 
 #include "Domain.h"
 
+#include "ArgumentParser.h"
+
 #include <wx/wx.h>
 
 namespace gg {
@@ -18,11 +20,12 @@ namespace envsel {
 class SelectionTab : public wxPanel {
 
 public:
-    SelectionTab(wxWindow *parent, wxWindowID winid, const wxString &name, Environments & environments, Environment & currentEnvironment);
+    SelectionTab(const Arguments & args, wxWindow *parent, wxWindowID winid, const wxString &name, Environments & environments, Environment & currentEnvironment);
 
     virtual ~SelectionTab();
 
 private:
+    const Arguments & m_args;
     Environments & m_environments;
     Environment & m_currentEnvironment;
 

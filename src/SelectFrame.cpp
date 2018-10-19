@@ -34,7 +34,7 @@ SelectFrame::SelectFrame(const Arguments & args, Environments &environments, con
 
     for (auto &p : environments.environments()) {
 
-        SelectionTab *tab = new SelectionTab(m_notebook, wxID_ANY, "Tab1", m_environments, *p);
+        SelectionTab *tab = new SelectionTab(m_args,m_notebook, wxID_ANY, "Tab1", m_environments, *p);
 
         m_tabs.push_back(std::pair<SelectionTab *, Environment &>(tab, *p));
 

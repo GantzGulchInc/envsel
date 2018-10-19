@@ -10,6 +10,7 @@
 #include "JsonHelper.h"
 
 #include <iostream>
+#include <regex>
 
 using nlohmann::json;
 
@@ -32,6 +33,15 @@ ScriptVariable::~ScriptVariable() {
 
     CLOG(TRACE, TAG) << "Called";
 }
+
+const std::string & ScriptVariable::name(){
+    return  m_name;
+}
+
+const std::string & ScriptVariable::value() {
+    return m_value;
+}
+
 
 void from_json(const nlohmann::json &json, ScriptVariable &item) {
 
@@ -74,12 +84,16 @@ ApplicationInstallation::~ApplicationInstallation() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-const std::string &ApplicationInstallation::id() {
+const std::string &ApplicationInstallation::id() const {
     return m_id;
 }
 
-const std::string &ApplicationInstallation::name() {
+const std::string &ApplicationInstallation::name() const {
     return m_name;
+}
+
+const ScriptVariableList & ApplicationInstallation::variables() const {
+    return m_variables;
 }
 
 void from_json(const nlohmann::json &json, ApplicationInstallation &item) {
@@ -182,6 +196,59 @@ ScriptOperation::~ScriptOperation() {
     CLOG(TRACE, TAG) << "Called";
 }
 
+
+const std::string & ScriptOperation::operation() const {
+    return m_operation;
+}
+
+const std::vector<std::string> & ScriptOperation::arguments() const {
+    return m_arguments;
+}
+
+static std::string expandVariables(std::string value, const std::map<std::string, std::string> &variables ) {
+
+    const std::regex r{R"(#\{([^}]+)\})"};
+
+    std::smatch match;
+
+    while( std::regex_search(value, match, r) ){
+
+        auto const expr = match[0];
+        auto const name = match[1].str();
+
+        CLOG(TRACE, TAG) << "doing it:";
+        CLOG(TRACE, TAG) << "   expr: " << expr;
+        CLOG(TRACE, TAG) << "   name: " << name;
+
+        std::string r = variables.count( name ) ? variables.at(name) : "";
+
+        value.replace(expr.first, expr.second, r);
+
+    }
+
+    return value;
+
+}
+
+void ScriptOperation::execute(const std::map<std::string, std::string> &variables, std::vector<std::string> &output) const {
+
+    if( m_operation == "print" ) {
+
+        for(auto arg : m_arguments){
+
+            auto v = expandVariables(arg, variables);
+
+            output.push_back(v);
+        }
+
+    }else{
+
+        // Uh oh.
+    }
+
+}
+
+
 void from_json(const nlohmann::json &json, ScriptOperation &item) {
 
     json.at("op").get_to(item.m_operation);
@@ -220,6 +287,37 @@ Script::Script() :
 Script::~Script() {
 
     CLOG(TRACE, TAG) << "Called";
+}
+
+const std::string & Script::id() const {
+    return m_id;
+}
+
+const std::string & Script::name() const {
+    return m_name;
+}
+
+const std::string & Script::ifSet() const {
+    return m_ifSet;
+}
+
+const ScriptOperationList & Script::operations() const {
+    return m_operations;
+}
+
+void Script::execute(const std::map<std::string, std::string> &variables, std::vector<std::string> &output) const {
+
+    if( m_ifSet.length() > 0 && variables.count(m_ifSet) == 0 ) {
+        return;
+    }
+
+    for(auto & op : m_operations) {
+
+        op->execute(variables, output);
+
+    }
+
+
 }
 
 void from_json(const nlohmann::json &json, Script &item) {
@@ -399,6 +497,20 @@ Application *Environments::findApplication(const std::string &applicationId) con
 const EnvironmentList &Environments::environments() const {
     return m_environments;
 }
+
+
+
+std::vector<std::string> Environments::executeScripts(const std::map<std::string, std::string> &variables) {
+
+    std::vector<std::string> results;
+
+    for( auto & script : m_scripts ) {
+        script->execute(variables, results);
+    }
+
+    return results;
+}
+
 
 void from_json(const nlohmann::json &json, Environments &item) {
 
