@@ -26,6 +26,9 @@ namespace envsel {
 class ScriptVariable : public NonCopyable {
 public:
 
+    static const std::string F_NAME;
+    static const std::string F_VALUE;
+
     ScriptVariable();
 
     virtual ~ScriptVariable();
@@ -53,6 +56,11 @@ typedef std::vector<std::unique_ptr<ScriptVariable>> ScriptVariableList;
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class ApplicationInstallation : public NonCopyable {
 public:
+
+    static const std::string F_ID;
+    static const std::string F_NAME;
+    static const std::string F_VARIABLES;
+
 
     ApplicationInstallation();
 
@@ -85,6 +93,10 @@ typedef std::vector<std::unique_ptr<ApplicationInstallation>> ApplicationInstall
 class Application : public NonCopyable {
 public:
 
+    static const std::string F_ID;
+    static const std::string F_NAME;
+    static const std::string F_INSTALLATIONS;
+
     Application();
 
     virtual ~Application();
@@ -115,6 +127,9 @@ typedef std::vector<std::unique_ptr<Application>> ApplicationList;
 class ScriptOperation : public NonCopyable {
 public:
 
+    static const std::string F_OPERATION;
+    static const std::string F_ARGUMENTS;
+
     ScriptOperation();
 
     virtual ~ScriptOperation();
@@ -143,6 +158,11 @@ typedef std::vector<std::unique_ptr<ScriptOperation>> ScriptOperationList;
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class Script : public NonCopyable {
 public:
+
+    static const std::string F_ID;
+    static const std::string F_NAME;
+    static const std::string F_IFSET;
+    static const std::string F_OPERATIONS;
 
     Script();
 
