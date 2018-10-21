@@ -31,17 +31,16 @@ public:
     virtual int OnRun();
 
 private:
-    bool m_parsedArgs;
 
-    Model & m_model;
+    Model &m_model;
 
-    ArgumentParser * m_argumentsParser;
+    ArgumentParser *m_argumentsParser;
 
-    bool runSelect(const Arguments & args);
+    bool runSelect();
 
-    bool runEdit(const Arguments & args);
+    bool runEdit();
 
-    bool runCheck(const Arguments & args);
+    bool runCheck();
 };
 
 } /* namespace envsel */

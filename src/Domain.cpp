@@ -7,6 +7,7 @@
 
 #include "Domain.h"
 #include "IO.h"
+#include "ToString.h"
 #include "JsonHelper.h"
 
 #include <iostream>
@@ -65,10 +66,10 @@ void to_json(nlohmann::json &j, const ScriptVariable &item) {
 
 std::ostream &operator<<(std::ostream &stream, const ScriptVariable &scriptVariable) {
 
-    stream << "ScriptVariable:[" //
-           << ScriptVariable::F_NAME << "=" << scriptVariable.m_name //
-           << "," << ScriptVariable::F_VALUE << "=" << scriptVariable.m_value //
-           << "]";
+
+    ToString(stream, "ScriptVariable") //
+            .field("m_name", scriptVariable.m_name) //
+            .field("m_value", scriptVariable.m_value); //
 
     return stream;
 }
@@ -123,11 +124,11 @@ void to_json(nlohmann::json &j, const ApplicationInstallation &item) {
 
 std::ostream &operator<<(std::ostream &stream, const ApplicationInstallation &applicationInstallation) {
 
-    stream << "ApplicationInstallation:[" //
-           << "id=" << applicationInstallation.m_id //
-           << ",name=" << applicationInstallation.m_name //
-           << ",variables=[" << applicationInstallation.m_variables << "]" //
-           << "]";
+
+    ToString(stream, "ApplicationInstallation") //
+            .field("m_id", applicationInstallation.m_id) //
+            .field("m_name", applicationInstallation.m_name) //
+            .field("m_variables", applicationInstallation.m_variables); //
 
     return stream;
 }
@@ -138,7 +139,7 @@ std::ostream &operator<<(std::ostream &stream, const ApplicationInstallation &ap
 
 const std::string Application::F_ID{"id"};
 const std::string Application::F_NAME{"name"};
-const std::string Application::F_INSTALLATIONS{"installed"};
+const std::string Application::F_INSTALLATIONS{"installations"};
 
 Application::Application() :
         m_id{""}, m_name{""} {
@@ -183,11 +184,10 @@ void to_json(nlohmann::json &j, const Application &item) {
 
 std::ostream &operator<<(std::ostream &stream, const Application &application) {
 
-    stream << "Application:[" //
-           << "id=" << application.m_id //
-           << ",name=" << application.m_name //
-           << ",installations=[" << application.m_installations << "]" //
-           << "]";
+    ToString(stream, "Application") //
+            .field("m_id", application.m_id) //
+            .field("m_name", application.m_name) //
+            .field("m_installations", application.m_installations); //
 
     return stream;
 }
@@ -197,30 +197,30 @@ std::ostream &operator<<(std::ostream &stream, const Application &application) {
 // Script Operation
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const std::string ScriptOperation::F_OPERATION{"op"};
-const std::string ScriptOperation::F_ARGUMENTS{"args"};
+const std::string ScriptCommand::F_COMMAND{"command"};
+const std::string ScriptCommand::F_ARGUMENTS{"args"};
 
-ScriptOperation::ScriptOperation() :
-        m_operation{""} {
-
-    CLOG(TRACE, TAG) << "Called";
-}
-
-ScriptOperation::~ScriptOperation() {
+ScriptCommand::ScriptCommand() :
+        m_command{""} {
 
     CLOG(TRACE, TAG) << "Called";
 }
 
+ScriptCommand::~ScriptCommand() {
 
-const std::string &ScriptOperation::operation() const {
-    return m_operation;
+    CLOG(TRACE, TAG) << "Called";
 }
 
-const std::vector<std::string> &ScriptOperation::arguments() const {
+
+const std::string &ScriptCommand::operation() const {
+    return m_command;
+}
+
+const std::vector<std::string> &ScriptCommand::arguments() const {
     return m_arguments;
 }
 
-static std::string expandVariables(std::string value, const std::map<std::string, std::string> &variables) {
+static std::string expandVariables(std::string value, const VariableDictionary &variables) {
 
     const std::regex r{R"(#\{([^}]+)\})"};
 
@@ -245,9 +245,9 @@ static std::string expandVariables(std::string value, const std::map<std::string
 
 }
 
-void ScriptOperation::execute(const std::map<std::string, std::string> &variables, std::vector<std::string> &output) const {
+void ScriptCommand::execute(const VariableDictionary &variables, std::vector<std::string> &output) const {
 
-    if (m_operation == "print") {
+    if (m_command == "print") {
 
         for (auto arg : m_arguments) {
 
@@ -264,27 +264,26 @@ void ScriptOperation::execute(const std::map<std::string, std::string> &variable
 }
 
 
-void from_json(const nlohmann::json &json, ScriptOperation &item) {
+void from_json(const nlohmann::json &json, ScriptCommand &item) {
 
-    json.at(ScriptOperation::F_OPERATION).get_to(item.m_operation);
-    json.at(ScriptOperation::F_ARGUMENTS).get_to(item.m_arguments);
+    json.at(ScriptCommand::F_COMMAND).get_to(item.m_command);
+    json.at(ScriptCommand::F_ARGUMENTS).get_to(item.m_arguments);
 
 }
 
-void to_json(nlohmann::json &j, const ScriptOperation &item) {
+void to_json(nlohmann::json &j, const ScriptCommand &item) {
 
     j = {
-            {ScriptOperation::F_OPERATION, item.m_operation},
-            {ScriptOperation::F_ARGUMENTS, item.m_arguments}
+            {ScriptCommand::F_COMMAND,   item.m_command},
+            {ScriptCommand::F_ARGUMENTS, item.m_arguments}
     };
 }
 
-std::ostream &operator<<(std::ostream &stream, const ScriptOperation &scriptOperation) {
+std::ostream &operator<<(std::ostream &stream, const ScriptCommand &scriptOperation) {
 
-    stream << "ScriptOperation:[" //
-           << "op=" << scriptOperation.m_operation //
-           << "args=[" << scriptOperation.m_arguments << "]" //
-           << "]";
+    ToString(stream, "ScriptCommand") //
+            .field("m_command", scriptOperation.m_command) //
+            .field("m_arguments", scriptOperation.m_arguments); //
 
     return stream;
 }
@@ -296,7 +295,7 @@ std::ostream &operator<<(std::ostream &stream, const ScriptOperation &scriptOper
 const std::string Script::F_ID{"id"};
 const std::string Script::F_NAME{"name"};
 const std::string Script::F_IFSET{"ifSet"};
-const std::string Script::F_OPERATIONS{"instructions"};
+const std::string Script::F_COMMANDS{"commands"};
 
 Script::Script() :
         m_id{""}, m_name{""}, m_ifSet{""} {
@@ -321,17 +320,17 @@ const std::string &Script::ifSet() const {
     return m_ifSet;
 }
 
-const ScriptOperationList &Script::operations() const {
-    return m_operations;
+const ScriptCommandList &Script::commands() const {
+    return m_commands;
 }
 
-void Script::execute(const std::map<std::string, std::string> &variables, std::vector<std::string> &output) const {
+void Script::execute(const VariableDictionary &variables, std::vector<std::string> &output) const {
 
     if (m_ifSet.length() > 0 && variables.count(m_ifSet) == 0) {
         return;
     }
 
-    for (auto &op : m_operations) {
+    for (auto &op : m_commands) {
 
         op->execute(variables, output);
 
@@ -348,28 +347,27 @@ void from_json(const nlohmann::json &json, Script &item) {
     json.at(Script::F_NAME).get_to(item.m_name);
     json.at(Script::F_IFSET).get_to(item.m_ifSet);
 
-    JsonHelper::from_json(json.at(Script::F_OPERATIONS), item.m_operations);
+    JsonHelper::from_json(json.at(Script::F_COMMANDS), item.m_commands);
 }
 
 void to_json(nlohmann::json &j, const Script &item) {
 
     j = {
-            {Script::F_ID,         item.m_id},
-            {Script::F_NAME,       item.m_name},
-            {Script::F_IFSET,      item.m_ifSet},
-            {Script::F_OPERATIONS, JsonHelper::to_json(item.m_operations)}
+            {Script::F_ID,       item.m_id},
+            {Script::F_NAME,     item.m_name},
+            {Script::F_IFSET,    item.m_ifSet},
+            {Script::F_COMMANDS, JsonHelper::to_json(item.m_commands)}
     };
 
 }
 
 std::ostream &operator<<(std::ostream &stream, const Script &script) {
 
-    stream << "Script:[" //
-           << "id=" << script.m_id //
-           << ",name=" << script.m_name //
-           << ",ifSet=" << script.m_ifSet //
-           << ",operations=[" << script.m_operations << "]" //
-           << "]";
+    ToString(stream, "Script") //
+            .field("m_id", script.m_id) //
+            .field("m_name", script.m_name) //
+            .field("m_ifSet", script.m_ifSet) //
+            .field("m_commands", script.m_commands); //
 
     return stream;
 }
@@ -379,8 +377,12 @@ std::ostream &operator<<(std::ostream &stream, const Script &script) {
 // Environment App
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+const std::string EnvironmentApp::F_APPLICATION_ID{"applicationId"};
+const std::string EnvironmentApp::F_DEFAULT_INSTALLATION_ID{"defaultInstallationId"};
+
+
 EnvironmentApp::EnvironmentApp() :
-        m_applicationId{""}, m_applicationInstallationId{""} {
+        m_applicationId{""}, m_defaultInstallationId{""} {
 
     CLOG(TRACE, TAG) << "Called";
 }
@@ -396,32 +398,42 @@ const std::string &EnvironmentApp::applicationId() const {
 }
 
 
-const std::string &EnvironmentApp::installationId() const {
-    return m_applicationInstallationId;
+const std::string &EnvironmentApp::defaultInstallationId() const {
+    return m_defaultInstallationId;
+}
+
+
+const std::string &EnvironmentApp::currentInstalltionId() const {
+    return m_currentInstallationId;
+}
+
+EnvironmentApp &EnvironmentApp::currentInstallationId(const std::string &id) {
+    m_currentInstallationId = id;
+    return *this;
 }
 
 void from_json(const nlohmann::json &json, EnvironmentApp &item) {
 
-    json.at("id").get_to(item.m_applicationId);
-    json.at("default").get_to(item.m_applicationInstallationId);
+    json.at(EnvironmentApp::F_APPLICATION_ID).get_to(item.m_applicationId);
+    json.at(EnvironmentApp::F_DEFAULT_INSTALLATION_ID).get_to(item.m_defaultInstallationId);
 
 }
 
 void to_json(nlohmann::json &j, const EnvironmentApp &item) {
 
     j = {
-            {"id",      item.m_applicationId},
-            {"default", item.m_applicationInstallationId}
+            {EnvironmentApp::F_APPLICATION_ID,          item.m_applicationId},
+            {EnvironmentApp::F_DEFAULT_INSTALLATION_ID, item.m_defaultInstallationId}
     };
 
 }
 
 std::ostream &operator<<(std::ostream &stream, const EnvironmentApp &environmentApp) {
 
-    stream << "EnvironmentApp:["
-           << "applicationId=" << environmentApp.m_applicationId //
-           << ",installationId=" << environmentApp.m_applicationInstallationId //
-           << "]";
+    ToString(stream, "EnvironmentApp") //
+            .field("m_applicationId", environmentApp.m_applicationId) //
+            .field("m_defaultInstallationId", environmentApp.m_defaultInstallationId) //
+            .field("m_currentInstallationId", environmentApp.m_currentInstallationId); //
 
     return stream;
 }
@@ -429,6 +441,10 @@ std::ostream &operator<<(std::ostream &stream, const EnvironmentApp &environment
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Environment
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+const std::string Environment::F_ID{"id"};
+const std::string Environment::F_NAME{"name"};
+const std::string Environment::F_APPS{"applications"};
 
 Environment::Environment() :
         m_id{""}, m_name{""} {
@@ -451,29 +467,28 @@ const EnvironmentAppList &Environment::apps() const {
 
 void from_json(const nlohmann::json &json, Environment &item) {
 
-    json.at("id").get_to(item.m_id);
-    json.at("name").get_to(item.m_name);
+    json.at(Environment::F_ID).get_to(item.m_id);
+    json.at(Environment::F_NAME).get_to(item.m_name);
 
-    JsonHelper::from_json(json.at("apps"), item.m_environmentApps);
+    JsonHelper::from_json(json.at(Environment::F_APPS), item.m_environmentApps);
 }
 
 void to_json(nlohmann::json &j, const Environment &item) {
 
     j = {
-            {"id",   item.m_id},
-            {"name", item.m_name},
-            {"apps", JsonHelper::to_json(item.m_environmentApps)}
+            {Environment::F_ID,   item.m_id},
+            {Environment::F_NAME, item.m_name},
+            {Environment::F_APPS, JsonHelper::to_json(item.m_environmentApps)}
     };
 
 }
 
 std::ostream &operator<<(std::ostream &stream, const Environment &environment) {
 
-    stream << "Environment:["
-           << "id=" << environment.m_id
-           << ",name=" << environment.m_name
-           << ",apps=[" << environment.m_environmentApps << "]" <<
-           "]";
+    ToString(stream, "Environment") //
+            .field("m_id", environment.m_id) //
+            .field("m_name", environment.m_name) //
+            .field("m_environmentApps", environment.m_environmentApps); //
 
     return stream;
 }
@@ -482,6 +497,10 @@ std::ostream &operator<<(std::ostream &stream, const Environment &environment) {
 // Environments
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+const std::string Environments::F_APPLICATIONS{"applications"};
+const std::string Environments::F_SCRIPTS{"scripts"};
+const std::string Environments::F_ENVIRONMENTS{"environments"};
+
 Environments::Environments() {
     CLOG(TRACE, TAG) << "Called";
 }
@@ -489,15 +508,6 @@ Environments::Environments() {
 Environments::~Environments() {
 
     CLOG(TRACE, TAG) << "Called";
-}
-
-const std::string &Environments::filename() const {
-    return m_filename;
-}
-
-Environments &Environments::filename(const std::string &filename) {
-    m_filename = filename;
-    return *this;
 }
 
 Application *Environments::findApplication(const std::string &applicationId) const {
@@ -531,17 +541,11 @@ void Environments::load(const std::string &filename) {
 
     json.get_to(*this);
 
-    m_filename = filename;
-
     CLOG(TRACE, TAG) << "Parsed: " << *this;
-
-    // nlohmann::json outputJson = m_envs;
-
-    // CLOG(TRACE, TAG) << "Output Json: " << std::endl << outputJson.dump(4);
 }
 
 
-std::vector<std::string> Environments::executeScripts(const std::map<std::string, std::string> &variables) {
+std::vector<std::string> Environments::executeScripts(const VariableDictionary &variables) {
 
     std::vector<std::string> results;
 
@@ -557,18 +561,18 @@ void from_json(const nlohmann::json &json, Environments &item) {
 
     CLOG(TRACE, TAG) << "called.";
 
-    JsonHelper::from_json(json.at("environments"), item.m_environments);
-    JsonHelper::from_json(json.at("scripts"), item.m_scripts);
-    JsonHelper::from_json(json.at("applications"), item.m_applications);
+    JsonHelper::from_json(json.at(Environments::F_ENVIRONMENTS), item.m_environments);
+    JsonHelper::from_json(json.at(Environments::F_SCRIPTS), item.m_scripts);
+    JsonHelper::from_json(json.at(Environments::F_APPLICATIONS), item.m_applications);
 
 }
 
 void to_json(nlohmann::json &j, const Environments &item) {
 
     j = {
-            {"environments", JsonHelper::to_json(item.m_environments)},
-            {"scripts",      JsonHelper::to_json(item.m_scripts)},
-            {"applications", JsonHelper::to_json(item.m_applications)}
+            {Environments::F_ENVIRONMENTS, JsonHelper::to_json(item.m_environments)},
+            {Environments::F_SCRIPTS,      JsonHelper::to_json(item.m_scripts)},
+            {Environments::F_APPLICATIONS, JsonHelper::to_json(item.m_applications)}
 
     };
 
@@ -576,12 +580,10 @@ void to_json(nlohmann::json &j, const Environments &item) {
 
 std::ostream &operator<<(std::ostream &stream, const Environments &environments) {
 
-    stream << "Environments[" //
-           << "filename=" << environments.m_filename //
-           << ",environments=[" << environments.m_environments << "]" //
-           << ",scripts=[" << environments.m_scripts << "]" //
-           << ",applications=[" << environments.m_applications << "]" << //
-           "]";
+    ToString(stream, "Environments") //
+            .field("m_environments", environments.m_environments) //
+            .field("m_scripts", environments.m_scripts) //
+            .field("m_applications", environments.m_applications); //
 
     return stream;
 }

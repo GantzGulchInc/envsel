@@ -20,6 +20,8 @@ namespace gg {
 namespace envsel {
 
 
+typedef std::map<std::string,std::string> VariableDictionary;
+
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ScriptVariable
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -124,34 +126,34 @@ typedef std::vector<std::unique_ptr<Application>> ApplicationList;
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ScriptOperation
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class ScriptOperation : public NonCopyable {
+class ScriptCommand : public NonCopyable {
 public:
 
-    static const std::string F_OPERATION;
+    static const std::string F_COMMAND;
     static const std::string F_ARGUMENTS;
 
-    ScriptOperation();
+    ScriptCommand();
 
-    virtual ~ScriptOperation();
+    virtual ~ScriptCommand();
 
     const std::string &operation() const;
 
     const std::vector<std::string> &arguments() const;
 
-    void execute(const std::map<std::string, std::string> &variables, std::vector<std::string> &output) const;
+    void execute(const VariableDictionary &variables, std::vector<std::string> &output) const;
 
-    friend void from_json(const nlohmann::json &json, ScriptOperation &item);
+    friend void from_json(const nlohmann::json &json, ScriptCommand &item);
 
-    friend void to_json(nlohmann::json &j, const ScriptOperation &item);
+    friend void to_json(nlohmann::json &j, const ScriptCommand &item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const ScriptOperation &scriptOperation);
+    friend std::ostream &operator<<(std::ostream &stream, const ScriptCommand &scriptOperation);
 
 private:
-    std::string m_operation;
+    std::string m_command;
     std::vector<std::string> m_arguments;
 };
 
-typedef std::vector<std::unique_ptr<ScriptOperation>> ScriptOperationList;
+typedef std::vector<std::unique_ptr<ScriptCommand>> ScriptCommandList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Script
@@ -162,7 +164,7 @@ public:
     static const std::string F_ID;
     static const std::string F_NAME;
     static const std::string F_IFSET;
-    static const std::string F_OPERATIONS;
+    static const std::string F_COMMANDS;
 
     Script();
 
@@ -174,9 +176,9 @@ public:
 
     const std::string &ifSet() const;
 
-    const ScriptOperationList &operations() const;
+    const ScriptCommandList &commands() const;
 
-    void execute(const std::map<std::string, std::string> &variables, std::vector<std::string> &output) const;
+    void execute(const VariableDictionary &variables, std::vector<std::string> &output) const;
 
     friend void from_json(const nlohmann::json &json, Script &item);
 
@@ -188,7 +190,7 @@ private:
     std::string m_id;
     std::string m_name;
     std::string m_ifSet;
-    ScriptOperationList m_operations;
+    ScriptCommandList m_commands;
 };
 
 typedef std::vector<std::unique_ptr<Script>> ScriptList;
@@ -199,13 +201,20 @@ typedef std::vector<std::unique_ptr<Script>> ScriptList;
 class EnvironmentApp : public NonCopyable {
 public:
 
+    static const std::string F_APPLICATION_ID;
+    static const std::string F_DEFAULT_INSTALLATION_ID;
+
     EnvironmentApp();
 
     virtual ~EnvironmentApp();
 
     const std::string &applicationId() const;
 
-    const std::string &installationId() const;
+    const std::string &defaultInstallationId() const;
+
+    const std::string &currentInstalltionId() const;
+
+    EnvironmentApp & currentInstallationId(const std::string & id);
 
     friend void from_json(const nlohmann::json &json, EnvironmentApp &item);
 
@@ -215,7 +224,8 @@ public:
 
 private:
     std::string m_applicationId;
-    std::string m_applicationInstallationId;
+    std::string m_defaultInstallationId;
+    std::string m_currentInstallationId;
 };
 
 typedef std::vector<std::unique_ptr<EnvironmentApp>> EnvironmentAppList;
@@ -225,6 +235,10 @@ typedef std::vector<std::unique_ptr<EnvironmentApp>> EnvironmentAppList;
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class Environment : public NonCopyable {
 public:
+
+    static const std::string F_ID;
+    static const std::string F_NAME;
+    static const std::string F_APPS;
 
     Environment();
 
@@ -254,13 +268,14 @@ typedef std::vector<std::unique_ptr<Environment>> EnvironmentList;
 class Environments : public NonCopyable {
 public:
 
+
+    static const std::string F_APPLICATIONS;
+    static const std::string F_SCRIPTS;
+    static const std::string F_ENVIRONMENTS;
+
     Environments();
 
     virtual ~Environments();
-
-    const std::string &filename() const;
-
-    Environments &filename(const std::string &filename);
 
     Application *findApplication(const std::string &applicationId) const;
 
@@ -268,7 +283,7 @@ public:
 
     void load(const std::string & filename);
 
-    std::vector<std::string> executeScripts(const std::map<std::string, std::string> &variables);
+    std::vector<std::string> executeScripts(const VariableDictionary &variables);
 
     friend void from_json(const nlohmann::json &json, Environments &item);
 
@@ -277,7 +292,6 @@ public:
     friend std::ostream &operator<<(std::ostream &stream, const Environments &environments);
 
 private:
-    std::string m_filename;
     ApplicationList m_applications;
     ScriptList m_scripts;
     EnvironmentList m_environments;

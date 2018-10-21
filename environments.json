@@ -3,7 +3,7 @@
 		{
 			"id": "jdk",
 			"name": "Java Development Kit",
-			"installed": [
+			"installations": [
 				{
 					"id": "jdk-11",
 					"name": "JDK 11.28",
@@ -49,7 +49,7 @@
 		{
 			"id": "maven",
 			"name": "Maven",
-			"installed": [
+			"installations": [
 				{
 					"id": "mvn-3.5",
 					"name": "Maven 3.5.4",
@@ -111,7 +111,7 @@
 		{
 			"id": "ant",
 			"name": "ANT",
-			"installed": [
+			"installations": [
 				{
 					"id": "ant-1.9",
 					"name": "ANT 1.9.7",
@@ -137,7 +137,7 @@
 		{
 			"id": "eclipse",
 			"name": "Eclipse",
-			"installed": [
+			"installations": [
 				{
 					"id": "eclpise-cpp-2018-09",
 					"name": "Eclipse CPP 2018-09",
@@ -223,7 +223,7 @@
 		{
 			"id": "webstorm",
 			"name": "Webstorm",
-			"installed": [
+			"installations": [
 				{
 					"id": "webstorm-current",
 					"name": "Webstorm Current",
@@ -249,7 +249,7 @@
 		{
 			"id": "nodejs",
 			"name": "Node.JS",
-			"installed": [
+			"installations": [
 				{
 					"id": "node-8.9",
 					"name": "Node 8.9.3",
@@ -298,9 +298,9 @@
 			"id": "script-emacs",
 			"name": "Emacs",
 			"ifSet": "",
-			"instructions": [
+			"commands": [
 				{
-					"op": "print",
+					"command": "print",
 					"args": [
 						"export EDITOR=\"emacs -nw\""
 					]
@@ -311,9 +311,9 @@
 			"id": "script-java",
 			"name": "Java",
 			"ifSet": "JAVA_HOME",
-			"instructions": [
+			"commands": [
 				{
-					"op": "print",
+					"command": "print",
 					"args": [
 						"export JAVA_HOME=#{JAVA_HOME}",
 						"export JRE_HOME=#{JAVA_HOME}",
@@ -326,9 +326,9 @@
 			"id": "script-maven",
 			"name": "Maven",
 			"ifSet": "MAVEN_HOME",
-			"instructions": [
+			"commands": [
 				{
-					"op": "print",
+					"command": "print",
 					"args": [
 						"export MAVEN_HOME=#{MAVEN_HOME}",
 						"export PATH=#{MAVEN_HOME}/bin:${PATH}"
@@ -340,9 +340,9 @@
 			"id": "script-maven-opts",
 			"name": "Maven Options",
 			"ifSet": "MAVEN_OPTS",
-			"instructions": [
+			"commands": [
 				{
-					"op": "print",
+					"command": "print",
 					"args": [
 						"export MAVEN_OPTS=#{MAVEN_OPTS}"
 					]
@@ -353,9 +353,9 @@
 			"id": "script-ant",
 			"name": "Apache ANT",
 			"ifSet": "ANT_HOME",
-			"instructions": [
+			"commands": [
 				{
-					"op": "print",
+					"command": "print",
 					"args": [
 						"export ANT_HOME=#{ANT_HOME}",
 						"export PATH=#{ANT_HOME}/bin:${PATH}"
@@ -367,9 +367,9 @@
 			"id": "script-eclipse",
 			"name": "Eclipse",
 			"ifSet": "ECLIPSE_HOME",
-			"instructions": [
+			"commands": [
 				{
-					"op": "print",
+					"command": "print",
 					"args": [
 						"export ECLIPSE_HOME=#{ECLIPSE_HOME}",
 						"export PATH=#{ECLIPSE_HOME}:${PATH}"
@@ -381,9 +381,9 @@
 			"id": "script-nodejs",
 			"name": "NodeJS",
 			"ifSet": "NODEJS_HOME",
-			"instructions": [
+			"commands": [
 				{
-					"op": "print",
+					"command": "print",
 					"args": [
 						"export NODEJS_HOME=#{NODEJS_HOME}",
 						"export PATH=#{NODEJS_HOME}/bin:${PATH}"
@@ -395,9 +395,9 @@
 			"id": "script-westorm",
 			"name": "WebStorm",
 			"ifSet": "WEBSTORM_HOME",
-			"instructions": [
+			"commands": [
 				{
-					"op": "print",
+					"command": "print",
 					"args": [
 						"export WEBSTORM_HOME=#{WEBSTORM_HOME}",
 						"export PATH=#{WEBSTORM_HOME}/bin:${PATH}"
@@ -410,70 +410,70 @@
 		{
 			"id": "device-manager",
 			"name": "Device Manager",
-			"apps": [
+			"applications": [
 				{
-					"id": "jdk",
-					"default": "jdk-1.8"
+					"applicationId": "jdk",
+					"defaultInstallationId": "jdk-1.8"
 				},
 				{
-					"id": "maven",
-					"default": "mvn-3.3"
+					"applicationId": "maven",
+					"defaultInstallationId": "mvn-3.3"
 				},
 				{
-					"id": "eclipse",
-					"default": "eclipse-neon"
+					"applicationId": "eclipse",
+					"defaultInstallationId": "eclipse-neon"
 				}
 			]
 		},
 		{
 			"id": "blitz",
 			"name": "Blitz",
-			"apps": [
+			"applications": [
 				{
-					"id": "jdk",
-					"default": "jdk-1.8"
+					"applicationId": "jdk",
+					"defaultInstallationId": "jdk-1.8"
 				},
 				{
-					"id": "maven",
-					"default": "mvn-3.3"
+					"applicationId": "maven",
+					"defaultInstallationId": "mvn-3.3"
 				},
 				{
-					"id": "eclipse",
-					"default": "eclipse-neon"
+					"applicationId": "eclipse",
+					"defaultInstallationId": "eclipse-neon"
 				},
 				{
-					"id": "webstorm",
-					"default": "webstorm-current"
+					"applicationId": "webstorm",
+					"defaultInstallationId": "webstorm-current"
 				},
 				{
-					"id": "nodejs",
-					"default": "node-4.4"
+					"applicationId": "nodejs",
+					"defaultInstallationId": "node-4.4"
 				}
 			]
 		},
 		{
 			"id": "blitz2",
 			"name": "Blitz2",
-			"apps": [
+			"applications": [
 				{
-					"id": "jdk",
-					"default": "jdk-11"
+					"applicationId": "jdk",
+					"defaultInstallationId": "jdk-11"
 				},
 				{
-					"id": "maven",
-					"default": "mvn-3.5"
+					"applicationId": "maven",
+					"defaultInstallationId": "mvn-3.5"
 				},
 				{
-					"id": "eclipse",
-					"default": "eclpise-jee-2018-09"
+					"applicationId": "eclipse",
+					"defaultInstallationId": "eclpise-jee-2018-09"
 				},
 				{
-					"id": "webstorm",
-					"default": "webstorm-current"
+					"applicationId": "webstorm",
+					"defaultInstallationId": "webstorm-current"
 				},
 				{
-					"id": "nodejs",
-					"default": "node-8.9"
+					"applicationId": "nodejs",
+					"defaultInstallationId": "node-8.9"
 				}
 			]
 		}

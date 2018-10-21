@@ -9,7 +9,7 @@
 namespace gg {
 namespace envsel {
 
-const char * TAG = "IO";
+const char *TAG = "IO";
 
 nlohmann::json readJsonFile(const std::string &filename) {
 
@@ -29,7 +29,7 @@ nlohmann::json readJsonFile(const std::string &filename) {
 }
 
 
-void writeOutput(const std::string & filename, const std::vector<std::string> & lines) {
+void writeOutput(const std::string &filename, const std::vector<std::string> &lines) {
 
     CLOG(TRACE, TAG) << "Writing to: " << filename;
 
@@ -37,11 +37,11 @@ void writeOutput(const std::string & filename, const std::vector<std::string> & 
 
     output.open(filename, std::ifstream::out);
 
-    if( output.fail() ){
+    if (output.fail()) {
         throw std::ios_base::failure("Error opening file: " + filename);
     }
 
-    for( auto line : lines) {
+    for (auto line : lines) {
         CLOG(TRACE, TAG) << "  w: " << line;
         output << line << std::endl;
     }
@@ -52,15 +52,15 @@ void writeOutput(const std::string & filename, const std::vector<std::string> & 
 
 }
 
-std::ostream &operator<<(std::ostream &stream, const std::vector<std::string> & vec) {
+std::ostream &operator<<(std::ostream &stream, const std::vector<std::string> &vec) {
 
     bool addSep = false;
 
     for (auto &value : vec) {
 
-        if( addSep ){
+        if (addSep) {
             stream << ",";
-        }else{
+        } else {
             addSep = true;
         }
 
@@ -70,6 +70,7 @@ std::ostream &operator<<(std::ostream &stream, const std::vector<std::string> & 
 
     return stream;
 }
+
 
 
 

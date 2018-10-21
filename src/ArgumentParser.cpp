@@ -17,13 +17,17 @@ namespace envsel {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Arguments::Arguments() :
-        m_inputFilename(""), m_outputFilename("") {
+        m_wasParsed(false),  m_inputFilename(""), m_outputFilename("") {
 
 
 }
 
 Arguments::~Arguments() {
 
+}
+
+bool Arguments::wasParsed() {
+    return m_wasParsed;
 }
 
 Arguments &Arguments::inputFilename(const std::string &inputFilename) {
@@ -58,35 +62,59 @@ ArgumentParser::ArgumentParser(Arguments & args, const std::string &name, int ar
 
     m_app.require_subcommand(1);
 
-    CLI::App *m_selectCommand = m_app.add_subcommand("select", "Select an environment.");
+    createSelectCommand();
 
-    m_selectCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to use.")->required(true)->type_name("FILENAME");
-    m_selectCommand->add_option("-o,--output", m_arguments.m_outputFilename, "Script filename to write.")->required(true)->type_name("OUTPUT_FILENAME");
+    createEditCommand();
 
-    m_selectCommand->callback([this]() {
-        this->m_selFunc(this->m_arguments);
-    });
-
-    CLI::App *m_editCommand = m_app.add_subcommand("edit", "Edit an environment file.");
-
-    m_editCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to edit.")->required(true);
-
-    m_editCommand->callback([this]() {
-        this->m_editFunc(this->m_arguments);
-    });
-
-    CLI::App *m_checkCommand = m_app.add_subcommand("check", "Check an environment file.");
-
-    m_checkCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to check.")->required(true);
-
-    m_checkCommand->callback([this]() {
-        this->m_checkFunc(this->m_arguments);
-    });
+    createCheckCommand();
 
 }
 
 ArgumentParser::~ArgumentParser() {
 
+}
+
+CLI::App * ArgumentParser::createSelectCommand() {
+
+    CLI::App * selectCommand = m_app.add_subcommand("select", "Select an environment.");
+
+    selectCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to use.")->required(true)->type_name("FILENAME");
+    selectCommand->add_option("-o,--output", m_arguments.m_outputFilename, "Script filename to write.")->required(true)->type_name("OUTPUT_FILENAME");
+
+    selectCommand->callback([this]() {
+        this->m_arguments.m_wasParsed = true;
+        this->m_selFunc(this->m_arguments);
+    });
+
+    return selectCommand;
+}
+
+CLI::App * ArgumentParser::createEditCommand(){
+
+    CLI::App *editCommand = m_app.add_subcommand("edit", "Edit an environment file.");
+
+    editCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to edit.")->required(true);
+
+    editCommand->callback([this]() {
+        this->m_arguments.m_wasParsed = true;
+        this->m_editFunc(this->m_arguments);
+    });
+
+    return editCommand;
+}
+
+CLI::App * ArgumentParser::createCheckCommand(){
+
+    CLI::App *checkCommand = m_app.add_subcommand("check", "Check an environment file.");
+
+    checkCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to check.")->required(true);
+
+    checkCommand->callback([this]() {
+        this->m_arguments.m_wasParsed = true;
+        this->m_checkFunc(this->m_arguments);
+    });
+
+    return checkCommand;
 }
 
 void ArgumentParser::parse() {

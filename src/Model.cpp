@@ -7,11 +7,11 @@
 namespace gg {
 namespace envsel {
 
-Model::Model(){
+Model::Model() : m_exitCode{ Model::EXIT_CANCEL } {
 
 }
 
-Model & Model::instance(){
+Model &Model::instance() {
 
     static Model instance;
 

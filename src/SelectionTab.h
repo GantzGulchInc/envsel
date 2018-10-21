@@ -40,10 +40,11 @@ private:
 
     std::vector<wxComboBox *> m_comboBoxes;
 
-    wxComboBox * createComboBox(wxWindow *parent, const std::string & selectedId, const ApplicationInstallationList & installedApps);
+    wxComboBox * createComboBox(wxWindow *parent, EnvironmentApp * envApp, const ApplicationInstallationList & installedApps);
 
     void onSelect(wxCommandEvent &event);
     void onCancel(wxCommandEvent &event);
+    void onChange(wxCommandEvent &event);
 };
 
 }

@@ -19,14 +19,14 @@ static const char *TAG = "View";
 // SelectionTab
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SelectionTab::SelectionTab(Model & model, wxWindow *parent, wxWindowID winId, const wxString &name, Environment &currentEnvironment) :
+SelectionTab::SelectionTab(Model &model, wxWindow *parent, wxWindowID winId, const wxString &name, Environment &currentEnvironment) :
         wxPanel(parent, winId, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxNO_BORDER, name), //
         m_model(model), //
         m_currentEnvironment(currentEnvironment) {
 
     int rows = currentEnvironment.apps().size();
 
-    CLOG(TRACE, TAG) << "SelectinoTab:ctor: outputFilename: " << m_model.m_args.outputFilename();
+    CLOG(TRACE, TAG) << "ctor: outputFilename: " << m_model.m_args.outputFilename();
 
     m_panelSizer = new wxBoxSizer(wxVERTICAL);
     m_flexGridSizer = new wxFlexGridSizer(rows, 2, 10, 10);
@@ -40,7 +40,9 @@ SelectionTab::SelectionTab(Model & model, wxWindow *parent, wxWindowID winId, co
 
             wxStaticText *label = new wxStaticText(this, wxID_ANY, app->name());
 
-            wxComboBox *comboBox = createComboBox(this, envApp->installationId(), app->installations());
+            wxComboBox *comboBox = createComboBox(this, envApp.get(), app->installations());
+
+            comboBox->Bind(wxEVT_COMBOBOX, &SelectionTab::onChange, this, wxID_ANY);
 
             m_comboBoxes.push_back(comboBox);
 
@@ -55,10 +57,17 @@ SelectionTab::SelectionTab(Model & model, wxWindow *parent, wxWindowID winId, co
     m_buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     m_panelSizer->Add(m_buttonSizer, 0, wxALL | wxEXPAND, 15);
 
+    //
+    // Select Button
+    //
     m_selectButton = new wxButton(this, wxID_ANY, "Select");
     m_selectButton->Bind(wxEVT_BUTTON, &SelectionTab::onSelect, this, wxID_ANY);
 
-    m_cancelButton = new wxButton(this, wxID_EXIT, "Cancel");
+    //
+    // Cancel Button
+    //
+    m_cancelButton = new wxButton(this, wxID_ANY, "Cancel");
+    m_cancelButton->Bind(wxEVT_BUTTON, &SelectionTab::onCancel, this, wxID_ANY);
 
     m_buttonSizer->Add(m_selectButton);
     m_buttonSizer->AddStretchSpacer(1);
@@ -70,12 +79,18 @@ SelectionTab::SelectionTab(Model & model, wxWindow *parent, wxWindowID winId, co
 
 SelectionTab::~SelectionTab() {
 
+    CLOG(TRACE, TAG) << "Called.";
 }
 
 
-wxComboBox *SelectionTab::createComboBox(wxWindow *parent, const std::string &selectedId, const ApplicationInstallationList &installedApps) {
+wxComboBox *SelectionTab::createComboBox(wxWindow *parent, EnvironmentApp *envApp, const ApplicationInstallationList &installedApps) {
+
+
+    const std::string &selectedId{envApp->defaultInstallationId()};
 
     wxComboBox *cb = new wxComboBox{parent, wxID_ANY};
+
+    cb->SetClientData((void *) envApp);
 
     int count{1};
     int selected{0};
@@ -87,6 +102,9 @@ wxComboBox *SelectionTab::createComboBox(wxWindow *parent, const std::string &se
         cb->Append(installedApp->name(), installedApp.get());
 
         if (installedApp->id() == selectedId) {
+
+            envApp->currentInstallationId(selectedId);
+
             selected = count;
         }
 
@@ -98,13 +116,39 @@ wxComboBox *SelectionTab::createComboBox(wxWindow *parent, const std::string &se
     return cb;
 }
 
+void SelectionTab::onChange(wxCommandEvent &event) {
+
+    CLOG(TRACE, TAG) << "Called.";
+
+    int id = event.GetId();
+
+    CLOG(TRACE, TAG) << "    Id: " << id;
+
+    wxWindow *w = FindWindow(event.GetId());
+
+    CLOG(TRACE, TAG) << "   Win: " << w;
+
+    wxComboBox *cb = reinterpret_cast<wxComboBox *>(w);
+
+    CLOG(TRACE, TAG) << "    Sel: " << cb->GetValue();
+
+    EnvironmentApp *envApp{reinterpret_cast<EnvironmentApp *>(cb->GetClientData())};
+
+    CLOG(TRACE, TAG) << "    EnvApp 1: " << *envApp;
+
+    ApplicationInstallation *installation{reinterpret_cast<ApplicationInstallation *>( cb->GetClientData(cb->GetSelection()))};
+
+    envApp->currentInstallationId(installation->id());
+
+    CLOG(TRACE, TAG) << "    EnvApp 2: " << *envApp;
+}
 
 
 void SelectionTab::onSelect(wxCommandEvent &event) {
 
     CLOG(TRACE, TAG) << "Called.";
 
-    std::map<std::string,std::string> variables;
+    VariableDictionary variables;
 
     for (auto a : m_comboBoxes) {
 
@@ -114,7 +158,7 @@ void SelectionTab::onSelect(wxCommandEvent &event) {
 
             CLOG(TRACE, TAG) << "Selected: " << *installation;
 
-            for(auto & v : installation->variables()) {
+            for (auto &v : installation->variables()) {
                 variables[v->name()] = v->value();
             }
 
@@ -126,31 +170,42 @@ void SelectionTab::onSelect(wxCommandEvent &event) {
 
     CLOG(TRACE, TAG) << "Variables:";
 
-    for(auto e : variables) {
+    for (auto e : variables) {
         CLOG(TRACE, TAG) << "    Name: " << std::setw(20) << std::left << e.first << " Value: " << e.second;
     }
 
     std::vector<std::string> output;
 
-    output = m_model.m_environments.executeScripts( variables );
+    output = m_model.m_environments.executeScripts(variables);
 
     CLOG(TRACE, TAG) << "Output:";
 
-    for(auto sl : output) {
+    for (auto sl : output) {
         CLOG(TRACE, TAG) << "    : " << sl;
     }
 
-    CLOG(TRACE, TAG) << " ouputFilename: " << m_model.m_args.outputFilename();
+    CLOG(TRACE, TAG) << " outputFilename: " << m_model.m_args.outputFilename();
 
     writeOutput(m_model.m_args.outputFilename(), output);
 
     CLOG(TRACE, TAG) << "Finished writing script.";
+
+    m_model.m_exitCode = Model::EXIT_OK;
+
+    wxWindow * w = wxGetTopLevelParent(this);
+
+    w->Close(true);
 }
 
 void SelectionTab::onCancel(wxCommandEvent &event) {
 
     CLOG(TRACE, TAG) << "Called.";
 
+    m_model.m_exitCode = Model::EXIT_CANCEL;
+
+    wxWindow * w = wxGetTopLevelParent(this);
+
+    w->Close(true);
 }
 
 }

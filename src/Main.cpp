@@ -10,6 +10,12 @@ wxIMPLEMENT_WX_THEME_SUPPORT;
 
 int main(int argc, char *argv[])  {
 
+    el::Configurations defaultConf;
+    defaultConf.setToDefault();
+    defaultConf.setGlobally(el::ConfigurationType::Format, "%datetime [%levshort] %fbase:%line %func: %msg");
+
+    el::Loggers::setDefaultConfigurations(defaultConf, true);
+
     el::Loggers::getLogger("Domain");
     el::Loggers::getLogger("App");
     el::Loggers::getLogger("View");
@@ -18,8 +24,7 @@ int main(int argc, char *argv[])  {
     wxEntryStart( argc, argv );
     
     wxTheApp->CallOnInit();
-    wxTheApp->OnRun();
 
-    return 0;
+    return wxTheApp->OnRun();
 }
 

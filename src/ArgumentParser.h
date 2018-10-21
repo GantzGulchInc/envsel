@@ -30,6 +30,8 @@ public:
 
     virtual ~Arguments();
 
+    bool wasParsed();
+
     Arguments &inputFilename(const std::string &inputFilename);
 
     const std::string &inputFilename() const;
@@ -42,6 +44,7 @@ public:
 
 private:
 
+    bool m_wasParsed;
     std::string m_inputFilename;
     std::string m_outputFilename;
 
@@ -73,7 +76,13 @@ private:
     CheckFunc m_checkFunc;
 
     Arguments & m_arguments;
+
+    CLI::App * createSelectCommand();
+    CLI::App * createEditCommand();
+    CLI::App * createCheckCommand();
+
 };
+
 
 } /* namespace envsel */
 } /* namespace gg */
