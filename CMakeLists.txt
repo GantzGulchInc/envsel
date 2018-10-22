@@ -32,7 +32,8 @@ include("${wxWidgets_USE_FILE}")
 
 add_executable(${PROJECT_NAME} src/App.cpp src/SelectFrame.cpp src/ArgumentParser.cpp src/Domain.cpp src/Main.cpp src/IO.cpp src/NonCopyable.cpp src/SelectionTab.cpp src/Model.cpp src/ToString.cpp)
 
-target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} easyloggingpp)
+target_link_libraries(${PROJECT_NAME} easyloggingpp)
+target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES})
 
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "${PROJECT_BINARY_DIR}")
 
