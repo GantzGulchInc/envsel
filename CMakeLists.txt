@@ -9,6 +9,7 @@ set(EnvSel_VERSION_BUGFIX 0)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -std=c++17")
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_COLOR_MAKEFILE ON)
+set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY  true)
 set(PROJECT_SOURCE_DIR "src")
 
 configure_file(
@@ -21,7 +22,7 @@ configure_file(
 #
 add_definitions(-DELPP_THREAD_SAFE -DELPP_NO_DEFAULT_LOG_FILE)
 set(build_static_lib ON)
-add_subdirectory("ThirdParty/easyloggingpp")
+add_subdirectory("ThirdParty/easyloggingpp" EXCLUDE_FROM_ALL)
 
 #
 # wxWidgets
@@ -40,8 +41,10 @@ target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "${PROJECT_BINARY_DIR}"
 #
 # Third party libraries
 #
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "ThirdParty/CLI11/include")
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "ThirdParty/json/single_include")
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "ThirdParty/easyloggingpp/src")
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE "ThirdParty/CLI11/include")
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE "ThirdParty/json/single_include")
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE "ThirdParty/easyloggingpp/src")
 
+
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION $ENV{HOME}/bin )
 
