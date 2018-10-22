@@ -6,9 +6,8 @@
  */
 
 #include "SelectFrame.h"
-
 #include "SelectionTab.h"
-
+#include "Directives.h"
 
 namespace gg {
 namespace envsel {
@@ -24,7 +23,7 @@ wxEND_EVENT_TABLE()
 // SelectFrame
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SelectFrame::SelectFrame(Model & model, const wxString &title, const wxPoint &pos, const wxSize &size) :
+SelectFrame::SelectFrame(Model &model, const wxString &title, const wxPoint &pos, const wxSize &size) :
         wxFrame(NULL, wxID_ANY, title, pos, size), m_model(model) {
 
     m_panel = new wxPanel(this);
@@ -35,7 +34,7 @@ SelectFrame::SelectFrame(Model & model, const wxString &title, const wxPoint &po
 
     for (auto &p : m_model.m_environments.environments()) {
 
-        SelectionTab *tab = new SelectionTab(m_model,m_notebook, wxID_ANY, "Tab1", *p);
+        SelectionTab *tab = new SelectionTab(m_model, m_notebook, wxID_ANY, "Tab1", *p);
 
         m_tabs.push_back(std::pair<SelectionTab *, Environment &>(tab, *p));
 
@@ -81,7 +80,7 @@ SelectFrame::SelectFrame(Model & model, const wxString &title, const wxPoint &po
 SelectFrame::~SelectFrame() {
 }
 
-void SelectFrame::OnExit(wxCommandEvent &event) {
+void SelectFrame::OnExit(wxCommandEvent &UNUSED(event)) {
 
     LOG(TRACE) << "exiting...: " << m_model.m_exitCode;
 
@@ -90,11 +89,11 @@ void SelectFrame::OnExit(wxCommandEvent &event) {
     Close(true);
 }
 
-void SelectFrame::OnAbout(wxCommandEvent &event) {
+void SelectFrame::OnAbout(wxCommandEvent &UNUSED(event)) {
     wxMessageBox("This is a wxWidgets' Hello world sample", "About Hello World", wxOK | wxICON_INFORMATION);
 }
 
-void SelectFrame::OnHello(wxCommandEvent &event) {
+void SelectFrame::OnHello(wxCommandEvent &UNUSED(event)) {
     wxLogMessage("Hello world from wxWidgets!");
 }
 

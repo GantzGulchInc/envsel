@@ -3,8 +3,8 @@
 //
 
 #include "SelectionTab.h"
-
 #include "IO.h"
+#include "Directives.h"
 
 #include <iomanip>
 #include <map>
@@ -144,7 +144,7 @@ void SelectionTab::onChange(wxCommandEvent &event) {
 }
 
 
-void SelectionTab::onSelect(wxCommandEvent &event) {
+void SelectionTab::onSelect(wxCommandEvent & UNUSED(event)) {
 
     CLOG(TRACE, TAG) << "Called.";
 
@@ -197,7 +197,7 @@ void SelectionTab::onSelect(wxCommandEvent &event) {
     w->Close(true);
 }
 
-void SelectionTab::onCancel(wxCommandEvent &event) {
+void SelectionTab::onCancel(wxCommandEvent & UNUSED(event)) {
 
     CLOG(TRACE, TAG) << "Called.";
 

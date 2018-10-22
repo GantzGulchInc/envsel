@@ -21,11 +21,11 @@ nlohmann::json readJsonFile(const std::string &filename) {
         throw std::ios_base::failure("Error opening file: " + filename);
     }
 
-    CLOG(TRACE, TAG) << "Parsing file.";
+    CLOG(DEBUG, TAG) << "Parsing file: " << filename;
 
     nlohmann::json json = nlohmann::json::parse(jsonFile);
 
-    CLOG(TRACE, TAG) << "Closing file.";
+    CLOG(DEBUG, TAG) << "Closing file: " << filename;
 
     jsonFile.close();
 
@@ -35,7 +35,7 @@ nlohmann::json readJsonFile(const std::string &filename) {
 
 void writeOutput(const std::string &filename, const std::vector<std::string> &lines) {
 
-    CLOG(TRACE, TAG) << "Writing to: " << filename;
+    CLOG(DEBUG, TAG) << "Writing to: " << filename;
 
     std::ofstream output;
 
@@ -46,7 +46,7 @@ void writeOutput(const std::string &filename, const std::vector<std::string> &li
     }
 
     for (auto line : lines) {
-        CLOG(TRACE, TAG) << "  w: " << line;
+        CLOG(DEBUG, TAG) << "  w: " << line;
         output << line << std::endl;
     }
 

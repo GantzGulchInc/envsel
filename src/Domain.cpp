@@ -231,10 +231,6 @@ static std::string expandVariables(std::string value, const VariableDictionary &
         auto const expr = match[0];
         auto const name = match[1].str();
 
-        CLOG(TRACE, TAG) << "doing it:";
-        CLOG(TRACE, TAG) << "   expr: " << expr;
-        CLOG(TRACE, TAG) << "   name: " << name;
-
         std::string r = variables.count(name) ? variables.at(name) : "";
 
         value.replace(expr.first, expr.second, r);
@@ -340,8 +336,6 @@ void Script::execute(const VariableDictionary &variables, std::vector<std::strin
 }
 
 void from_json(const nlohmann::json &json, Script &item) {
-
-    CLOG(TRACE, TAG) << "Parsing a script.";
 
     json.at(Script::F_ID).get_to(item.m_id);
     json.at(Script::F_NAME).get_to(item.m_name);
@@ -484,8 +478,6 @@ void to_json(nlohmann::json &j, const Environment &item) {
 }
 
 std::ostream &operator<<(std::ostream &stream, const Environment &environment) {
-
-    std::string o{"2"};
 
     ToString(stream, "Environment") //
             .field<>("m_id", environment.m_id) //

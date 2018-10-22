@@ -3,16 +3,19 @@
 
 #include "App.h"
 
-INITIALIZE_EASYLOGGINGPP;
+INITIALIZE_EASYLOGGINGPP
 
 wxIMPLEMENT_APP_NO_MAIN(gg::envsel::App);
-wxIMPLEMENT_WX_THEME_SUPPORT;
+wxIMPLEMENT_WX_THEME_SUPPORT
 
 int main(int argc, char *argv[])  {
 
     el::Configurations defaultConf;
     defaultConf.setToDefault();
     defaultConf.setGlobally(el::ConfigurationType::Format, "%datetime [%levshort] %fbase:%line %func: %msg");
+    defaultConf.setGlobally(el::ConfigurationType::Filename, "/tmp/envsel.log");
+    defaultConf.set(el::Level::Trace,el::ConfigurationType::Enabled, "false");
+
 
     el::Loggers::setDefaultConfigurations(defaultConf, true);
 
