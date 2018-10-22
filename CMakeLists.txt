@@ -2,9 +2,19 @@ cmake_minimum_required(VERSION 3.12)
 
 project(EnvSel)
 
+set(EnvSel_VERSION_MAJOR 1)
+set(EnvSel_VERSION_MINOR 0)
+set(EnvSel_VERSION_BUGFIX 0)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -std=c++17")
-set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_COLOR_MAKEFILE ON)
+set(PROJECT_SOURCE_DIR "src")
+
+configure_file(
+        "${PROJECT_SOURCE_DIR}/EnvSelConfig.h.in"
+        "${PROJECT_BINARY_DIR}/EnvSelConfig.h"
+)
 
 #
 # Easy Logging++
@@ -17,20 +27,20 @@ add_subdirectory("ThirdParty/easyloggingpp")
 # wxWidgets
 #
 find_package(wxWidgets COMPONENTS core base REQUIRED)
+
 include("${wxWidgets_USE_FILE}")
+
+add_executable(${PROJECT_NAME} src/App.cpp src/SelectFrame.cpp src/ArgumentParser.cpp src/Domain.cpp src/Main.cpp src/IO.cpp src/NonCopyable.cpp src/SelectionTab.cpp src/Model.cpp src/ToString.cpp)
+
+target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} easyloggingpp)
+
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "${PROJECT_BINARY_DIR}")
 
 #
 # Third party libraries
 #
-include_directories(SYSTEM "ThirdParty/CLI11/include")
-include_directories(SYSTEM "ThirdParty/json/single_include")
-include_directories(SYSTEM "ThirdParty/easyloggingpp/src")
-
-set(E_SOURCES src/App.cpp src/SelectFrame.cpp src/ArgumentParser.cpp src/Domain.cpp src/Main.cpp src/IO.cpp src/NonCopyable.cpp src/NonCopyable.h src/SelectionTab.cpp src/SelectionTab.h src/Model.cpp src/Model.h src/ToString.cpp src/ToString.h)
-
-
-add_executable(EnvSel ${E_SOURCES})
-
-target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} easyloggingpp)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "ThirdParty/CLI11/include")
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "ThirdParty/json/single_include")
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "ThirdParty/easyloggingpp/src")
 
 
