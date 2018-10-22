@@ -21,7 +21,7 @@ namespace envsel {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Arguments::Arguments() :
-        m_wasParsed(false),  m_inputFilename(""), m_outputFilename("") {
+        m_wasParsed(false), m_inputFilename(""), m_outputFilename("") {
 
 }
 
@@ -34,7 +34,10 @@ bool Arguments::wasParsed() {
 }
 
 Arguments &Arguments::inputFilename(const std::string &inputFilename) {
+
     m_inputFilename = inputFilename;
+
+    return *this;
 }
 
 const std::string &Arguments::inputFilename() const {
@@ -42,7 +45,10 @@ const std::string &Arguments::inputFilename() const {
 }
 
 Arguments &Arguments::outputFilename(const std::string &outputFilename) {
+
     m_outputFilename = outputFilename;
+
+    return *this;
 }
 
 const std::string &Arguments::outputFilename() const {
@@ -54,18 +60,19 @@ const std::string &Arguments::outputFilename() const {
 // ArgumentParser
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-ArgumentParser::ArgumentParser(Arguments & args, const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc, CheckFunc checkFunc) :
-        m_arguments(args), //
+ArgumentParser::ArgumentParser(Arguments &args, const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc,
+                               CheckFunc checkFunc) :
         m_app{name},  //
         m_argc{argc}, //
         m_argv{argv}, //
         m_selFunc{selFunc}, //
         m_editFunc{editFunc}, //
-        m_checkFunc{checkFunc} {
+        m_checkFunc{checkFunc}, //
+        m_arguments(args) {
 
     m_app.require_subcommand(1);
 
-    m_arguments.inputFilename( getHomeDirectory() + "/.environments.json" );
+    m_arguments.inputFilename(getHomeDirectory() + "/.environments.json");
 
     createSelectCommand();
 
@@ -79,9 +86,9 @@ ArgumentParser::~ArgumentParser() {
 
 }
 
-CLI::App * ArgumentParser::createSelectCommand() {
+CLI::App *ArgumentParser::createSelectCommand() {
 
-    CLI::App * selectCommand = m_app.add_subcommand("select", "Select an environment.");
+    CLI::App *selectCommand = m_app.add_subcommand("select", "Select an environment.");
 
     selectCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to use.")->type_name("FILENAME");
     selectCommand->add_option("-o,--output", m_arguments.m_outputFilename, "Script filename to write.")->required(true)->type_name("OUTPUT_FILENAME");
@@ -94,7 +101,7 @@ CLI::App * ArgumentParser::createSelectCommand() {
     return selectCommand;
 }
 
-CLI::App * ArgumentParser::createEditCommand(){
+CLI::App *ArgumentParser::createEditCommand() {
 
     CLI::App *editCommand = m_app.add_subcommand("edit", "Edit an environment file.");
 
@@ -108,7 +115,7 @@ CLI::App * ArgumentParser::createEditCommand(){
     return editCommand;
 }
 
-CLI::App * ArgumentParser::createCheckCommand(){
+CLI::App *ArgumentParser::createCheckCommand() {
 
     CLI::App *checkCommand = m_app.add_subcommand("check", "Check an environment file.");
 
@@ -124,9 +131,9 @@ CLI::App * ArgumentParser::createCheckCommand(){
 
 std::string ArgumentParser::getHomeDirectory() {
 
-    char * userHome = getenv("HOME");
+    char *userHome = getenv("HOME");
 
-    if( userHome == nullptr) {
+    if (userHome == nullptr) {
 
         userHome = getpwuid(getuid())->pw_dir;
 
@@ -143,7 +150,9 @@ void ArgumentParser::parse() {
 
     } catch (const CLI::ParseError &e) {
 
-        int exitCode = m_app.exit(e);
+        // Do nothing;
+
+        // int exitCode = m_app.exit(e);
 
     }
 
