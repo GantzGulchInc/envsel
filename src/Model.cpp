@@ -7,7 +7,7 @@
 namespace gg {
 namespace envsel {
 
-Model::Model() : m_exitCode{ Model::EXIT_CANCEL } {
+Model::Model() : m_exitCode{ ExitReason::EXIT_CANCEL } {
 
 }
 

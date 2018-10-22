@@ -14,21 +14,23 @@ namespace gg {
 namespace envsel {
 
 
+enum ExitReason {
+    EXIT_OK = 0,
+    EXIT_CANCEL = 1,
+    EXIT_ERROR = 2
+};
+
 class Model : public NonCopyable {
 
 public:
 
     static Model & instance();
 
-    static const int EXIT_OK = 0;
-    static const int EXIT_CANCEL = 1;
-    static const int EXIT_ERROR = 2;
-
     Arguments m_args;
 
     Environments m_environments;
 
-    int m_exitCode;
+    ExitReason m_exitCode;
 
 private:
 

@@ -291,6 +291,22 @@
 					]
 				}
 			]
+		},
+		{
+			"id": "clion",
+			"name": "CLion",
+			"installations": [
+				{
+					"id": "clion-2018.2",
+					"name": "CLion 2018.2",
+					"variables": [
+						{
+							"name": "CLION_HOME",
+							"value": "/workspace/apps/clion/clion-2018.2.4"
+						}
+					]
+				}
+			]
 		}
 	],
 	"scripts": [
@@ -404,6 +420,20 @@
 					]
 				}
 			]
+		},
+		{
+			"id": "script-clion",
+			"name": "CLion",
+			"ifSet": "CLION_HOME",
+			"commands": [
+				{
+					"command": "print",
+					"args": [
+						"export CLION_HOME=#{CLION_HOME}",
+						"export PATH=#{CLION_HOME}/bin:${PATH}"
+					]
+				}
+			]
 		}
 	],
 	"environments": [
@@ -474,6 +504,16 @@
 				{
 					"applicationId": "nodejs",
 					"defaultInstallationId": "node-8.9"
+				}
+			]
+		},
+		{
+			"id": "envsel",
+			"name": "EnvSel",
+			"applications": [
+				{
+					"applicationId": "clion",
+					"defaultInstallationId": "clion-2018.2"
 				}
 			]
 		}

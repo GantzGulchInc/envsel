@@ -85,7 +85,7 @@ void SelectFrame::OnExit(wxCommandEvent &event) {
 
     LOG(TRACE) << "exiting...: " << m_model.m_exitCode;
 
-    m_model.m_exitCode = Model::EXIT_CANCEL;
+    m_model.m_exitCode = ExitReason::EXIT_CANCEL;
 
     Close(true);
 }

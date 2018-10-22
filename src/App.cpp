@@ -86,7 +86,7 @@ int App::OnRun() {
         return m_model.m_exitCode;
     }
 
-    return Model::EXIT_ERROR;
+    return ExitReason::EXIT_ERROR;
 }
 
 } /* namespace envsel */

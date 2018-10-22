@@ -190,7 +190,7 @@ void SelectionTab::onSelect(wxCommandEvent &event) {
 
     CLOG(TRACE, TAG) << "Finished writing script.";
 
-    m_model.m_exitCode = Model::EXIT_OK;
+    m_model.m_exitCode = ExitReason::EXIT_OK;
 
     wxWindow * w = wxGetTopLevelParent(this);
 
@@ -201,7 +201,7 @@ void SelectionTab::onCancel(wxCommandEvent &event) {
 
     CLOG(TRACE, TAG) << "Called.";
 
-    m_model.m_exitCode = Model::EXIT_CANCEL;
+    m_model.m_exitCode = ExitReason::EXIT_CANCEL;
 
     wxWindow * w = wxGetTopLevelParent(this);
 
