@@ -1,0 +1,1 @@
+As an independent software developer I work with many clients using many different versions of tools.  This includes using really old software such as JDK 1.6.
