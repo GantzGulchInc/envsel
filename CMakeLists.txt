@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.12)
 
-project (EnvironmentSelector)
+project (EnvSel)
 
 set (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -std=c++17)
 
@@ -26,7 +26,7 @@ set( L_SOURCES ThirdParty/easyloggingpp/src/easylogging++.cc)
 set( E_SOURCES src/App.cpp src/SelectFrame.cpp src/ArgumentParser.cpp src/Domain.cpp src/Main.cpp src/IO.cpp src/NonCopyable.cpp src/NonCopyable.h src/SelectionTab.cpp src/SelectionTab.h src/Model.cpp src/Model.h src/ToString.cpp src/ToString.h)
 
 
-add_executable(EnvironmentSelector ${E_SOURCES} ${L_SOURCES})
+add_executable(EnvSel ${E_SOURCES} ${L_SOURCES})
 
 target_link_libraries( ${PROJECT_NAME} ${wxWidgets_LIBRARIES} )
 

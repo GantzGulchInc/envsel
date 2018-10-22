@@ -485,8 +485,10 @@ void to_json(nlohmann::json &j, const Environment &item) {
 
 std::ostream &operator<<(std::ostream &stream, const Environment &environment) {
 
+    std::string o{"2"};
+
     ToString(stream, "Environment") //
-            .field("m_id", environment.m_id) //
+            .field<>("m_id", environment.m_id) //
             .field("m_name", environment.m_name) //
             .field("m_environmentApps", environment.m_environmentApps); //
 
@@ -565,6 +567,7 @@ void from_json(const nlohmann::json &json, Environments &item) {
     JsonHelper::from_json(json.at(Environments::F_SCRIPTS), item.m_scripts);
     JsonHelper::from_json(json.at(Environments::F_APPLICATIONS), item.m_applications);
 
+    CLOG(TRACE, TAG) << "done.";
 }
 
 void to_json(nlohmann::json &j, const Environments &item) {
@@ -580,10 +583,14 @@ void to_json(nlohmann::json &j, const Environments &item) {
 
 std::ostream &operator<<(std::ostream &stream, const Environments &environments) {
 
+    CLOG(TRACE,TAG) << "called.";
+
     ToString(stream, "Environments") //
             .field("m_environments", environments.m_environments) //
             .field("m_scripts", environments.m_scripts) //
             .field("m_applications", environments.m_applications); //
+
+    CLOG(TRACE,TAG) << "done.";
 
     return stream;
 }

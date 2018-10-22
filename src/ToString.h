@@ -1,9 +1,10 @@
 
+
+#pragma once
+
 #include <string>
 #include <iostream>
 #include <vector>
-
-#pragma once
 
 namespace gg {
 namespace envsel {
@@ -26,6 +27,8 @@ public:
         m_stream << fieldName << "=" << value;
 
         fieldCount += 1;
+
+        return *this;
     }
 
     template<class T>
@@ -38,6 +41,8 @@ public:
         m_stream << fieldName << "=[" << value << "]";
 
         fieldCount += 1;
+
+        return *this;
     }
 
 private:

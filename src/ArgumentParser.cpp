@@ -9,6 +9,10 @@
 
 #include <iostream>
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+
 namespace gg {
 namespace envsel {
 
@@ -18,7 +22,6 @@ namespace envsel {
 
 Arguments::Arguments() :
         m_wasParsed(false),  m_inputFilename(""), m_outputFilename("") {
-
 
 }
 
@@ -62,6 +65,8 @@ ArgumentParser::ArgumentParser(Arguments & args, const std::string &name, int ar
 
     m_app.require_subcommand(1);
 
+    m_arguments.inputFilename( getHomeDirectory() + "/.environments.json" );
+
     createSelectCommand();
 
     createEditCommand();
@@ -78,7 +83,7 @@ CLI::App * ArgumentParser::createSelectCommand() {
 
     CLI::App * selectCommand = m_app.add_subcommand("select", "Select an environment.");
 
-    selectCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to use.")->required(true)->type_name("FILENAME");
+    selectCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to use.")->type_name("FILENAME");
     selectCommand->add_option("-o,--output", m_arguments.m_outputFilename, "Script filename to write.")->required(true)->type_name("OUTPUT_FILENAME");
 
     selectCommand->callback([this]() {
@@ -115,6 +120,19 @@ CLI::App * ArgumentParser::createCheckCommand(){
     });
 
     return checkCommand;
+}
+
+std::string ArgumentParser::getHomeDirectory() {
+
+    char * userHome = getenv("HOME");
+
+    if( userHome == nullptr) {
+
+        userHome = getpwuid(getuid())->pw_dir;
+
+    }
+
+    return std::string(userHome);
 }
 
 void ArgumentParser::parse() {

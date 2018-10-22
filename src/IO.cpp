@@ -21,7 +21,11 @@ nlohmann::json readJsonFile(const std::string &filename) {
         throw std::ios_base::failure("Error opening file: " + filename);
     }
 
+    CLOG(TRACE, TAG) << "Parsing file.";
+
     nlohmann::json json = nlohmann::json::parse(jsonFile);
+
+    CLOG(TRACE, TAG) << "Closing file.";
 
     jsonFile.close();
 

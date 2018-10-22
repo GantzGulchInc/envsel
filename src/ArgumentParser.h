@@ -81,6 +81,8 @@ private:
     CLI::App * createEditCommand();
     CLI::App * createCheckCommand();
 
+
+    std::string getHomeDirectory();
 };
 
 

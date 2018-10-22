@@ -52,6 +52,8 @@ bool App::runSelect() {
 
     m_model.m_environments.load(m_model.m_args.inputFilename());
 
+    CLOG(TRACE, TAG) << "loaded...";
+
     SelectFrame *frame = new SelectFrame(m_model, "Select", wxPoint(50, 50), wxSize(450, 340));
     frame->Show();
     return true;
