@@ -41,6 +41,8 @@ public:
 
     bool wasParsed();
 
+    bool loggingEnabled();
+
     SelectedCommand command();
 
     Arguments &command(SelectedCommand command);
@@ -56,6 +58,7 @@ public:
     friend ArgumentParser;
 
 private:
+    bool m_enableLogging;
     SelectedCommand m_command;
     std::string m_inputFilename;
     std::string m_outputFilename;

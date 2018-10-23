@@ -15,7 +15,7 @@ wxIMPLEMENT_WX_THEME_SUPPORT
 
 static void parseArguments(int argc, char *argv[]) {
 
-    gg::envsel::Arguments & args{gg::envsel::Arguments::instance()};
+    gg::envsel::Arguments &args{gg::envsel::Arguments::instance()};
 
     gg::envsel::ArgumentParser argsParser{args, "Environment Selector", argc, argv};
 
@@ -27,12 +27,18 @@ static void parseArguments(int argc, char *argv[]) {
 
 static void initLogging() {
 
+    gg::envsel::Arguments &args{gg::envsel::Arguments::instance()};
+
     el::Configurations defaultConf;
     defaultConf.setToDefault();
-    defaultConf.setGlobally(el::ConfigurationType::Format, "%datetime [%levshort] %fbase:%line %func: %msg");
-    defaultConf.setGlobally(el::ConfigurationType::Filename, "/tmp/envsel.log");
-    defaultConf.set(el::Level::Trace, el::ConfigurationType::Enabled, "false");
 
+    if( args.loggingEnabled() ) {
+        defaultConf.setGlobally(el::ConfigurationType::ToStandardOutput, "false");
+        defaultConf.setGlobally(el::ConfigurationType::Format, "%datetime [%levshort] %fbase:%line %func: %msg");
+        defaultConf.setGlobally(el::ConfigurationType::Filename, "/tmp/envsel.log");
+    }else{
+        defaultConf.setGlobally(el::ConfigurationType::Enabled, "false");
+    }
 
     el::Loggers::setDefaultConfigurations(defaultConf, true);
 

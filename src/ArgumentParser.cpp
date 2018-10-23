@@ -28,7 +28,7 @@ Arguments &Arguments::instance() {
 }
 
 Arguments::Arguments() :
-        m_command(SelectedCommand::NONE), m_inputFilename(""), m_outputFilename("") {
+        m_enableLogging{false}, m_command{SelectedCommand::NONE}, m_inputFilename{""}, m_outputFilename{""} {
 
 }
 
@@ -39,6 +39,11 @@ Arguments::~Arguments() {
 bool Arguments::wasParsed() {
     return m_command != SelectedCommand ::NONE;
 }
+
+bool Arguments::loggingEnabled() {
+    return m_enableLogging;
+}
+
 
 SelectedCommand Arguments::command() {
     return m_command;
@@ -84,9 +89,11 @@ ArgumentParser::ArgumentParser(Arguments &args, const std::string &name, int arg
         m_argc{argc}, //
         m_argv{argv} {
 
+    m_arguments.inputFilename(getHomeDirectory() + "/.environments.json");
+
     m_app.require_subcommand(1);
 
-    m_arguments.inputFilename(getHomeDirectory() + "/.environments.json");
+    m_app.add_flag("-l,--logging", m_arguments.m_enableLogging, "Enable logging");
 
     createSelectCommand();
 
