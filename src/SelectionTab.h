@@ -27,6 +27,7 @@ public:
     virtual ~SelectionTab();
 
 private:
+    Arguments & m_args;
     Model & m_model;
 
     Environment & m_currentEnvironment;

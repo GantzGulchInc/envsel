@@ -32,9 +32,9 @@ public:
 
 private:
 
-    Model &m_model;
+    Arguments &m_arguments;
 
-    ArgumentParser *m_argumentsParser;
+    Model &m_model;
 
     bool runSelect();
 

@@ -21,12 +21,13 @@ static const char *TAG = "View";
 
 SelectionTab::SelectionTab(Model &model, wxWindow *parent, wxWindowID winId, const wxString &name, Environment &currentEnvironment) :
         wxPanel(parent, winId, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxNO_BORDER, name), //
+        m_args{Arguments::instance()}, //
         m_model(model), //
         m_currentEnvironment(currentEnvironment) {
 
     int rows = currentEnvironment.apps().size();
 
-    CLOG(TRACE, TAG) << "ctor: outputFilename: " << m_model.m_args.outputFilename();
+    CLOG(TRACE, TAG) << "ctor: outputFilename: " << m_args.outputFilename();
 
     m_panelSizer = new wxBoxSizer(wxVERTICAL);
     m_flexGridSizer = new wxFlexGridSizer(rows, 2, 10, 10);
@@ -150,6 +151,8 @@ void SelectionTab::onSelect(wxCommandEvent & UNUSED(event)) {
 
     VariableDictionary variables;
 
+    variables["_curEnv"] = m_currentEnvironment.name();
+
     for (auto a : m_comboBoxes) {
 
         ApplicationInstallation *installation = reinterpret_cast<ApplicationInstallation *>(a->GetClientData(a->GetSelection()));
@@ -184,9 +187,9 @@ void SelectionTab::onSelect(wxCommandEvent & UNUSED(event)) {
         CLOG(TRACE, TAG) << "    : " << sl;
     }
 
-    CLOG(TRACE, TAG) << " outputFilename: " << m_model.m_args.outputFilename();
+    CLOG(TRACE, TAG) << " outputFilename: " << m_args.outputFilename();
 
-    writeOutput(m_model.m_args.outputFilename(), output);
+    writeOutput(m_args.outputFilename(), output);
 
     CLOG(TRACE, TAG) << "Finished writing script.";
 

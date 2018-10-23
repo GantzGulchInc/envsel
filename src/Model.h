@@ -26,8 +26,6 @@ public:
 
     static Model & instance();
 
-    Arguments m_args;
-
     Environments m_environments;
 
     ExitReason m_exitCode;

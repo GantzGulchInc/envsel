@@ -20,8 +20,15 @@ namespace envsel {
 // Arguments
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+Arguments &Arguments::instance() {
+
+    static Arguments instance;
+
+    return instance;
+}
+
 Arguments::Arguments() :
-        m_wasParsed(false), m_inputFilename(""), m_outputFilename("") {
+        m_command(SelectedCommand::NONE), m_inputFilename(""), m_outputFilename("") {
 
 }
 
@@ -30,7 +37,18 @@ Arguments::~Arguments() {
 }
 
 bool Arguments::wasParsed() {
-    return m_wasParsed;
+    return m_command != SelectedCommand ::NONE;
+}
+
+SelectedCommand Arguments::command() {
+    return m_command;
+}
+
+Arguments &Arguments::command(SelectedCommand command) {
+
+    m_command = command;
+
+    return *this;
 }
 
 Arguments &Arguments::inputFilename(const std::string &inputFilename) {
@@ -60,15 +78,11 @@ const std::string &Arguments::outputFilename() const {
 // ArgumentParser
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-ArgumentParser::ArgumentParser(Arguments &args, const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc,
-                               CheckFunc checkFunc) :
+ArgumentParser::ArgumentParser(Arguments &args, const std::string &name, int argc, const char *const *argv) :
+        m_arguments{ args }, //
         m_app{name},  //
         m_argc{argc}, //
-        m_argv{argv}, //
-        m_selFunc{selFunc}, //
-        m_editFunc{editFunc}, //
-        m_checkFunc{checkFunc}, //
-        m_arguments(args) {
+        m_argv{argv} {
 
     m_app.require_subcommand(1);
 
@@ -86,6 +100,24 @@ ArgumentParser::~ArgumentParser() {
 
 }
 
+bool ArgumentParser::parse() {
+
+    try {
+
+        m_app.parse(m_argc, m_argv);
+
+        return true;
+
+    } catch (const CLI::ParseError &e) {
+
+        m_app.exit(e);
+
+        return false;
+
+    }
+
+}
+
 CLI::App *ArgumentParser::createSelectCommand() {
 
     CLI::App *selectCommand = m_app.add_subcommand("select", "Select an environment.");
@@ -94,8 +126,7 @@ CLI::App *ArgumentParser::createSelectCommand() {
     selectCommand->add_option("-o,--output", m_arguments.m_outputFilename, "Script filename to write.")->required(true)->type_name("OUTPUT_FILENAME");
 
     selectCommand->callback([this]() {
-        this->m_arguments.m_wasParsed = true;
-        this->m_selFunc(this->m_arguments);
+        this->m_arguments.command(SelectedCommand::SELECT);
     });
 
     return selectCommand;
@@ -105,11 +136,10 @@ CLI::App *ArgumentParser::createEditCommand() {
 
     CLI::App *editCommand = m_app.add_subcommand("edit", "Edit an environment file.");
 
-    editCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to edit.")->required(true);
+    editCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to edit.");
 
     editCommand->callback([this]() {
-        this->m_arguments.m_wasParsed = true;
-        this->m_editFunc(this->m_arguments);
+        this->m_arguments.command(SelectedCommand::EDIT);
     });
 
     return editCommand;
@@ -122,8 +152,7 @@ CLI::App *ArgumentParser::createCheckCommand() {
     checkCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to check.")->required(true);
 
     checkCommand->callback([this]() {
-        this->m_arguments.m_wasParsed = true;
-        this->m_checkFunc(this->m_arguments);
+        this->m_arguments.command(SelectedCommand::CHECK);
     });
 
     return checkCommand;
@@ -140,22 +169,6 @@ std::string ArgumentParser::getHomeDirectory() {
     }
 
     return std::string(userHome);
-}
-
-void ArgumentParser::parse() {
-
-    try {
-
-        m_app.parse(m_argc, m_argv);
-
-    } catch (const CLI::ParseError &e) {
-
-        // Do nothing;
-
-        // int exitCode = m_app.exit(e);
-
-    }
-
 }
 
 } /* namespace envsel */

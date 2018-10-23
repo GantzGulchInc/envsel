@@ -19,18 +19,31 @@ namespace envsel {
 
 // Forward declaration.
 
+enum SelectedCommand {
+
+    NONE = 0,
+    SELECT,
+    EDIT,
+    CHECK
+};
+
 class ArgumentParser;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Arguments
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class Arguments : public NonCopyable {
+class Arguments : NonCopyable {
 public:
-    Arguments();
+
+    static Arguments & instance();
 
     virtual ~Arguments();
 
     bool wasParsed();
+
+    SelectedCommand command();
+
+    Arguments &command(SelectedCommand command);
 
     Arguments &inputFilename(const std::string &inputFilename);
 
@@ -43,11 +56,11 @@ public:
     friend ArgumentParser;
 
 private:
-
-    bool m_wasParsed;
+    SelectedCommand m_command;
     std::string m_inputFilename;
     std::string m_outputFilename;
 
+    Arguments();
 };
 
 typedef std::function<void(const Arguments &args)> SelectFunc;
@@ -59,28 +72,21 @@ typedef std::function<void(const Arguments &args)> CheckFunc;
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class ArgumentParser  : public NonCopyable {
 public:
-    ArgumentParser(Arguments & args, const std::string &name, int argc, const char *const *argv, SelectFunc selFunc, EditFunc editFunc, CheckFunc checkFunc);
+    ArgumentParser(Arguments & args, const std::string &name, int argc, const char *const *argv);
 
     virtual ~ArgumentParser();
 
-    void parse();
+    bool parse();
 
 private:
+    Arguments & m_arguments;
     CLI::App m_app;
-
     int m_argc;
     const char *const *m_argv;
-
-    SelectFunc m_selFunc;
-    EditFunc m_editFunc;
-    CheckFunc m_checkFunc;
-
-    Arguments & m_arguments;
 
     CLI::App * createSelectCommand();
     CLI::App * createEditCommand();
     CLI::App * createCheckCommand();
-
 
     std::string getHomeDirectory();
 };
