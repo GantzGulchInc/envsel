@@ -51,27 +51,67 @@ wxBEGIN_EVENT_TABLE(EditFrame, wxFrame)
                 EVT_TREE_ITEM_RIGHT_CLICK(ID_APP_TREE, EditFrame::onTreeMenu)
                 EVT_MENU(ID_APPLICATION_INSTALLATION_NEW, EditFrame::onApplicationInstallationNew)
                 EVT_MENU(ID_APPLICATION_INSTALLATION_DELETE, EditFrame::onApplicationInstallationDelete)
-
+                EVT_MENU(ID_SCRIPT_NEW, EditFrame::onScriptNew)
+                EVT_MENU(ID_SCRIPT_DELETE, EditFrame::onScriptDelete)
+                EVT_MENU(ID_SCRIPT_COMMAND_NEW, EditFrame::onScriptCommandNew)
+                EVT_MENU(ID_SCRIPT_COMMAND_DELETE, EditFrame::onScriptCommandDelete)
+                EVT_MENU(ID_PROJECT_NEW, EditFrame::onProjectNew)
+                EVT_MENU(ID_PROJECT_DELETE, EditFrame::onProjectDelete)
+                EVT_MENU(ID_PROJECT_APP_NEW, EditFrame::onProjectAppNew)
+                EVT_MENU(ID_PROJECT_APP_DELETE, EditFrame::onProjectAppDelete)
 
                 //EVT_TREE_ITEM_MENU(ID_APP_TREE, EditFrame::onTreeMenu)
 
 wxEND_EVENT_TABLE()
 
 void EditFrame::onApplicationNew(wxCommandEvent &event) {
-    CLOG(TRACE, TAG) << "Called.";
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
 void EditFrame::onApplicationDelete(wxCommandEvent &event) {
-    CLOG(TRACE, TAG) << "Called.";
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
 void EditFrame::onApplicationInstallationNew(wxCommandEvent &event) {
-    CLOG(TRACE, TAG) << "Called.";
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
 void EditFrame::onApplicationInstallationDelete(wxCommandEvent &event) {
-    CLOG(TRACE, TAG) << "Called.";
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
+
+void EditFrame::onScriptNew(wxCommandEvent & event) {
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
+}
+
+void EditFrame::onScriptDelete(wxCommandEvent & event) {
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
+}
+
+void EditFrame::onScriptCommandNew(wxCommandEvent & event) {
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
+}
+
+void EditFrame::onScriptCommandDelete(wxCommandEvent & event) {
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
+}
+
+void EditFrame::onProjectNew(wxCommandEvent & event) {
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
+}
+
+void EditFrame::onProjectDelete(wxCommandEvent & event) {
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
+}
+
+void EditFrame::onProjectAppNew(wxCommandEvent & event) {
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
+}
+
+void EditFrame::onProjectAppDelete(wxCommandEvent & event) {
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
+}
+
 
 wxTreeItemId EditFrame::createApplicationsNode(wxTreeCtrl *treeCtrl, wxTreeItemId rootId) {
 
@@ -118,7 +158,6 @@ wxTreeItemId EditFrame::createScriptsNode(wxTreeCtrl *treeCtrl, wxTreeItemId roo
         TreeClientPtr *scriptPtr = new TreeClientPtr{TreeClientType::SCRIPT, script.get(), std::bind(&EditFrame::scriptPopup, this, std::placeholders::_1)};
 
         wxTreeItemId scriptId = treeCtrl->AppendItem(scriptsId, script->name(), -1, -1, scriptPtr);
-
 
         for (auto &command : script->commands()) {
 
@@ -248,13 +287,6 @@ void EditFrame::onTreeMenu(wxTreeEvent &event) {
 
     CLOG(TRACE, TAG) << "Id: " << event.GetId();
 
-    if (!event.GetItem().IsOk()) {
-        CLOG(TRACE, TAG) << "Item is not OK.";
-        return;
-    } else {
-        CLOG(TRACE, TAG) << "Item is OK.";
-    }
-
     TreeClientPtr *clientPtr = reinterpret_cast<TreeClientPtr *>( m_tree->GetItemData(event.GetItem()));
 
     clientPtr->dispatch(event);
@@ -264,7 +296,6 @@ void EditFrame::onTreeMenu(wxTreeEvent &event) {
 void EditFrame::rootPopup(wxTreeEvent &event) {
 
     CLOG(TRACE, TAG) << event.GetId();
-    // Do nothing.
 
 }
 

@@ -105,6 +105,15 @@ private:
     void onApplicationDelete(wxCommandEvent & event);
     void onApplicationInstallationNew(wxCommandEvent & event);
     void onApplicationInstallationDelete(wxCommandEvent & event);
+    void onScriptNew(wxCommandEvent & event);
+    void onScriptDelete(wxCommandEvent & event);
+    void onScriptCommandNew(wxCommandEvent & event);
+    void onScriptCommandDelete(wxCommandEvent & event);
+    void onProjectNew(wxCommandEvent & event);
+    void onProjectDelete(wxCommandEvent & event);
+    void onProjectAppNew(wxCommandEvent & event);
+    void onProjectAppDelete(wxCommandEvent & event);
+
 
     void onTreeMenu(wxTreeEvent &event);
 
