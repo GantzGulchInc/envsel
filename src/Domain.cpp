@@ -504,6 +504,10 @@ Environments::~Environments() {
     CLOG(TRACE, TAG) << "Called";
 }
 
+ApplicationList & Environments::applications() {
+    return m_applications;
+}
+
 Application *Environments::findApplication(const std::string &applicationId) const {
 
     for (auto &app : m_applications) {
@@ -517,8 +521,11 @@ Application *Environments::findApplication(const std::string &applicationId) con
     return nullptr;
 }
 
+ScriptList & Environments::scripts() {
+    return m_scripts;
+}
 
-const EnvironmentList &Environments::environments() const {
+EnvironmentList &Environments::environments() {
     return m_environments;
 }
 

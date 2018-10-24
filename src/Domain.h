@@ -277,9 +277,13 @@ public:
 
     virtual ~Environments();
 
+    ApplicationList & applications();
+
     Application *findApplication(const std::string &applicationId) const;
 
-    const EnvironmentList &environments() const;
+    ScriptList & scripts();
+
+    EnvironmentList &environments();
 
     void load(const std::string & filename);
 

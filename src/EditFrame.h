@@ -5,11 +5,31 @@
 #pragma once
 
 #include <wx/wx.h>
+#include <wx/splitter.h>
+#include <wx/treectrl.h>
 
 #include "Model.h"
 
 namespace gg {
 namespace envsel {
+
+template<class T>
+class TreeClientPtr : public wxTreeItemData {
+public:
+    TreeClientPtr(T *item) : wxTreeItemData() , m_item{item} {
+
+    }
+
+    virtual ~TreeClientPtr(){
+
+    }
+
+    T * get(){
+        return m_item;
+    }
+private:
+    T * m_item;
+};
 
 class EditFrame : public wxFrame {
 public:
@@ -21,6 +41,9 @@ private:
     Model & m_model;
 
     wxPanel *m_panel;
+    wxSizer *m_panelSizer;
+    wxSplitterWindow * m_splitter;
+
 };
 
 }
