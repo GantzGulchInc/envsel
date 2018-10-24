@@ -17,7 +17,7 @@ static void parseArguments(int argc, char *argv[]) {
 
     gg::envsel::Arguments &args{gg::envsel::Arguments::instance()};
 
-    gg::envsel::ArgumentParser argsParser{args, "Environment Selector", argc, argv};
+    gg::envsel::ArgumentParser argsParser{args, "Project Selector", argc, argv};
 
     if (!argsParser.parse()) {
         exit(gg::envsel::ExitReason::EXIT_ERROR);

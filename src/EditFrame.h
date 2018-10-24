@@ -64,7 +64,7 @@ private:
     wxNotebook *m_notebook;
     wxSizer *m_notebookSizer;
 
-    std::vector<std::pair<SelectionTab *, Environment &>> m_tabs;
+    std::vector<std::pair<SelectionTab *, Project &>> m_tabs;
 
     void OnHello(wxCommandEvent &event);
 

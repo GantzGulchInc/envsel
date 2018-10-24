@@ -436,7 +436,7 @@
 			]
 		}
 	],
-	"environments": [
+	"projects": [
 		{
 			"id": "device-manager",
 			"name": "Device Manager",

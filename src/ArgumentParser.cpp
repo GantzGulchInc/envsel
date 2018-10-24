@@ -129,7 +129,7 @@ CLI::App *ArgumentParser::createSelectCommand() {
 
     CLI::App *selectCommand = m_app.add_subcommand("select", "Select an environment.");
 
-    selectCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to use.")->type_name("FILENAME");
+    selectCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Project file to use.")->type_name("FILENAME");
     selectCommand->add_option("-o,--output", m_arguments.m_outputFilename, "Script filename to write.")->required(true)->type_name("OUTPUT_FILENAME");
 
     selectCommand->callback([this]() {
@@ -143,7 +143,7 @@ CLI::App *ArgumentParser::createEditCommand() {
 
     CLI::App *editCommand = m_app.add_subcommand("edit", "Edit an environment file.");
 
-    editCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to edit.");
+    editCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Project file to edit.");
 
     editCommand->callback([this]() {
         this->m_arguments.command(SelectedCommand::EDIT);
@@ -156,7 +156,7 @@ CLI::App *ArgumentParser::createCheckCommand() {
 
     CLI::App *checkCommand = m_app.add_subcommand("check", "Check an environment file.");
 
-    checkCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Environment file to check.")->required(true);
+    checkCommand->add_option("-f,--filename", m_arguments.m_inputFilename, "Project file to check.")->required(true);
 
     checkCommand->callback([this]() {
         this->m_arguments.command(SelectedCommand::CHECK);

@@ -32,11 +32,11 @@ SelectFrame::SelectFrame(Model &model, const wxString &title, const wxPoint &pos
 
     bool first{true};
 
-    for (auto &p : m_model.m_environments.environments()) {
+    for (auto &p : m_model.m_environments.projects()) {
 
         SelectionTab *tab = new SelectionTab(m_model, m_notebook, wxID_ANY, "Tab1", *p);
 
-        m_tabs.push_back(std::pair<SelectionTab *, Environment &>(tab, *p));
+        m_tabs.push_back(std::pair<SelectionTab *, Project &>(tab, *p));
 
         m_notebook->AddPage(tab, p->name(), first);
 

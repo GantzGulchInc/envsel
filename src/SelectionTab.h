@@ -22,7 +22,7 @@ namespace envsel {
 class SelectionTab : public wxPanel {
 
 public:
-    SelectionTab(Model & model, wxWindow *parent, wxWindowID winid, const wxString &name, Environment & currentEnvironment);
+    SelectionTab(Model & model, wxWindow *parent, wxWindowID winid, const wxString &name, Project & currentEnvironment);
 
     virtual ~SelectionTab();
 
@@ -30,7 +30,7 @@ private:
     Arguments & m_args;
     Model & m_model;
 
-    Environment & m_currentEnvironment;
+    Project & m_currentEnvironment;
 
     wxSizer * m_panelSizer;
     wxFlexGridSizer * m_flexGridSizer;
@@ -41,7 +41,7 @@ private:
 
     std::vector<wxComboBox *> m_comboBoxes;
 
-    wxComboBox * createComboBox(wxWindow *parent, EnvironmentApp * envApp, const ApplicationInstallationList & installedApps);
+    wxComboBox * createComboBox(wxWindow *parent, ProjectApp * envApp, const ApplicationInstallationList & installedApps);
 
     void onSelect(wxCommandEvent &event);
     void onCancel(wxCommandEvent &event);

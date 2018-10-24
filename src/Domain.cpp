@@ -164,6 +164,21 @@ const ApplicationInstallationList &Application::installations() const {
     return m_installations;
 }
 
+
+ApplicationInstallation * Application::findInstallation(const std::string & id){
+
+    for(auto & appInst : m_installations ) {
+
+        if( appInst->id() == id ) {
+            return appInst.get();
+        }
+
+    }
+
+    return nullptr;
+
+}
+
 void from_json(const nlohmann::json &json, Application &item) {
 
     json.at(Application::F_ID).get_to(item.m_id);
@@ -368,63 +383,63 @@ std::ostream &operator<<(std::ostream &stream, const Script &script) {
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Environment App
+// Project App
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const std::string EnvironmentApp::F_APPLICATION_ID{"applicationId"};
-const std::string EnvironmentApp::F_DEFAULT_INSTALLATION_ID{"defaultInstallationId"};
+const std::string ProjectApp::F_APPLICATION_ID{"applicationId"};
+const std::string ProjectApp::F_DEFAULT_INSTALLATION_ID{"defaultInstallationId"};
 
 
-EnvironmentApp::EnvironmentApp() :
+ProjectApp::ProjectApp() :
         m_applicationId{""}, m_defaultInstallationId{""} {
 
     CLOG(TRACE, TAG) << "Called";
 }
 
-EnvironmentApp::~EnvironmentApp() {
+ProjectApp::~ProjectApp() {
 
     CLOG(TRACE, TAG) << "Called";
 }
 
-const std::string &EnvironmentApp::applicationId() const {
+const std::string &ProjectApp::applicationId() const {
 
     return m_applicationId;
 }
 
 
-const std::string &EnvironmentApp::defaultInstallationId() const {
+const std::string &ProjectApp::defaultInstallationId() const {
     return m_defaultInstallationId;
 }
 
 
-const std::string &EnvironmentApp::currentInstalltionId() const {
+const std::string &ProjectApp::currentInstalltionId() const {
     return m_currentInstallationId;
 }
 
-EnvironmentApp &EnvironmentApp::currentInstallationId(const std::string &id) {
+ProjectApp &ProjectApp::currentInstallationId(const std::string &id) {
     m_currentInstallationId = id;
     return *this;
 }
 
-void from_json(const nlohmann::json &json, EnvironmentApp &item) {
+void from_json(const nlohmann::json &json, ProjectApp &item) {
 
-    json.at(EnvironmentApp::F_APPLICATION_ID).get_to(item.m_applicationId);
-    json.at(EnvironmentApp::F_DEFAULT_INSTALLATION_ID).get_to(item.m_defaultInstallationId);
+    json.at(ProjectApp::F_APPLICATION_ID).get_to(item.m_applicationId);
+    json.at(ProjectApp::F_DEFAULT_INSTALLATION_ID).get_to(item.m_defaultInstallationId);
 
 }
 
-void to_json(nlohmann::json &j, const EnvironmentApp &item) {
+void to_json(nlohmann::json &j, const ProjectApp &item) {
 
     j = {
-            {EnvironmentApp::F_APPLICATION_ID,          item.m_applicationId},
-            {EnvironmentApp::F_DEFAULT_INSTALLATION_ID, item.m_defaultInstallationId}
+            {ProjectApp::F_APPLICATION_ID,          item.m_applicationId},
+            {ProjectApp::F_DEFAULT_INSTALLATION_ID, item.m_defaultInstallationId}
     };
 
 }
 
-std::ostream &operator<<(std::ostream &stream, const EnvironmentApp &environmentApp) {
+std::ostream &operator<<(std::ostream &stream, const ProjectApp &environmentApp) {
 
-    ToString(stream, "EnvironmentApp") //
+    ToString(stream, "ProjectApp") //
             .field("m_applicationId", environmentApp.m_applicationId) //
             .field("m_defaultInstallationId", environmentApp.m_defaultInstallationId) //
             .field("m_currentInstallationId", environmentApp.m_currentInstallationId); //
@@ -433,56 +448,56 @@ std::ostream &operator<<(std::ostream &stream, const EnvironmentApp &environment
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Environment
+// Project
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const std::string Environment::F_ID{"id"};
-const std::string Environment::F_NAME{"name"};
-const std::string Environment::F_APPS{"applications"};
+const std::string Project::F_ID{"id"};
+const std::string Project::F_NAME{"name"};
+const std::string Project::F_APPS{"applications"};
 
-Environment::Environment() :
+Project::Project() :
         m_id{""}, m_name{""} {
 
     CLOG(TRACE, TAG) << "Called";
 }
 
-Environment::~Environment() {
+Project::~Project() {
 
     CLOG(TRACE, TAG) << "Called";
 }
 
-const std::string &Environment::name() const {
+const std::string &Project::name() const {
     return m_name;
 }
 
-const EnvironmentAppList &Environment::apps() const {
-    return m_environmentApps;
+const ProjectAppList &Project::apps() const {
+    return m_projectApps;
 }
 
-void from_json(const nlohmann::json &json, Environment &item) {
+void from_json(const nlohmann::json &json, Project &item) {
 
-    json.at(Environment::F_ID).get_to(item.m_id);
-    json.at(Environment::F_NAME).get_to(item.m_name);
+    json.at(Project::F_ID).get_to(item.m_id);
+    json.at(Project::F_NAME).get_to(item.m_name);
 
-    JsonHelper::from_json(json.at(Environment::F_APPS), item.m_environmentApps);
+    JsonHelper::from_json(json.at(Project::F_APPS), item.m_projectApps);
 }
 
-void to_json(nlohmann::json &j, const Environment &item) {
+void to_json(nlohmann::json &j, const Project &item) {
 
     j = {
-            {Environment::F_ID,   item.m_id},
-            {Environment::F_NAME, item.m_name},
-            {Environment::F_APPS, JsonHelper::to_json(item.m_environmentApps)}
+            {Project::F_ID,   item.m_id},
+            {Project::F_NAME, item.m_name},
+            {Project::F_APPS, JsonHelper::to_json(item.m_projectApps)}
     };
 
 }
 
-std::ostream &operator<<(std::ostream &stream, const Environment &environment) {
+std::ostream &operator<<(std::ostream &stream, const Project &environment) {
 
-    ToString(stream, "Environment") //
+    ToString(stream, "Project") //
             .field<>("m_id", environment.m_id) //
             .field("m_name", environment.m_name) //
-            .field("m_environmentApps", environment.m_environmentApps); //
+            .field("m_projectApps", environment.m_projectApps); //
 
     return stream;
 }
@@ -493,7 +508,7 @@ std::ostream &operator<<(std::ostream &stream, const Environment &environment) {
 
 const std::string Environments::F_APPLICATIONS{"applications"};
 const std::string Environments::F_SCRIPTS{"scripts"};
-const std::string Environments::F_ENVIRONMENTS{"environments"};
+const std::string Environments::F_PROJECTS{"projects"};
 
 Environments::Environments() {
     CLOG(TRACE, TAG) << "Called";
@@ -525,8 +540,8 @@ ScriptList & Environments::scripts() {
     return m_scripts;
 }
 
-EnvironmentList &Environments::environments() {
-    return m_environments;
+ProjectList &Environments::projects() {
+    return m_projects;
 }
 
 
@@ -562,7 +577,7 @@ void from_json(const nlohmann::json &json, Environments &item) {
 
     CLOG(TRACE, TAG) << "called.";
 
-    JsonHelper::from_json(json.at(Environments::F_ENVIRONMENTS), item.m_environments);
+    JsonHelper::from_json(json.at(Environments::F_PROJECTS), item.m_projects);
     JsonHelper::from_json(json.at(Environments::F_SCRIPTS), item.m_scripts);
     JsonHelper::from_json(json.at(Environments::F_APPLICATIONS), item.m_applications);
 
@@ -572,7 +587,7 @@ void from_json(const nlohmann::json &json, Environments &item) {
 void to_json(nlohmann::json &j, const Environments &item) {
 
     j = {
-            {Environments::F_ENVIRONMENTS, JsonHelper::to_json(item.m_environments)},
+            {Environments::F_PROJECTS, JsonHelper::to_json(item.m_projects)},
             {Environments::F_SCRIPTS,      JsonHelper::to_json(item.m_scripts)},
             {Environments::F_APPLICATIONS, JsonHelper::to_json(item.m_applications)}
 
@@ -585,7 +600,7 @@ std::ostream &operator<<(std::ostream &stream, const Environments &environments)
     CLOG(TRACE,TAG) << "called.";
 
     ToString(stream, "Environments") //
-            .field("m_environments", environments.m_environments) //
+            .field("m_projects", environments.m_projects) //
             .field("m_scripts", environments.m_scripts) //
             .field("m_applications", environments.m_applications); //
 

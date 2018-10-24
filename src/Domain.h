@@ -109,6 +109,8 @@ public:
 
     const ApplicationInstallationList &installations() const;
 
+    ApplicationInstallation * findInstallation(const std::string & id);
+
     friend void from_json(const nlohmann::json &json, Application &item);
 
     friend void to_json(nlohmann::json &j, const Application &item);
@@ -198,15 +200,15 @@ typedef std::vector<std::unique_ptr<Script>> ScriptList;
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * EnvironmentApp
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class EnvironmentApp : public NonCopyable {
+class ProjectApp : public NonCopyable {
 public:
 
     static const std::string F_APPLICATION_ID;
     static const std::string F_DEFAULT_INSTALLATION_ID;
 
-    EnvironmentApp();
+    ProjectApp();
 
-    virtual ~EnvironmentApp();
+    virtual ~ProjectApp();
 
     const std::string &applicationId() const;
 
@@ -214,13 +216,13 @@ public:
 
     const std::string &currentInstalltionId() const;
 
-    EnvironmentApp & currentInstallationId(const std::string & id);
+    ProjectApp & currentInstallationId(const std::string & id);
 
-    friend void from_json(const nlohmann::json &json, EnvironmentApp &item);
+    friend void from_json(const nlohmann::json &json, ProjectApp &item);
 
-    friend void to_json(nlohmann::json &j, const EnvironmentApp &item);
+    friend void to_json(nlohmann::json &j, const ProjectApp &item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const EnvironmentApp &environmentApp);
+    friend std::ostream &operator<<(std::ostream &stream, const ProjectApp &environmentApp);
 
 private:
     std::string m_applicationId;
@@ -228,39 +230,39 @@ private:
     std::string m_currentInstallationId;
 };
 
-typedef std::vector<std::unique_ptr<EnvironmentApp>> EnvironmentAppList;
+typedef std::vector<std::unique_ptr<ProjectApp>> ProjectAppList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Environment
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class Environment : public NonCopyable {
+class Project : public NonCopyable {
 public:
 
     static const std::string F_ID;
     static const std::string F_NAME;
     static const std::string F_APPS;
 
-    Environment();
+    Project();
 
-    virtual ~Environment();
+    virtual ~Project();
 
     const std::string &name() const;
 
-    const EnvironmentAppList &apps() const;
+    const ProjectAppList &apps() const;
 
-    friend void from_json(const nlohmann::json &json, Environment &item);
+    friend void from_json(const nlohmann::json &json, Project &item);
 
-    friend void to_json(nlohmann::json &j, const Environment &item);
+    friend void to_json(nlohmann::json &j, const Project &item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const Environment &environment);
+    friend std::ostream &operator<<(std::ostream &stream, const Project &environment);
 
 private:
     std::string m_id;
     std::string m_name;
-    EnvironmentAppList m_environmentApps;
+    ProjectAppList m_projectApps;
 };
 
-typedef std::vector<std::unique_ptr<Environment>> EnvironmentList;
+typedef std::vector<std::unique_ptr<Project>> ProjectList;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Environments
@@ -271,7 +273,7 @@ public:
 
     static const std::string F_APPLICATIONS;
     static const std::string F_SCRIPTS;
-    static const std::string F_ENVIRONMENTS;
+    static const std::string F_PROJECTS;
 
     Environments();
 
@@ -283,7 +285,7 @@ public:
 
     ScriptList & scripts();
 
-    EnvironmentList &environments();
+    ProjectList &projects();
 
     void load(const std::string & filename);
 
@@ -298,7 +300,7 @@ public:
 private:
     ApplicationList m_applications;
     ScriptList m_scripts;
-    EnvironmentList m_environments;
+    ProjectList m_projects;
 };
 
 

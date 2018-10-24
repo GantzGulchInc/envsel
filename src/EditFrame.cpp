@@ -10,47 +10,65 @@
 namespace gg {
 namespace envsel {
 
-static wxTreeCtrl * createTree(wxWindow * parent, gg::envsel::Model &m_model) {
+static wxTreeCtrl *createTree(wxWindow *parent, gg::envsel::Model &m_model) {
 
-    wxTreeCtrl * treeCtrl = new wxTreeCtrl(parent, wxID_ANY );
+    wxTreeCtrl *treeCtrl = new wxTreeCtrl(parent, wxID_ANY);
 
     wxTreeItemId rootId = treeCtrl->AddRoot("Root");
 
     wxTreeItemId appsId = treeCtrl->AppendItem(rootId, "Applications");
 
-    for(auto & app : m_model.m_environments.applications()) {
+    for (auto &app : m_model.m_environments.applications()) {
 
-        TreeClientPtr<Application> * p = new TreeClientPtr<Application>{ app.get() };
+        TreeClientPtr<Application> *p = new TreeClientPtr<Application>{app.get()};
 
-        wxTreeItemId appId= treeCtrl->AppendItem(appsId, app->name(), -1, -1,  p);
+        wxTreeItemId appId = treeCtrl->AppendItem(appsId, app->name(), -1, -1, p);
 
     }
 
     wxTreeItemId scriptsId = treeCtrl->AppendItem(rootId, "Scripts");
 
-    for(auto & script : m_model.m_environments.scripts()) {
+    for (auto &script : m_model.m_environments.scripts()) {
 
-        TreeClientPtr<Script> * p = new TreeClientPtr<Script>{ script.get() };
+        TreeClientPtr<Script> *p = new TreeClientPtr<Script>{script.get()};
 
-        wxTreeItemId scriptId = treeCtrl->AppendItem(scriptsId, script->name(), -1, -1,  p);
+        wxTreeItemId scriptId = treeCtrl->AppendItem(scriptsId, script->name(), -1, -1, p);
     }
 
-    wxTreeItemId environmentsId = treeCtrl->AppendItem(rootId, "Environments");
+    wxTreeItemId projectsId = treeCtrl->AppendItem(rootId, "Projects");
 
-    for(auto & environment : m_model.m_environments.environments() ){
+    for (auto &project : m_model.m_environments.projects()) {
 
-        TreeClientPtr<Environment> * p = new TreeClientPtr<Environment>{ environment.get() };
+        TreeClientPtr<Project> *p = new TreeClientPtr<Project>{project.get()};
 
-        wxTreeItemId envId = treeCtrl->AppendItem(environmentsId, environment->name(), -1, -1,  p);
+        wxTreeItemId envId = treeCtrl->AppendItem(projectsId, project->name(), -1, -1, p);
+
+        for (auto &projectApp : project->apps()) {
+
+            TreeClientPtr<ProjectApp> *p2 = new TreeClientPtr<ProjectApp>(projectApp.get());
+
+            Application *app = m_model.m_environments.findApplication(projectApp->applicationId());
+
+            if (app) {
+
+                ApplicationInstallation *applicationInstallation = app->findInstallation(projectApp->defaultInstallationId());
+
+                if (applicationInstallation) {
+
+                    wxTreeItemId projAppId = treeCtrl->AppendItem(envId, app->name() + " / " + applicationInstallation->name(), -1, -1, p2);
+
+                }
+            }
+        }
     }
 
     return treeCtrl;
 
 }
 
-wxPanel * createPanel(wxWindow * parent) {
+wxPanel *createPanel(wxWindow *parent) {
 
-    wxPanel * p = new wxPanel(parent, wxID_ANY);
+    wxPanel *p = new wxPanel(parent, wxID_ANY);
 
     return p;
 }
@@ -68,15 +86,16 @@ EditFrame::EditFrame(gg::envsel::Model &model, const wxString &title, const wxPo
     m_panelSizer->Add(m_splitter, 1, wxEXPAND, 0);
 
 
-    wxPanel * leftPanel = new wxPanel(m_splitter, wxID_ANY);
-    wxSizer * leftPanelSizer = new wxBoxSizer(wxVERTICAL);
-    wxTreeCtrl * treeCtrl = createTree(leftPanel, m_model);
+    wxPanel *leftPanel = new wxPanel(m_splitter, wxID_ANY);
+    wxSizer *leftPanelSizer = new wxBoxSizer(wxVERTICAL);
+    wxTreeCtrl *treeCtrl = createTree(leftPanel, m_model);
+    treeCtrl->ExpandAll();
     leftPanelSizer->Add(treeCtrl, 1, wxEXPAND, 0);
     leftPanel->SetSizer(leftPanelSizer);
 
-    wxPanel * rightPanel = new wxPanel(m_splitter, wxID_ANY);
-    wxSizer * rightPanelSizer = new wxBoxSizer(wxVERTICAL);
-    wxTextCtrl * text = new wxTextCtrl(rightPanel, wxID_ANY);
+    wxPanel *rightPanel = new wxPanel(m_splitter, wxID_ANY);
+    wxSizer *rightPanelSizer = new wxBoxSizer(wxVERTICAL);
+    wxTextCtrl *text = new wxTextCtrl(rightPanel, wxID_ANY);
     rightPanelSizer->Add(text, 1, wxEXPAND, 0);
     rightPanel->SetSizer(rightPanelSizer);
 

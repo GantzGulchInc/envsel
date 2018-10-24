@@ -19,7 +19,7 @@ static const char *TAG = "View";
 // SelectionTab
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SelectionTab::SelectionTab(Model &model, wxWindow *parent, wxWindowID winId, const wxString &name, Environment &currentEnvironment) :
+SelectionTab::SelectionTab(Model &model, wxWindow *parent, wxWindowID winId, const wxString &name, Project &currentEnvironment) :
         wxPanel(parent, winId, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxNO_BORDER, name), //
         m_args{Arguments::instance()}, //
         m_model(model), //
@@ -84,7 +84,7 @@ SelectionTab::~SelectionTab() {
 }
 
 
-wxComboBox *SelectionTab::createComboBox(wxWindow *parent, EnvironmentApp *envApp, const ApplicationInstallationList &installedApps) {
+wxComboBox *SelectionTab::createComboBox(wxWindow *parent, ProjectApp *envApp, const ApplicationInstallationList &installedApps) {
 
 
     const std::string &selectedId{envApp->defaultInstallationId()};
@@ -133,7 +133,7 @@ void SelectionTab::onChange(wxCommandEvent &event) {
 
     CLOG(TRACE, TAG) << "    Sel: " << cb->GetValue();
 
-    EnvironmentApp *envApp{reinterpret_cast<EnvironmentApp *>(cb->GetClientData())};
+    ProjectApp *envApp{reinterpret_cast<ProjectApp *>(cb->GetClientData())};
 
     CLOG(TRACE, TAG) << "    EnvApp 1: " << *envApp;
 
