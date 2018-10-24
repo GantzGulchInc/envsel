@@ -10,42 +10,149 @@
 namespace gg {
 namespace envsel {
 
-static wxTreeCtrl *createTree(wxWindow *parent, gg::envsel::Model &m_model) {
+static const char *TAG = "Edit";
 
-    wxTreeCtrl *treeCtrl = new wxTreeCtrl(parent, wxID_ANY);
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TreeClientPtr
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    wxTreeItemId rootId = treeCtrl->AddRoot("Root");
+TreeClientPtr::TreeClientPtr(TreeClientType type, void *item, RighClickHandler handler)
+        : wxTreeItemData(), m_type{type}, m_item{item}, m_handler{ handler } {
 
-    wxTreeItemId appsId = treeCtrl->AppendItem(rootId, "Applications");
+}
 
-    for (auto &app : m_model.m_environments.applications()) {
+TreeClientPtr::~TreeClientPtr() {
 
-        TreeClientPtr<Application> *p = new TreeClientPtr<Application>{app.get()};
+}
 
-        wxTreeItemId appId = treeCtrl->AppendItem(appsId, app->name(), -1, -1, p);
+TreeClientType TreeClientPtr::type() {
+    return m_type;
+}
+
+void *TreeClientPtr::get() {
+    return m_item;
+}
+
+void TreeClientPtr::dispatch(wxTreeEvent &event) {
+
+    m_handler(event);
+
+}
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EditFrame
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+wxBEGIN_EVENT_TABLE(EditFrame, wxFrame)
+
+                EVT_MENU(ID_APPLICATION_NEW, EditFrame::onApplicationNew)
+                EVT_MENU(ID_APPLICATION_DELETE, EditFrame::onApplicationDelete)
+                EVT_TREE_ITEM_RIGHT_CLICK(ID_APP_TREE, EditFrame::onTreeMenu)
+                EVT_MENU(ID_APPLICATION_INSTALLATION_NEW, EditFrame::onApplicationInstallationNew)
+                EVT_MENU(ID_APPLICATION_INSTALLATION_DELETE, EditFrame::onApplicationInstallationDelete)
+
+
+                //EVT_TREE_ITEM_MENU(ID_APP_TREE, EditFrame::onTreeMenu)
+
+wxEND_EVENT_TABLE()
+
+void EditFrame::onApplicationNew(wxCommandEvent &event) {
+    CLOG(TRACE, TAG) << "Called.";
+}
+
+void EditFrame::onApplicationDelete(wxCommandEvent &event) {
+    CLOG(TRACE, TAG) << "Called.";
+}
+
+void EditFrame::onApplicationInstallationNew(wxCommandEvent &event) {
+    CLOG(TRACE, TAG) << "Called.";
+}
+
+void EditFrame::onApplicationInstallationDelete(wxCommandEvent &event) {
+    CLOG(TRACE, TAG) << "Called.";
+}
+
+wxTreeItemId EditFrame::createApplicationsNode(wxTreeCtrl *treeCtrl, wxTreeItemId rootId) {
+
+    ApplicationList &appList = m_model.m_environments.applications();
+
+    TreeClientPtr *appListPtr = new TreeClientPtr(TreeClientType::APPLICATIONS, &appList, std::bind(&EditFrame::applicationsPopup, this, std::placeholders::_1) );
+
+    wxTreeItemId appListItemId = treeCtrl->AppendItem(rootId, "Applications", -1, -1, appListPtr);
+
+    for (auto &app : appList) {
+
+        TreeClientPtr *appPtr = new TreeClientPtr{TreeClientType::APPLICATION, app.get(), std::bind(&EditFrame::applicationPopup, this, std::placeholders::_1)};
+
+        wxTreeItemId appItemId = treeCtrl->AppendItem(appListItemId, app->name(), -1, -1, appPtr);
+
+        for (auto &installation : app->installations()) {
+
+            TreeClientPtr *installationPtr = new TreeClientPtr{TreeClientType::APPLICATION_INSTALLATION, installation.get(), std::bind(&EditFrame::applicationInstallationPopup, this, std::placeholders::_1)};
+
+            treeCtrl->AppendItem(appItemId, installation->name(), -1, -1, installationPtr);
+
+
+        }
 
     }
 
-    wxTreeItemId scriptsId = treeCtrl->AppendItem(rootId, "Scripts");
+    treeCtrl->Expand(appListItemId);
 
-    for (auto &script : m_model.m_environments.scripts()) {
+    return appListItemId;
 
-        TreeClientPtr<Script> *p = new TreeClientPtr<Script>{script.get()};
+}
 
-        wxTreeItemId scriptId = treeCtrl->AppendItem(scriptsId, script->name(), -1, -1, p);
+
+wxTreeItemId EditFrame::createScriptsNode(wxTreeCtrl *treeCtrl, wxTreeItemId rootId) {
+
+    ScriptList &scriptList = m_model.m_environments.scripts();
+
+    TreeClientPtr *scriptsPtr = new TreeClientPtr(TreeClientType::SCRIPTS, &scriptList, std::bind(&EditFrame::scriptsPopup, this, std::placeholders::_1));
+
+    wxTreeItemId scriptsId = treeCtrl->AppendItem(rootId, "Scripts", -1, -1, scriptsPtr);
+
+    for (auto &script : scriptList) {
+
+        TreeClientPtr *scriptPtr = new TreeClientPtr{TreeClientType::SCRIPT, script.get(), std::bind(&EditFrame::scriptPopup, this, std::placeholders::_1)};
+
+        wxTreeItemId scriptId = treeCtrl->AppendItem(scriptsId, script->name(), -1, -1, scriptPtr);
+
+
+        for (auto &command : script->commands()) {
+
+            TreeClientPtr *commandPtr = new TreeClientPtr{TreeClientType::SCRIPT_COMMAND, command.get(), std::bind(&EditFrame::scriptCommandPopup, this, std::placeholders::_1)};
+
+            treeCtrl->AppendItem(scriptId, command->operation(), -1, -1, commandPtr);
+
+
+        }
+
     }
 
-    wxTreeItemId projectsId = treeCtrl->AppendItem(rootId, "Projects");
+    treeCtrl->Expand(scriptsId);
 
-    for (auto &project : m_model.m_environments.projects()) {
+    return scriptsId;
+}
 
-        TreeClientPtr<Project> *p = new TreeClientPtr<Project>{project.get()};
+wxTreeItemId EditFrame::createProjectsNode(wxTreeCtrl *treeCtrl, wxTreeItemId rootId) {
 
-        wxTreeItemId envId = treeCtrl->AppendItem(projectsId, project->name(), -1, -1, p);
+    ProjectList &projectList = m_model.m_environments.projects();
+
+    TreeClientPtr *projectsPtr = new TreeClientPtr(TreeClientType::PROJECTS, &projectList, std::bind(&EditFrame::projectsPopup, this, std::placeholders::_1));
+
+    wxTreeItemId projectsId = treeCtrl->AppendItem(rootId, "Projects", -1, -1, projectsPtr);
+
+    for (auto &project : projectList) {
+
+        TreeClientPtr *projectPtr = new TreeClientPtr{TreeClientType::PROJECT, project.get(), std::bind(&EditFrame::projectPopup, this, std::placeholders::_1)};
+
+        wxTreeItemId projectId = treeCtrl->AppendItem(projectsId, project->name(), -1, -1, projectPtr);
 
         for (auto &projectApp : project->apps()) {
 
-            TreeClientPtr<ProjectApp> *p2 = new TreeClientPtr<ProjectApp>(projectApp.get());
+            TreeClientPtr *projectAppPtr = new TreeClientPtr(TreeClientType::PROJECT_APP, projectApp.get(), std::bind(&EditFrame::projectAppPopup, this, std::placeholders::_1));
 
             Application *app = m_model.m_environments.findApplication(projectApp->applicationId());
 
@@ -55,12 +162,37 @@ static wxTreeCtrl *createTree(wxWindow *parent, gg::envsel::Model &m_model) {
 
                 if (applicationInstallation) {
 
-                    wxTreeItemId projAppId = treeCtrl->AppendItem(envId, app->name() + " / " + applicationInstallation->name(), -1, -1, p2);
+                    treeCtrl->AppendItem(projectId, app->name() + " / " + applicationInstallation->name(), -1, -1, projectAppPtr);
 
                 }
             }
         }
     }
+
+    treeCtrl->Expand(projectsId);
+
+
+    return projectsId;
+}
+
+
+wxTreeCtrl *EditFrame::createTree(wxWindow *parent) {
+
+    wxTreeCtrl *treeCtrl = new wxTreeCtrl(parent, ID_APP_TREE);
+
+    TreeClientPtr *rootPtr = new TreeClientPtr(TreeClientType::ROOT, &m_model.m_environments, std::bind(&EditFrame::rootPopup, this, std::placeholders::_1));
+
+    wxTreeItemId rootId = treeCtrl->AddRoot("Root", -1, -1, rootPtr);
+
+    createApplicationsNode(treeCtrl, rootId);
+
+    createScriptsNode(treeCtrl, rootId);
+
+    createProjectsNode(treeCtrl, rootId);
+
+    treeCtrl->Expand(rootId);
+
+    treeCtrl->Bind(wxEVT_TREE_ITEM_RIGHT_CLICK, &EditFrame::onTreeMenu, this);
 
     return treeCtrl;
 
@@ -88,9 +220,10 @@ EditFrame::EditFrame(gg::envsel::Model &model, const wxString &title, const wxPo
 
     wxPanel *leftPanel = new wxPanel(m_splitter, wxID_ANY);
     wxSizer *leftPanelSizer = new wxBoxSizer(wxVERTICAL);
-    wxTreeCtrl *treeCtrl = createTree(leftPanel, m_model);
-    treeCtrl->ExpandAll();
-    leftPanelSizer->Add(treeCtrl, 1, wxEXPAND, 0);
+
+    m_tree = createTree(leftPanel);
+
+    leftPanelSizer->Add(m_tree, 1, wxEXPAND, 0);
     leftPanel->SetSizer(leftPanelSizer);
 
     wxPanel *rightPanel = new wxPanel(m_splitter, wxID_ANY);
@@ -102,13 +235,140 @@ EditFrame::EditFrame(gg::envsel::Model &model, const wxString &title, const wxPo
     m_splitter->SplitVertically(leftPanel, rightPanel);
 
     this->SetSizer(m_panelSizer);
-    m_panelSizer->SetSizeHints(this);
+    //m_panelSizer->SetSizeHints(this);
 
     this->SetSize(600, 400);
 }
 
 EditFrame::~EditFrame() {
 
+}
+
+void EditFrame::onTreeMenu(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << "Id: " << event.GetId();
+
+    if (!event.GetItem().IsOk()) {
+        CLOG(TRACE, TAG) << "Item is not OK.";
+        return;
+    } else {
+        CLOG(TRACE, TAG) << "Item is OK.";
+    }
+
+    TreeClientPtr *clientPtr = reinterpret_cast<TreeClientPtr *>( m_tree->GetItemData(event.GetItem()));
+
+    clientPtr->dispatch(event);
+
+}
+
+void EditFrame::rootPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+    // Do nothing.
+
+}
+
+void EditFrame::applicationsPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+
+    wxMenu menu{};
+
+    menu.Append(ID_APPLICATION_NEW, "New Application", "New Application");
+
+    PopupMenu(&menu);
+}
+
+void EditFrame::applicationPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+
+    wxMenu menu{};
+
+    menu.Append(ID_APPLICATION_INSTALLATION_NEW, "New Installation", "New Installation");
+    menu.Append(ID_APPLICATION_DELETE, "Delete Application", "Delete Application");
+
+    PopupMenu(&menu);
+}
+
+void EditFrame::applicationInstallationPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+
+    wxMenu menu{};
+
+    menu.Append(ID_APPLICATION_INSTALLATION_DELETE, "Delete Installation", "Delete Installation");
+
+    PopupMenu(&menu);
+
+}
+
+void EditFrame::scriptsPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+
+    wxMenu menu{};
+
+    menu.Append(ID_SCRIPT_NEW, "New Script", "New Script");
+
+    PopupMenu(&menu);
+}
+
+void EditFrame::scriptPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+
+    wxMenu menu{};
+
+    menu.Append(ID_SCRIPT_COMMAND_NEW, "New Command", "New Command");
+    menu.Append(ID_SCRIPT_DELETE, "Delete Script", "Delete Script");
+
+    PopupMenu(&menu);
+}
+
+void EditFrame::scriptCommandPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+
+    wxMenu menu{};
+
+    menu.Append(ID_SCRIPT_COMMAND_DELETE, "Delete Command", "Delete Command");
+
+    PopupMenu(&menu);
+}
+
+void EditFrame::projectsPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+
+    wxMenu menu{};
+
+    menu.Append(ID_PROJECT_NEW, "New Project", "New Project");
+
+    PopupMenu(&menu);
+}
+
+void EditFrame::projectPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+
+    wxMenu menu{};
+
+    menu.Append(ID_PROJECT_APP_NEW, "New Project App", "New Project App");
+    menu.Append(ID_PROJECT_DELETE, "Delete Project", "Delete Project");
+
+    PopupMenu(&menu);
+}
+
+void EditFrame::projectAppPopup(wxTreeEvent &event) {
+
+    CLOG(TRACE, TAG) << event.GetId();
+
+    wxMenu menu{};
+
+    menu.Append(ID_PROJECT_APP_DELETE, "Delete Project App", "Delete Project App");
+
+    PopupMenu(&menu);
 }
 
 

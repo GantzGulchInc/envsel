@@ -331,7 +331,7 @@ const std::string &Script::ifSet() const {
     return m_ifSet;
 }
 
-const ScriptCommandList &Script::commands() const {
+ScriptCommandList &Script::commands() {
     return m_commands;
 }
 

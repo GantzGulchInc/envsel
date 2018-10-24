@@ -33,7 +33,7 @@ static void initLogging() {
     defaultConf.setToDefault();
 
     if( args.loggingEnabled() ) {
-        defaultConf.setGlobally(el::ConfigurationType::ToStandardOutput, "false");
+        //defaultConf.setGlobally(el::ConfigurationType::ToStandardOutput, "false");
         defaultConf.setGlobally(el::ConfigurationType::Format, "%datetime [%levshort] %fbase:%line %func: %msg");
         defaultConf.setGlobally(el::ConfigurationType::Filename, "/tmp/envsel.log");
     }else{
@@ -45,6 +45,7 @@ static void initLogging() {
     el::Loggers::getLogger("Domain");
     el::Loggers::getLogger("App");
     el::Loggers::getLogger("View");
+    el::Loggers::getLogger("Edit");
     el::Loggers::getLogger("IO");
 
 }

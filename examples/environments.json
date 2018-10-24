@@ -1,521 +1,551 @@
 {
-	"applications": [
-		{
-			"id": "jdk",
-			"name": "Java Development Kit",
-			"installations": [
-				{
-					"id": "jdk-11",
-					"name": "JDK 11.28",
-					"variables": [
-						{
-							"name": "JAVA_HOME",
-							"value": "/workspace/apps/jdk/11-28"
-						}
-					]
-				},
-				{
-					"id": "jdk-1.8",
-					"name": "JDK 1.8 - 161",
-					"variables": [
-						{
-							"name": "JAVA_HOME",
-							"value": "/workspace/apps/jdk/1.8.0_161"
-						}
-					]
-				},
-				{
-					"id": "jdk-1.7",
-					"name": "JDK 1.7 - 71",
-					"variables": [
-						{
-							"name": "JAVA_HOME",
-							"value": "/workspace/apps/jdk/1.7.0_71"
-						}
-					]
-				},
-				{
-					"id": "jdk-1.6",
-					"name": "JDK 1.6 - 32",
-					"variables": [
-						{
-							"name": "JAVA_HOME",
-							"value": "/workspace/apps/jdk/1.6.0_32"
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "maven",
-			"name": "Maven",
-			"installations": [
-				{
-					"id": "mvn-3.5",
-					"name": "Maven 3.5.4",
-					"variables": [
-						{
-							"name": "MAVEN_HOME",
-							"value": "/workspace/apps/apache-maven/3.5.4"
-						},
-						{
-							"name": "MAVEN_OPTS",
-							"value": "-Xmx2048M"
-						}
-					]
-				},
-				{
-					"id": "mvn-3.3",
-					"name": "Maven 3.3.9",
-					"variables": [
-						{
-							"name": "MAVEN_HOME",
-							"value": "/workspace/apps/apache-maven/3.3.9"
-						},
-						{
-							"name": "MAVEN_OPTS",
-							"value": "-Xmx2048M"
-						}
-					]
-				},
-				{
-					"id": "mvn-3.2",
-					"name": "Maven 3.2.5",
-					"variables": [
-						{
-							"name": "MAVEN_HOME",
-							"value": "/workspace/apps/apache-maven/3.2.5"
-						},
-						{
-							"name": "MAVEN_OPTS",
-							"value": "-Xmx2048M"
-						}
-					]
-				},
-				{
-					"id": "mvn-3.0",
-					"name": "Maven 3.0.4",
-					"variables": [
-						{
-							"name": "MAVEN_HOME",
-							"value": "/workspace/apps/apache-maven/3.0.4"
-						},
-						{
-							"name": "MAVEN_OPTS",
-							"value": "-Xmx2048M"
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "ant",
-			"name": "ANT",
-			"installations": [
-				{
-					"id": "ant-1.9",
-					"name": "ANT 1.9.7",
-					"variables": [
-						{
-							"name": "ANT_HOME",
-							"value": "/workspace/apps/apache-ant/1.9.7"
-						}
-					]
-				},
-				{
-					"id": "ant-1.8",
-					"name": "ANT 1.8.4",
-					"variables": [
-						{
-							"name": "ANT_HOME",
-							"value": "/workspace/apps/apache-ant/1.8.4"
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "eclipse",
-			"name": "Eclipse",
-			"installations": [
-				{
-					"id": "eclpise-cpp-2018-09",
-					"name": "Eclipse CPP 2018-09",
-					"variables": [
-						{
-							"name": "ECLIPSE_HOME",
-							"value": "/workspace/apps/eclipse/cpp-2018-09/eclipse"
-						}
-					]
-				},
-				{
-					"id": "eclpise-cpp-oygen",
-					"name": "Eclipse CPP Oxygen",
-					"variables": [
-						{
-							"name": "ECLIPSE_HOME",
-							"value": "/workspace/apps/eclipse-cpp-oxygen-R"
-						}
-					]
-				},
-				{
-					"id": "eclpise-cpp-luna",
-					"name": "Eclipse CPP Luna",
-					"variables": [
-						{
-							"name": "ECLIPSE_HOME",
-							"value": "/workspace/apps/eclipse-cpp-luna-SR1"
-						}
-					]
-				},
-				{
-					"id": "eclpise-cpp-kepler",
-					"name": "Eclipse CPP Kepler",
-					"variables": [
-						{
-							"name": "ECLIPSE_HOME",
-							"value": "/workspace/apps/eclipse-cpp-kepler-SR1"
-						}
-					]
-				},
-				{
-					"id": "eclpise-jee-2018-09",
-					"name": "Eclipse JEE 2018-09",
-					"variables": [
-						{
-							"name": "ECLIPSE_HOME",
-							"value": "/workspace/apps/eclipse/jee-2018-09/eclipse"
-						}
-					]
-				},
-				{
-					"id": "eclipse-neon",
-					"name": "Eclipse JEE Neon",
-					"variables": [
-						{
-							"name": "ECLIPSE_HOME",
-							"value": "/workspace/apps/eclipse-neon"
-						}
-					]
-				},
-				{
-					"id": "eclpise-luna",
-					"name": "Eclipse JEE Luna",
-					"variables": [
-						{
-							"name": "ECLIPSE_HOME",
-							"value": "/workspace/apps/eclipse-luna"
-						}
-					]
-				},
-				{
-					"id": "eclpise-kepler",
-					"name": "Eclipse JEE Kepler",
-					"variables": [
-						{
-							"name": "ECLIPSE_HOME",
-							"value": "/workspace/apps/eclipse-kepler-SR1"
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "webstorm",
-			"name": "Webstorm",
-			"installations": [
-				{
-					"id": "webstorm-current",
-					"name": "Webstorm Current",
-					"variables": [
-						{
-							"name": "WEBSTORM_HOME",
-							"value": "/workspace/apps/WebStorm/2017.3"
-						}
-					]
-				},
-				{
-					"id": "webstorm-2016",
-					"name": "Webstorm 2016",
-					"variables": [
-						{
-							"name": "WEBSTORM_HOME",
-							"value": "/workspace/apps/WebStorm/162.1121.31"
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "nodejs",
-			"name": "Node.JS",
-			"installations": [
-				{
-					"id": "node-8.9",
-					"name": "Node 8.9.3",
-					"variables": [
-						{
-							"name": "NODEJS_HOME",
-							"value": "/workspace/apps/node/8.9.3"
-						}
-					]
-				},
-				{
-					"id": "node-6.10",
-					"name": "Node 6.10.1",
-					"variables": [
-						{
-							"name": "NODEJS_HOME",
-							"value": "/workspace/apps/node/6.10.1"
-						}
-					]
-				},
-				{
-					"id": "node-4.5",
-					"name": "Node 4.5",
-					"variables": [
-						{
-							"name": "NODEJS_HOME",
-							"value": "/workspace/apps/node/4.5.0"
-						}
-					]
-				},
-				{
-					"id": "node-4.4",
-					"name": "Node 4.4.7",
-					"variables": [
-						{
-							"name": "NODEJS_HOME",
-							"value": "/workspace/apps/node/4.4.7"
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "clion",
-			"name": "CLion",
-			"installations": [
-				{
-					"id": "clion-2018.2",
-					"name": "CLion 2018.2",
-					"variables": [
-						{
-							"name": "CLION_HOME",
-							"value": "/workspace/apps/clion/clion-2018.2.4"
-						}
-					]
-				}
-			]
-		}
-	],
-	"scripts": [
-		{
-			"id": "script-emacs",
-			"name": "Emacs",
-			"ifSet": "",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export EDITOR=\"emacs -nw\""
-					]
-				}
-			]
-		},
-		{
-			"id": "script-java",
-			"name": "Java",
-			"ifSet": "JAVA_HOME",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export JAVA_HOME=#{JAVA_HOME}",
-						"export JRE_HOME=#{JAVA_HOME}",
-						"export PATH=#{JAVA_HOME}/bin:${PATH}"
-					]
-				}
-			]
-		},
-		{
-			"id": "script-maven",
-			"name": "Maven",
-			"ifSet": "MAVEN_HOME",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export MAVEN_HOME=#{MAVEN_HOME}",
-						"export PATH=#{MAVEN_HOME}/bin:${PATH}"
-					]
-				}
-			]
-		},
-		{
-			"id": "script-maven-opts",
-			"name": "Maven Options",
-			"ifSet": "MAVEN_OPTS",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export MAVEN_OPTS=#{MAVEN_OPTS}"
-					]
-				}
-			]
-		},
-		{
-			"id": "script-ant",
-			"name": "Apache ANT",
-			"ifSet": "ANT_HOME",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export ANT_HOME=#{ANT_HOME}",
-						"export PATH=#{ANT_HOME}/bin:${PATH}"
-					]
-				}
-			]
-		},
-		{
-			"id": "script-eclipse",
-			"name": "Eclipse",
-			"ifSet": "ECLIPSE_HOME",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export ECLIPSE_HOME=#{ECLIPSE_HOME}",
-						"export PATH=#{ECLIPSE_HOME}:${PATH}"
-					]
-				}
-			]
-		},
-		{
-			"id": "script-nodejs",
-			"name": "NodeJS",
-			"ifSet": "NODEJS_HOME",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export NODEJS_HOME=#{NODEJS_HOME}",
-						"export PATH=#{NODEJS_HOME}/bin:${PATH}"
-					]
-				}
-			]
-		},
-		{
-			"id": "script-westorm",
-			"name": "WebStorm",
-			"ifSet": "WEBSTORM_HOME",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export WEBSTORM_HOME=#{WEBSTORM_HOME}",
-						"export PATH=#{WEBSTORM_HOME}/bin:${PATH}"
-					]
-				}
-			]
-		},
-		{
-			"id": "script-clion",
-			"name": "CLion",
-			"ifSet": "CLION_HOME",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export CLION_HOME=#{CLION_HOME}",
-						"export PATH=#{CLION_HOME}/bin:${PATH}"
-					]
-				}
-			]
-		}
-	],
-	"projects": [
-		{
-			"id": "device-manager",
-			"name": "Device Manager",
-			"applications": [
-				{
-					"applicationId": "jdk",
-					"defaultInstallationId": "jdk-1.8"
-				},
-				{
-					"applicationId": "maven",
-					"defaultInstallationId": "mvn-3.3"
-				},
-				{
-					"applicationId": "eclipse",
-					"defaultInstallationId": "eclipse-neon"
-				}
-			]
-		},
-		{
-			"id": "blitz",
-			"name": "Blitz",
-			"applications": [
-				{
-					"applicationId": "jdk",
-					"defaultInstallationId": "jdk-1.8"
-				},
-				{
-					"applicationId": "maven",
-					"defaultInstallationId": "mvn-3.3"
-				},
-				{
-					"applicationId": "eclipse",
-					"defaultInstallationId": "eclipse-neon"
-				},
-				{
-					"applicationId": "webstorm",
-					"defaultInstallationId": "webstorm-current"
-				},
-				{
-					"applicationId": "nodejs",
-					"defaultInstallationId": "node-4.4"
-				}
-			]
-		},
-		{
-			"id": "blitz2",
-			"name": "Blitz2",
-			"applications": [
-				{
-					"applicationId": "jdk",
-					"defaultInstallationId": "jdk-11"
-				},
-				{
-					"applicationId": "maven",
-					"defaultInstallationId": "mvn-3.5"
-				},
-				{
-					"applicationId": "eclipse",
-					"defaultInstallationId": "eclpise-jee-2018-09"
-				},
-				{
-					"applicationId": "webstorm",
-					"defaultInstallationId": "webstorm-current"
-				},
-				{
-					"applicationId": "nodejs",
-					"defaultInstallationId": "node-8.9"
-				}
-			]
-		},
-		{
-			"id": "envsel",
-			"name": "EnvSel",
-			"applications": [
-				{
-					"applicationId": "clion",
-					"defaultInstallationId": "clion-2018.2"
-				}
-			]
-		}
-	]
+  "applications": [
+    {
+      "id": "jdk",
+      "name": "Java Development Kit",
+      "installations": [
+        {
+          "id": "jdk-11",
+          "name": "JDK 11 (Latest)",
+          "variables": [
+            {
+              "name": "JAVA_HOME",
+              "value": "/opt/jdk/11.0.1"
+            }
+          ]
+        },
+        {
+          "id": "jdk-11.0.1",
+          "name": "JDK 11.0.1",
+          "variables": [
+            {
+              "name": "JAVA_HOME",
+              "value": "/opt/jdk/11.0.1"
+            }
+          ]
+        },
+        {
+          "id": "jdk-1.8",
+          "name": "JDK 1.8 (Latest)",
+          "variables": [
+            {
+              "name": "JAVA_HOME",
+              "value": "/opt/jdk/1.8.0_191"
+            }
+          ]
+        },
+        {
+          "id": "jdk-1.8.0_191",
+          "name": "JDK 1.8.0_191",
+          "variables": [
+            {
+              "name": "JAVA_HOME",
+              "value": "/opt/jdk/1.8.0_191"
+            }
+          ]
+        },
+        {
+          "id": "jdk-1.8.0_161",
+          "name": "JDK 1.8.0_161",
+          "variables": [
+            {
+              "name": "JAVA_HOME",
+              "value": "/opt/jdk/1.8.0_161"
+            }
+          ]
+        },
+        {
+          "id": "jdk-1.8.0_152",
+          "name": "JDK 1.8.0_152",
+          "variables": [
+            {
+              "name": "JAVA_HOME",
+              "value": "/opt/jdk/1.8.0_152"
+            }
+          ]
+        },
+        {
+          "id": "jdk-1.7",
+          "name": "JDK 1.7.0_71",
+          "variables": [
+            {
+              "name": "JAVA_HOME",
+              "value": "/workspace/apps/jdk/1.7.0_71"
+            }
+          ]
+        },
+        {
+          "id": "jdk-1.6",
+          "name": "JDK 1.6.0_32",
+          "variables": [
+            {
+              "name": "JAVA_HOME",
+              "value": "/workspace/apps/jdk/1.6.0_32"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "maven",
+      "name": "Maven",
+      "installations": [
+        {
+          "id": "mvn-3.5",
+          "name": "Maven 3.5.4",
+          "variables": [
+            {
+              "name": "MAVEN_HOME",
+              "value": "/workspace/apps/apache-maven/3.5.4"
+            },
+            {
+              "name": "MAVEN_OPTS",
+              "value": "-Xmx2048M"
+            }
+          ]
+        },
+        {
+          "id": "mvn-3.3",
+          "name": "Maven 3.3.9",
+          "variables": [
+            {
+              "name": "MAVEN_HOME",
+              "value": "/workspace/apps/apache-maven/3.3.9"
+            },
+            {
+              "name": "MAVEN_OPTS",
+              "value": "-Xmx2048M"
+            }
+          ]
+        },
+        {
+          "id": "mvn-3.2",
+          "name": "Maven 3.2.5",
+          "variables": [
+            {
+              "name": "MAVEN_HOME",
+              "value": "/workspace/apps/apache-maven/3.2.5"
+            },
+            {
+              "name": "MAVEN_OPTS",
+              "value": "-Xmx2048M"
+            }
+          ]
+        },
+        {
+          "id": "mvn-3.0",
+          "name": "Maven 3.0.4",
+          "variables": [
+            {
+              "name": "MAVEN_HOME",
+              "value": "/workspace/apps/apache-maven/3.0.4"
+            },
+            {
+              "name": "MAVEN_OPTS",
+              "value": "-Xmx2048M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ant",
+      "name": "ANT",
+      "installations": [
+        {
+          "id": "ant-1.9",
+          "name": "ANT 1.9.7",
+          "variables": [
+            {
+              "name": "ANT_HOME",
+              "value": "/workspace/apps/apache-ant/1.9.7"
+            }
+          ]
+        },
+        {
+          "id": "ant-1.8",
+          "name": "ANT 1.8.4",
+          "variables": [
+            {
+              "name": "ANT_HOME",
+              "value": "/workspace/apps/apache-ant/1.8.4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eclipse",
+      "name": "Eclipse",
+      "installations": [
+        {
+          "id": "eclpise-cpp-2018-09",
+          "name": "Eclipse CPP 2018-09",
+          "variables": [
+            {
+              "name": "ECLIPSE_HOME",
+              "value": "/workspace/apps/eclipse/cpp-2018-09/eclipse"
+            }
+          ]
+        },
+        {
+          "id": "eclpise-cpp-oygen",
+          "name": "Eclipse CPP Oxygen",
+          "variables": [
+            {
+              "name": "ECLIPSE_HOME",
+              "value": "/workspace/apps/eclipse-cpp-oxygen-R"
+            }
+          ]
+        },
+        {
+          "id": "eclpise-cpp-luna",
+          "name": "Eclipse CPP Luna",
+          "variables": [
+            {
+              "name": "ECLIPSE_HOME",
+              "value": "/workspace/apps/eclipse-cpp-luna-SR1"
+            }
+          ]
+        },
+        {
+          "id": "eclpise-cpp-kepler",
+          "name": "Eclipse CPP Kepler",
+          "variables": [
+            {
+              "name": "ECLIPSE_HOME",
+              "value": "/workspace/apps/eclipse-cpp-kepler-SR1"
+            }
+          ]
+        },
+        {
+          "id": "eclpise-jee-2018-09",
+          "name": "Eclipse JEE 2018-09",
+          "variables": [
+            {
+              "name": "ECLIPSE_HOME",
+              "value": "/workspace/apps/eclipse/jee-2018-09/eclipse"
+            }
+          ]
+        },
+        {
+          "id": "eclipse-neon",
+          "name": "Eclipse JEE Neon",
+          "variables": [
+            {
+              "name": "ECLIPSE_HOME",
+              "value": "/workspace/apps/eclipse-neon"
+            }
+          ]
+        },
+        {
+          "id": "eclpise-luna",
+          "name": "Eclipse JEE Luna",
+          "variables": [
+            {
+              "name": "ECLIPSE_HOME",
+              "value": "/workspace/apps/eclipse-luna"
+            }
+          ]
+        },
+        {
+          "id": "eclpise-kepler",
+          "name": "Eclipse JEE Kepler",
+          "variables": [
+            {
+              "name": "ECLIPSE_HOME",
+              "value": "/workspace/apps/eclipse-kepler-SR1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "webstorm",
+      "name": "Webstorm",
+      "installations": [
+        {
+          "id": "webstorm-current",
+          "name": "Webstorm Current",
+          "variables": [
+            {
+              "name": "WEBSTORM_HOME",
+              "value": "/workspace/apps/WebStorm/2017.3"
+            }
+          ]
+        },
+        {
+          "id": "webstorm-2016",
+          "name": "Webstorm 2016",
+          "variables": [
+            {
+              "name": "WEBSTORM_HOME",
+              "value": "/workspace/apps/WebStorm/162.1121.31"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nodejs",
+      "name": "Node.JS",
+      "installations": [
+        {
+          "id": "node-8.9",
+          "name": "Node 8.9.3",
+          "variables": [
+            {
+              "name": "NODEJS_HOME",
+              "value": "/workspace/apps/node/8.9.3"
+            }
+          ]
+        },
+        {
+          "id": "node-6.10",
+          "name": "Node 6.10.1",
+          "variables": [
+            {
+              "name": "NODEJS_HOME",
+              "value": "/workspace/apps/node/6.10.1"
+            }
+          ]
+        },
+        {
+          "id": "node-4.5",
+          "name": "Node 4.5",
+          "variables": [
+            {
+              "name": "NODEJS_HOME",
+              "value": "/workspace/apps/node/4.5.0"
+            }
+          ]
+        },
+        {
+          "id": "node-4.4",
+          "name": "Node 4.4.7",
+          "variables": [
+            {
+              "name": "NODEJS_HOME",
+              "value": "/workspace/apps/node/4.4.7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clion",
+      "name": "CLion",
+      "installations": [
+        {
+          "id": "clion-2018.2",
+          "name": "CLion 2018.2",
+          "variables": [
+            {
+              "name": "CLION_HOME",
+              "value": "/workspace/apps/clion/clion-2018.2.4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scripts": [
+    {
+      "id": "script-emacs",
+      "name": "Emacs",
+      "ifSet": "",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export EDITOR=\"emacs -nw\""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "script-java",
+      "name": "Java",
+      "ifSet": "JAVA_HOME",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export JAVA_HOME=#{JAVA_HOME}",
+            "export JRE_HOME=#{JAVA_HOME}",
+            "export PATH=#{JAVA_HOME}/bin:${PATH}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "script-maven",
+      "name": "Maven",
+      "ifSet": "MAVEN_HOME",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export MAVEN_HOME=#{MAVEN_HOME}",
+            "export PATH=#{MAVEN_HOME}/bin:${PATH}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "script-maven-opts",
+      "name": "Maven Options",
+      "ifSet": "MAVEN_OPTS",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export MAVEN_OPTS=#{MAVEN_OPTS}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "script-ant",
+      "name": "Apache ANT",
+      "ifSet": "ANT_HOME",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export ANT_HOME=#{ANT_HOME}",
+            "export PATH=#{ANT_HOME}/bin:${PATH}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "script-eclipse",
+      "name": "Eclipse",
+      "ifSet": "ECLIPSE_HOME",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export ECLIPSE_HOME=#{ECLIPSE_HOME}",
+            "export PATH=#{ECLIPSE_HOME}:${PATH}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "script-nodejs",
+      "name": "NodeJS",
+      "ifSet": "NODEJS_HOME",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export NODEJS_HOME=#{NODEJS_HOME}",
+            "export PATH=#{NODEJS_HOME}/bin:${PATH}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "script-westorm",
+      "name": "WebStorm",
+      "ifSet": "WEBSTORM_HOME",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export WEBSTORM_HOME=#{WEBSTORM_HOME}",
+            "export PATH=#{WEBSTORM_HOME}/bin:${PATH}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "script-clion",
+      "name": "CLion",
+      "ifSet": "CLION_HOME",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export CLION_HOME=#{CLION_HOME}",
+            "export PATH=#{CLION_HOME}/bin:${PATH}"
+          ]
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "widget-factory",
+      "name": "Widget Factory",
+      "applications": [
+        {
+          "applicationId": "jdk",
+          "defaultInstallationId": "jdk-1.8"
+        },
+        {
+          "applicationId": "maven",
+          "defaultInstallationId": "mvn-3.3"
+        },
+        {
+          "applicationId": "eclipse",
+          "defaultInstallationId": "eclipse-neon"
+        }
+      ]
+    },
+    {
+      "id": "duster-collator",
+      "name": "Duster Collator",
+      "applications": [
+        {
+          "applicationId": "jdk",
+          "defaultInstallationId": "jdk-1.8"
+        },
+        {
+          "applicationId": "maven",
+          "defaultInstallationId": "mvn-3.3"
+        },
+        {
+          "applicationId": "eclipse",
+          "defaultInstallationId": "eclipse-neon"
+        },
+        {
+          "applicationId": "webstorm",
+          "defaultInstallationId": "webstorm-current"
+        },
+        {
+          "applicationId": "nodejs",
+          "defaultInstallationId": "node-4.4"
+        }
+      ]
+    },
+    {
+      "id": "target-blaster",
+      "name": "Target Blaster",
+      "applications": [
+        {
+          "applicationId": "jdk",
+          "defaultInstallationId": "jdk-11"
+        },
+        {
+          "applicationId": "maven",
+          "defaultInstallationId": "mvn-3.5"
+        },
+        {
+          "applicationId": "eclipse",
+          "defaultInstallationId": "eclpise-jee-2018-09"
+        },
+        {
+          "applicationId": "webstorm",
+          "defaultInstallationId": "webstorm-current"
+        },
+        {
+          "applicationId": "nodejs",
+          "defaultInstallationId": "node-8.9"
+        }
+      ]
+    }
+  ]
 }

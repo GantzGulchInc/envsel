@@ -178,7 +178,7 @@ public:
 
     const std::string &ifSet() const;
 
-    const ScriptCommandList &commands() const;
+    ScriptCommandList &commands();
 
     void execute(const VariableDictionary &variables, std::vector<std::string> &output) const;
 
