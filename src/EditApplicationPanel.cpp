@@ -3,3 +3,21 @@
 //
 
 #include "EditApplicationPanel.h"
+
+namespace gg {
+namespace envsel {
+
+
+
+EditApplicationPanel::EditApplicationPanel(wxWindow * parent) :
+    wxPanel(parent, wxID_ANY) {
+
+}
+
+EditApplicationPanel::~EditApplicationPanel(){
+
+}
+
+
+}
+}

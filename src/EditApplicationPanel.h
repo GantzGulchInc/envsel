@@ -2,13 +2,23 @@
 // Created by gantzm on 10/24/18.
 //
 
-#ifndef ENVSEL_EDITAPPLICATIONPANEL_H
-#define ENVSEL_EDITAPPLICATIONPANEL_H
+#pragma once
 
+#include <wx/wx.h>
 
-class EditApplicationPanel {
+namespace gg {
+namespace envsel {
+
+class EditApplicationPanel : public wxPanel {
+
+public:
+
+    EditApplicationPanel(wxWindow * parent);
+
+    ~EditApplicationPanel();
 
 };
 
+}
+}
 
-#endif //ENVSEL_EDITAPPLICATIONPANEL_H
