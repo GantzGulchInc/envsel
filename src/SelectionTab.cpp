@@ -121,31 +121,30 @@ void SelectionTab::onChange(wxCommandEvent &event) {
 
     CLOG(TRACE, TAG) << "Called.";
 
-    int id = event.GetId();
+    wxWindow *window = FindWindow(event.GetId());
 
-    CLOG(TRACE, TAG) << "    Id: " << id;
+    wxComboBox *cb = reinterpret_cast<wxComboBox *>(window);
 
-    wxWindow *w = FindWindow(event.GetId());
-
-    CLOG(TRACE, TAG) << "   Win: " << w;
-
-    wxComboBox *cb = reinterpret_cast<wxComboBox *>(w);
-
-    CLOG(TRACE, TAG) << "    Sel: " << cb->GetValue();
-
-    ProjectApp *envApp{reinterpret_cast<ProjectApp *>(cb->GetClientData())};
+    ProjectApp *envApp = reinterpret_cast<ProjectApp *>(cb->GetClientData());
 
     CLOG(TRACE, TAG) << "    EnvApp 1: " << *envApp;
 
-    ApplicationInstallation *installation{reinterpret_cast<ApplicationInstallation *>( cb->GetClientData(cb->GetSelection()))};
+    void *ptr = cb->GetClientData(cb->GetSelection());
 
-    envApp->currentInstallationId(installation->id());
+    if (ptr) {
 
-    CLOG(TRACE, TAG) << "    EnvApp 2: " << *envApp;
+        ApplicationInstallation *installation = reinterpret_cast<ApplicationInstallation *>( ptr );
+
+        envApp->currentInstallationId(installation->id());
+
+    }else{
+        envApp->currentInstallationId("");
+    }
+
 }
 
 
-void SelectionTab::onSelect(wxCommandEvent & UNUSED(event)) {
+void SelectionTab::onSelect(wxCommandEvent &UNUSED(event)) {
 
     CLOG(TRACE, TAG) << "Called.";
 
@@ -155,7 +154,11 @@ void SelectionTab::onSelect(wxCommandEvent & UNUSED(event)) {
 
     for (auto a : m_comboBoxes) {
 
+        CLOG(TRACE, TAG) << "Looking up selection.";
+
         ApplicationInstallation *installation = reinterpret_cast<ApplicationInstallation *>(a->GetClientData(a->GetSelection()));
+
+        CLOG(TRACE, TAG) << "Got it.";
 
         if (installation) {
 
@@ -195,18 +198,18 @@ void SelectionTab::onSelect(wxCommandEvent & UNUSED(event)) {
 
     m_model.m_exitCode = ExitReason::EXIT_OK;
 
-    wxWindow * w = wxGetTopLevelParent(this);
+    wxWindow *w = wxGetTopLevelParent(this);
 
     w->Close(true);
 }
 
-void SelectionTab::onCancel(wxCommandEvent & UNUSED(event)) {
+void SelectionTab::onCancel(wxCommandEvent &UNUSED(event)) {
 
     CLOG(TRACE, TAG) << "Called.";
 
     m_model.m_exitCode = ExitReason::EXIT_CANCEL;
 
-    wxWindow * w = wxGetTopLevelParent(this);
+    wxWindow *w = wxGetTopLevelParent(this);
 
     w->Close(true);
 }
