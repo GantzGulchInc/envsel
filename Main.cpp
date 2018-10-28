@@ -1,8 +1,8 @@
 
-#include <easylogging++.h>
 
-#include "App.h"
-#include "Model.h"
+#include "src/App.h"
+#include "src/Model.h"
+#include "src/EnvSelLogging.h"
 
 #include "EnvSelConfig.h"
 
@@ -29,25 +29,7 @@ static void initLogging() {
 
     gg::envsel::Arguments &args{gg::envsel::Arguments::instance()};
 
-    el::Configurations defaultConf;
-    defaultConf.setToDefault();
-
-    if( args.loggingEnabled() ) {
-        //defaultConf.setGlobally(el::ConfigurationType::ToStandardOutput, "false");
-        defaultConf.setGlobally(el::ConfigurationType::Format, "%datetime [%levshort] %fbase:%line %func: %msg");
-        defaultConf.setGlobally(el::ConfigurationType::Filename, "/tmp/envsel.log");
-    }else{
-        defaultConf.setGlobally(el::ConfigurationType::Enabled, "false");
-    }
-
-    el::Loggers::setDefaultConfigurations(defaultConf, true);
-
-    el::Loggers::getLogger("Domain");
-    el::Loggers::getLogger("App");
-    el::Loggers::getLogger("View");
-    el::Loggers::getLogger("Edit");
-    el::Loggers::getLogger("IO");
-
+    gg::envsel::initializeLogging(args.loggingEnabled(), true);
 }
 
 static int runApp(int argc, char *argv[]) {

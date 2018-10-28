@@ -7,3 +7,6 @@
 [submodule "ThirdParty/easyloggingpp"]
 	path = ThirdParty/easyloggingpp
 	url = git@github.com:muflihun/easyloggingpp.git
+[submodule "ThirdParty/googletest"]
+	path = ThirdParty/googletest
+	url = git@github.com:google/googletest.git
