@@ -3,6 +3,7 @@
 //
 
 #include "EditFrame.h"
+#include "ToString.h"
 
 #include <wx/wx.h>
 #include <wx/treectrl.h>
@@ -17,7 +18,7 @@ static const char *TAG = "Edit";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 TreeClientPtr::TreeClientPtr(TreeClientType type, void *item, RighClickHandler handler)
-        : wxTreeItemData(), m_type{type}, m_item{item}, m_handler{ handler } {
+        : wxTreeItemData(), m_type{type}, m_item{item}, m_handler{handler} {
 
 }
 
@@ -39,6 +40,15 @@ void TreeClientPtr::dispatch(wxTreeEvent &event) {
 
 }
 
+std::ostream &operator<<(std::ostream &stream, const TreeClientPtr &treeClientPtr) {
+
+    ToString(stream, "TreeClientPtr") //
+            .field("m_type", treeClientPtr.m_type) //
+            .field("m_item", treeClientPtr.m_item); //
+
+    return stream;
+}
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EditFrame
@@ -48,6 +58,7 @@ wxBEGIN_EVENT_TABLE(EditFrame, wxFrame)
 
                 EVT_MENU(ID_APPLICATION_NEW, EditFrame::onApplicationNew)
                 EVT_MENU(ID_APPLICATION_DELETE, EditFrame::onApplicationDelete)
+                EVT_TREE_SEL_CHANGED(ID_APP_TREE, EditFrame::onTreeSelectionChange)
                 EVT_TREE_ITEM_RIGHT_CLICK(ID_APP_TREE, EditFrame::onTreeMenu)
                 EVT_MENU(ID_APPLICATION_INSTALLATION_NEW, EditFrame::onApplicationInstallationNew)
                 EVT_MENU(ID_APPLICATION_INSTALLATION_DELETE, EditFrame::onApplicationInstallationDelete)
@@ -80,44 +91,53 @@ void EditFrame::onApplicationInstallationDelete(wxCommandEvent &event) {
     CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
-void EditFrame::onScriptNew(wxCommandEvent & event) {
+void EditFrame::onScriptNew(wxCommandEvent &event) {
     CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
-void EditFrame::onScriptDelete(wxCommandEvent & event) {
+void EditFrame::onScriptDelete(wxCommandEvent &event) {
     CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
-void EditFrame::onScriptCommandNew(wxCommandEvent & event) {
+void EditFrame::onScriptCommandNew(wxCommandEvent &event) {
     CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
-void EditFrame::onScriptCommandDelete(wxCommandEvent & event) {
+void EditFrame::onScriptCommandDelete(wxCommandEvent &event) {
     CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
-void EditFrame::onProjectNew(wxCommandEvent & event) {
+void EditFrame::onProjectNew(wxCommandEvent &event) {
     CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
-void EditFrame::onProjectDelete(wxCommandEvent & event) {
+void EditFrame::onProjectDelete(wxCommandEvent &event) {
     CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
-void EditFrame::onProjectAppNew(wxCommandEvent & event) {
+void EditFrame::onProjectAppNew(wxCommandEvent &event) {
     CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
-void EditFrame::onProjectAppDelete(wxCommandEvent & event) {
+void EditFrame::onProjectAppDelete(wxCommandEvent &event) {
     CLOG(TRACE, TAG) << "Called: " << event.GetId();
 }
 
+void EditFrame::onTreeSelectionChange(wxTreeEvent &event) {
+    CLOG(TRACE, TAG) << "Called: " << event.GetId();
+
+    TreeClientPtr *clientPtr = reinterpret_cast<TreeClientPtr *>( m_tree->GetItemData(event.GetItem()));
+
+    CLOG(TRACE, TAG) << "    Item Data ..........: " << *clientPtr;
+
+}
 
 wxTreeItemId EditFrame::createApplicationsNode(wxTreeCtrl *treeCtrl, wxTreeItemId rootId) {
 
     ApplicationList &appList = m_model.m_environments.applications();
 
-    TreeClientPtr *appListPtr = new TreeClientPtr(TreeClientType::APPLICATIONS, &appList, std::bind(&EditFrame::applicationsPopup, this, std::placeholders::_1) );
+    TreeClientPtr *appListPtr = new TreeClientPtr(TreeClientType::APPLICATIONS, &appList,
+                                                  std::bind(&EditFrame::applicationsPopup, this, std::placeholders::_1));
 
     wxTreeItemId appListItemId = treeCtrl->AppendItem(rootId, "Applications", -1, -1, appListPtr);
 
@@ -129,7 +149,8 @@ wxTreeItemId EditFrame::createApplicationsNode(wxTreeCtrl *treeCtrl, wxTreeItemI
 
         for (auto &installation : app->installations()) {
 
-            TreeClientPtr *installationPtr = new TreeClientPtr{TreeClientType::APPLICATION_INSTALLATION, installation.get(), std::bind(&EditFrame::applicationInstallationPopup, this, std::placeholders::_1)};
+            TreeClientPtr *installationPtr = new TreeClientPtr{TreeClientType::APPLICATION_INSTALLATION, installation.get(),
+                                                               std::bind(&EditFrame::applicationInstallationPopup, this, std::placeholders::_1)};
 
             treeCtrl->AppendItem(appItemId, installation->name(), -1, -1, installationPtr);
 
@@ -161,7 +182,8 @@ wxTreeItemId EditFrame::createScriptsNode(wxTreeCtrl *treeCtrl, wxTreeItemId roo
 
         for (auto &command : script->commands()) {
 
-            TreeClientPtr *commandPtr = new TreeClientPtr{TreeClientType::SCRIPT_COMMAND, command.get(), std::bind(&EditFrame::scriptCommandPopup, this, std::placeholders::_1)};
+            TreeClientPtr *commandPtr = new TreeClientPtr{TreeClientType::SCRIPT_COMMAND, command.get(),
+                                                          std::bind(&EditFrame::scriptCommandPopup, this, std::placeholders::_1)};
 
             treeCtrl->AppendItem(scriptId, command->operation(), -1, -1, commandPtr);
 
@@ -191,7 +213,8 @@ wxTreeItemId EditFrame::createProjectsNode(wxTreeCtrl *treeCtrl, wxTreeItemId ro
 
         for (auto &projectApp : project->apps()) {
 
-            TreeClientPtr *projectAppPtr = new TreeClientPtr(TreeClientType::PROJECT_APP, projectApp.get(), std::bind(&EditFrame::projectAppPopup, this, std::placeholders::_1));
+            TreeClientPtr *projectAppPtr = new TreeClientPtr(TreeClientType::PROJECT_APP, projectApp.get(),
+                                                             std::bind(&EditFrame::projectAppPopup, this, std::placeholders::_1));
 
             Application *app = m_model.m_environments.findApplication(projectApp->applicationId());
 

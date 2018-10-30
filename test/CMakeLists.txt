@@ -1,16 +1,63 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(EnvSelTest)
+project(EnvSel::Test)
 
-set(TestMain "TestMain")
-
-enable_testing()
 
 #
 # TEXT EXECUTABLE
 #
-add_executable(${TestMain} Test.cpp ScriptVariableTest.cpp)
-target_link_libraries(${TestMain} EnvSelLib)
-target_link_libraries(${TestMain} gtest)
+add_executable(envseltest
+        src/Test.cpp
+        src/ScriptVariableTest.cpp)
 
-# add_test(NAME TestMain COMMAND TestMain)
+target_include_directories(envseltest
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+        PRIVATE
+        src
+        )
+
+target_include_directories(envseltest
+        SYSTEM PUBLIC
+        "${Easyloggingpp_SOURCE_DIR}/src"
+        )
+
+
+target_compile_features(envseltest
+        PUBLIC
+        cxx_std_17
+        )
+
+target_compile_options(envseltest
+        PRIVATE
+        -pedantic -Wall -Wextra
+        )
+
+target_link_libraries(envseltest
+        PUBLIC
+        EnvSel::Core
+        gtest
+        easyloggingpp
+        CLI11::CLI11
+        nlohmann_json
+        ${wxWidgets_LIBRARIES}
+        )
+
+
+
+
+# target_link_libraries(EnvSelTest EnvSelLib)
+# target_link_libraries(EnvSelTest gtest)
+
+
+
+
+
+
+
+
+
+
+
+add_test(NAME TestMain COMMAND envseltest)

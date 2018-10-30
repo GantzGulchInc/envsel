@@ -6,15 +6,15 @@
 namespace gg {
 namespace envsel {
 
-void initializeLogging(bool enableFileLogging, bool enableConsoleLogging) {
+void initializeLogging(const std::string &filename, bool enableConsoleLogging) {
 
     el::Configurations defaultConf;
     defaultConf.setToDefault();
 
     defaultConf.setGlobally(el::ConfigurationType::Format, "%datetime [%levshort] %fbase:%line %func: %msg");
 
-    if( enableFileLogging ){
-        defaultConf.setGlobally(el::ConfigurationType::Filename, "/tmp/envsel.log");
+    if( filename.length() > 0 ){
+        defaultConf.setGlobally(el::ConfigurationType::Filename, filename);
     }
 
     if( enableConsoleLogging ) {

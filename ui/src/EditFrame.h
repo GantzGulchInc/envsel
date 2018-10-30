@@ -67,6 +67,8 @@ public:
 
     void dispatch(wxTreeEvent &event);
 
+    friend std::ostream &operator<<(std::ostream &stream, const TreeClientPtr &treeClientPtr);
+
 private:
     TreeClientType m_type;
     void *m_item;
@@ -113,7 +115,7 @@ private:
     void onProjectDelete(wxCommandEvent & event);
     void onProjectAppNew(wxCommandEvent & event);
     void onProjectAppDelete(wxCommandEvent & event);
-
+    void onTreeSelectionChange(wxTreeEvent &event);
 
     void onTreeMenu(wxTreeEvent &event);
 

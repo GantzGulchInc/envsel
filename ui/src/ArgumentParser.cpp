@@ -28,7 +28,7 @@ Arguments &Arguments::instance() {
 }
 
 Arguments::Arguments() :
-        m_enableLogging{false}, m_command{SelectedCommand::NONE}, m_inputFilename{""}, m_outputFilename{""} {
+        m_logggingFilename{""}, m_loggingConsole{false}, m_command{SelectedCommand::NONE}, m_inputFilename{""}, m_outputFilename{""} {
 
 }
 
@@ -37,13 +37,17 @@ Arguments::~Arguments() {
 }
 
 bool Arguments::wasParsed() {
-    return m_command != SelectedCommand ::NONE;
+    return m_command != SelectedCommand::NONE;
 }
 
-bool Arguments::loggingEnabled() {
-    return m_enableLogging;
+const std::string &Arguments::loggingFilename() {
+
+    return m_logggingFilename;
 }
 
+bool Arguments::logggingConsole() {
+    return m_loggingConsole;
+}
 
 SelectedCommand Arguments::command() {
     return m_command;
@@ -84,7 +88,7 @@ const std::string &Arguments::outputFilename() const {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ArgumentParser::ArgumentParser(Arguments &args, const std::string &name, int argc, const char *const *argv) :
-        m_arguments{ args }, //
+        m_arguments{args}, //
         m_app{name},  //
         m_argc{argc}, //
         m_argv{argv} {
@@ -93,7 +97,8 @@ ArgumentParser::ArgumentParser(Arguments &args, const std::string &name, int arg
 
     m_app.require_subcommand(1);
 
-    m_app.add_flag("-l,--logging", m_arguments.m_enableLogging, "Enable logging");
+    m_app.add_option("-l,--logging", m_arguments.m_logggingFilename, "Enable logging to file.")->type_name("LOG");
+    m_app.add_flag("-c,--console", m_arguments.m_loggingConsole, "Enable logging to console.");
 
     createSelectCommand();
 

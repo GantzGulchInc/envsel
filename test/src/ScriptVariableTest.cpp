@@ -1,7 +1,7 @@
 
 #include "ScriptVariableTest.h"
 
-#include "../src/Domain.h"
+#include "Domain.h"
 
 #include <nlohmann/json.hpp>
 

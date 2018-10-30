@@ -1,8 +1,8 @@
 
 
-#include "src/App.h"
-#include "src/Model.h"
-#include "src/EnvSelLogging.h"
+#include "App.h"
+#include "Model.h"
+#include "EnvSelLogging.h"
 
 #include "EnvSelConfig.h"
 
@@ -29,7 +29,7 @@ static void initLogging() {
 
     gg::envsel::Arguments &args{gg::envsel::Arguments::instance()};
 
-    gg::envsel::initializeLogging(args.loggingEnabled(), true);
+    gg::envsel::initializeLogging(args.loggingFilename(), false);
 }
 
 static int runApp(int argc, char *argv[]) {

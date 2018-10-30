@@ -1,0 +1,10 @@
+//
+// Created by gantzm on 10/22/18.
+//
+
+#pragma once
+
+#define EnvSel_VERSION         @EnvSel_VERSION@
+#define EnvSel_VERSION_MAJOR   @EnvSel_VERSION_MAJOR@
+#define EnvSel_VERSION_MINOR   @EnvSel_VERSION_MINOR@
+#define EnvSel_VERSION_BUGFIX  @EnvSel_VERSION_PATCH@

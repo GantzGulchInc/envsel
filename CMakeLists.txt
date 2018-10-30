@@ -1,23 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(EnvSel)
+cmake_policy(VERSION 3.12)
 
-#
-# Project Version
-#
-set(EnvSel_VERSION_MAJOR 1)
-set(EnvSel_VERSION_MINOR 0)
-set(EnvSel_VERSION_BUGFIX 0)
+project(EnvSel VERSION 1.0.1 LANGUAGES CXX)
 
-configure_file(
-        "${PROJECT_SOURCE_DIR}/src/EnvSelConfig.h.in"
-        "${PROJECT_BINARY_DIR}/EnvSelConfig.h"
-)
 
 #
 # Build flags and configuration
 #
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -std=c++17")
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_COLOR_MAKEFILE ON)
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY  true)
@@ -43,6 +33,7 @@ add_subdirectory("ThirdParty/easyloggingpp" EXCLUDE_FROM_ALL)
 #
 # nlohman json
 #
+option(JSON_BuildTests "" OFF)
 add_subdirectory("ThirdParty/json")
 
 #
@@ -57,30 +48,29 @@ include("${wxWidgets_USE_FILE}")
 add_subdirectory("ThirdParty/googletest")
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
-# EnvSelLib
+# EnvSel
 #
-add_subdirectory("src")
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+enable_testing()
+
+#
+# EnvSel::Core
+#
+add_subdirectory("core")
+
+#
+# EnvSel::UI
+#
+add_subdirectory("ui")
 
 
 #
-# MAIN EXECUTABLE
+# EnvSel::Test
 #
-add_executable(${PROJECT_NAME} Main.cpp )
-
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "${PROJECT_BINARY_DIR}")
-
-target_link_libraries(${PROJECT_NAME} EnvSelLib)
-
-
-
 add_subdirectory("test")
 
-#
-# Third party libraries
-#
-# target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE "ThirdParty/CLI11/include")
-# target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE "ThirdParty/json/single_include")
-# target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE "ThirdParty/easyloggingpp/src")
-
-add_test(NAME TestMain COMMAND TestMain)
+# add_test(NAME TestMain COMMAND TestMain)
