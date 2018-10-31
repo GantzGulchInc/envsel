@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ScriptVariable.h"
 #include "ScriptCommand.h"
 #include "NonCopyable.h"
 
@@ -28,21 +29,21 @@ public:
 
     virtual ~Script();
 
-    const std::string &id() const;
+    const std::string & id() const;
 
-    const std::string &name() const;
+    const std::string & name() const;
 
-    const std::string &ifSet() const;
+    const std::string & ifSet() const;
 
-    ScriptCommandList &commands();
+    ScriptCommandList & commands();
 
-    void execute(const VariableDictionary &variables, std::vector<std::string> &output) const;
+    void execute(const VariableDictionary & variables, std::vector<std::string> & output) const;
 
-    friend void from_json(const nlohmann::json &json, Script &item);
+    friend void from_json(const nlohmann::json & json, Script & item);
 
-    friend void to_json(nlohmann::json &j, const Script &item);
+    friend void to_json(nlohmann::json & j, const Script & item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const Script &script);
+    friend std::ostream & operator<<(std::ostream & stream, const Script & script);
 
 private:
     std::string m_id;

@@ -3,6 +3,8 @@
 #include "ToString.h"
 #include "JsonHelper.h"
 
+#include "easylogging++.h"
+
 #include <iostream>
 #include <regex>
 
@@ -41,8 +43,14 @@ const std::string &ApplicationInstallation::name() const {
     return m_name;
 }
 
-const ScriptVariableList &ApplicationInstallation::variables() const {
-    return m_variables;
+void ApplicationInstallation::addVariables(VariableDictionary & dictionary) const {
+
+    for(auto & variable : m_variables){
+
+        dictionary[variable->name()] = variable->value();
+
+    }
+
 }
 
 void from_json(const nlohmann::json &json, ApplicationInstallation &item) {

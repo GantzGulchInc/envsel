@@ -4,11 +4,12 @@ project(EnvSel::UI LANGUAGES CXX)
 
 configure_file(
         "${PROJECT_SOURCE_DIR}/src/EnvSelConfig.h.in"
-        "${PROJECT_BINARY_DIR}/EnvSelConfig.h"
+        "${PROJECT_BINARY_DIR}/include/EnvSelConfig.h"
 )
 
 add_executable(envsel
         src/App.cpp
+        src/Arguments.cpp
         src/ArgumentParser.cpp
         src/EditApplicationPanel.cpp
         src/EditFrame.cpp
@@ -20,7 +21,8 @@ add_executable(envsel
 
 target_include_directories(envsel
         PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
         PRIVATE
         src

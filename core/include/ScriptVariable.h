@@ -11,7 +11,7 @@ namespace gg {
 namespace envsel {
 
 
-typedef std::map<std::string,std::string> VariableDictionary;
+typedef std::map<std::string, std::string> VariableDictionary;
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ScriptVariable
@@ -26,15 +26,15 @@ public:
 
     virtual ~ScriptVariable();
 
-    const std::string &name();
+    const std::string & name();
 
-    const std::string &value();
+    const std::string & value();
 
-    friend void from_json(const nlohmann::json &json, ScriptVariable &item);
+    friend void from_json(const nlohmann::json & json, ScriptVariable & item);
 
-    friend void to_json(nlohmann::json &j, const ScriptVariable &item);
+    friend void to_json(nlohmann::json & j, const ScriptVariable & item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const ScriptVariable &scriptVariable);
+    friend std::ostream & operator<<(std::ostream & stream, const ScriptVariable & scriptVariable);
 
 private:
     std::string m_name;

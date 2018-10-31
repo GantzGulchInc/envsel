@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include <string>
@@ -13,12 +11,12 @@ namespace envsel {
 class ToString {
 
 public:
-    ToString(std::ostream &stream, const std::string &className);
+    ToString(std::ostream & stream, const std::string & className);
 
     virtual ~ToString();
 
     template<class T>
-    ToString &field(const std::string &fieldName, const T &value) {
+    ToString & field(const std::string & fieldName, const T & value) {
 
         if (fieldCount > 0) {
             m_stream << ",";
@@ -32,7 +30,7 @@ public:
     }
 
     template<class T>
-    ToString &field(const std::string &fieldName, const std::vector<T> &value) {
+    ToString & field(const std::string & fieldName, const std::vector<T> & value) {
 
         if (fieldCount > 0) {
             m_stream << ",";
@@ -46,7 +44,7 @@ public:
     }
 
 private:
-    std::ostream &m_stream;
+    std::ostream & m_stream;
     std::uint16_t fieldCount;
 };
 

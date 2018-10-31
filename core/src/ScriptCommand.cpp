@@ -1,7 +1,9 @@
-#include "Domain.h"
+#include "ScriptCommand.h"
 #include "IO.h"
 #include "ToString.h"
 #include "JsonHelper.h"
+
+#include "easylogging++.h"
 
 #include <iostream>
 #include <regex>
@@ -14,7 +16,7 @@ namespace envsel {
 static const char *TAG = "Domain";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Script Operation
+// Script Command
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const std::string ScriptCommand::F_COMMAND{"command"};

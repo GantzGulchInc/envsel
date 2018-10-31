@@ -1,13 +1,8 @@
-//
-// Created by gantzm on 10/15/18.
-//
-
 #pragma once
 
 #include <nlohmann/json.hpp>
 
 #include <string>
-#include <iostream>
 
 namespace gg {
 namespace envsel {
@@ -15,9 +10,9 @@ namespace JsonHelper {
 
 
 template<class T>
-void from_json(const nlohmann::json &json, std::vector<std::unique_ptr<T>> &vec) {
+void from_json(const nlohmann::json & json, std::vector<std::unique_ptr<T>> & vec) {
 
-    for (auto &eJson : json) {
+    for (auto & eJson : json) {
 
         std::unique_ptr<T> ptr(new T{});
 
@@ -29,12 +24,12 @@ void from_json(const nlohmann::json &json, std::vector<std::unique_ptr<T>> &vec)
 }
 
 template<class T>
-nlohmann::json to_json(const std::vector<std::unique_ptr<T>> &vec) {
+nlohmann::json to_json(const std::vector<std::unique_ptr<T>> & vec) {
 
     nlohmann::json json = nlohmann::json::array();
 
-    for (auto &item : vec) {
-        json.push_back( nlohmann::json(*item) );
+    for (auto & item : vec) {
+        json.push_back(nlohmann::json(*item));
     }
 
     return json;

@@ -9,15 +9,7 @@
 
 namespace gg {
 namespace envsel {
-
-ScriptVariableTest::ScriptVariableTest() {
-
-}
-
-ScriptVariableTest::~ScriptVariableTest() {
-
-}
-
+namespace test {
 
 TEST_F(ScriptVariableTest, ParseSimpleJson) {
 
@@ -49,5 +41,6 @@ TEST_F(ScriptVariableTest, ParseEmptyFieldsJson) {
 
 }
 
+}
 }
 }

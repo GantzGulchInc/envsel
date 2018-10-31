@@ -26,15 +26,16 @@ public:
 
     virtual ~Project();
 
-    const std::string &name() const;
+    const std::string & name() const;
 
-    const ProjectAppList &apps() const;
+    const ProjectAppList & apps() const;
 
-    friend void from_json(const nlohmann::json &json, Project &item);
 
-    friend void to_json(nlohmann::json &j, const Project &item);
+    friend void from_json(const nlohmann::json & json, Project & item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const Project &environment);
+    friend void to_json(nlohmann::json & j, const Project & item);
+
+    friend std::ostream & operator<<(std::ostream & stream, const Project & environment);
 
 private:
     std::string m_id;

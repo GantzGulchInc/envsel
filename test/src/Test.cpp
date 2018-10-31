@@ -3,8 +3,6 @@
 #include "Domain.h"
 #include "EnvSelLogging.h"
 
-INITIALIZE_EASYLOGGINGPP
-
 int main(int argc, char **argv) {
 
     gg::envsel::initializeLogging("/tmp/envseltest.log", false);

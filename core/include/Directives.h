@@ -1,7 +1,3 @@
-//
-// Created by gantzm on 10/22/18.
-//
-
 #pragma once
 
 #ifdef __GNUC__

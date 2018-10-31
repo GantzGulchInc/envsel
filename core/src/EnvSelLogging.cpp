@@ -3,8 +3,11 @@
 
 #include <easylogging++.h>
 
+INITIALIZE_EASYLOGGINGPP
+
 namespace gg {
 namespace envsel {
+
 
 void initializeLogging(const std::string &filename, bool enableConsoleLogging) {
 

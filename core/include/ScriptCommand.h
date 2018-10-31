@@ -1,9 +1,9 @@
 #pragma once
 
+#include "ScriptVariable.h"
 #include "NonCopyable.h"
 
 #include <nlohmann/json.hpp>
-#include <easylogging++.h>
 
 #include <string>
 #include <vector>
@@ -14,7 +14,7 @@ namespace envsel {
 
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * ScriptOperation
+ * ScriptCommand
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class ScriptCommand : public NonCopyable {
 public:
@@ -26,17 +26,18 @@ public:
 
     virtual ~ScriptCommand();
 
-    const std::string &operation() const;
+    const std::string & operation() const;
 
-    const std::vector<std::string> &arguments() const;
+    const std::vector<std::string> & arguments() const;
 
-    void execute(const VariableDictionary &variables, std::vector<std::string> &output) const;
+    void execute(const VariableDictionary & variables, std::vector<std::string> & output) const;
 
-    friend void from_json(const nlohmann::json &json, ScriptCommand &item);
 
-    friend void to_json(nlohmann::json &j, const ScriptCommand &item);
+    friend void from_json(const nlohmann::json & json, ScriptCommand & item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const ScriptCommand &scriptOperation);
+    friend void to_json(nlohmann::json & j, const ScriptCommand & item);
+
+    friend std::ostream & operator<<(std::ostream & stream, const ScriptCommand & scriptOperation);
 
 private:
     std::string m_command;
@@ -44,7 +45,6 @@ private:
 };
 
 typedef std::vector<std::unique_ptr<ScriptCommand>> ScriptCommandList;
-
 
 
 }

@@ -8,7 +8,9 @@ project(EnvSel::Test)
 #
 add_executable(envseltest
         src/Test.cpp
-        src/ScriptVariableTest.cpp)
+        src/ScriptVariableTest.cpp
+        src/EnvSelTest.cpp
+        src/EnvSelTest.h)
 
 target_include_directories(envseltest
         PUBLIC
@@ -43,21 +45,5 @@ target_link_libraries(envseltest
         nlohmann_json
         ${wxWidgets_LIBRARIES}
         )
-
-
-
-
-# target_link_libraries(EnvSelTest EnvSelLib)
-# target_link_libraries(EnvSelTest gtest)
-
-
-
-
-
-
-
-
-
-
 
 add_test(NAME TestMain COMMAND envseltest)

@@ -1,10 +1,10 @@
 
 #include "IO.h"
 
+#include <easylogging++.h>
+
 #include <fstream>
 #include <iostream>
-
-#include <easylogging++.h>
 
 namespace gg {
 namespace envsel {

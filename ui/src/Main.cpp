@@ -1,13 +1,10 @@
 
-
 #include "App.h"
 #include "Model.h"
 #include "EnvSelLogging.h"
-
 #include "EnvSelConfig.h"
 
-
-INITIALIZE_EASYLOGGINGPP
+#include "easylogging++.h"
 
 wxIMPLEMENT_APP_NO_MAIN(gg::envsel::App);
 
@@ -17,7 +14,7 @@ static void parseArguments(int argc, char *argv[]) {
 
     gg::envsel::Arguments &args{gg::envsel::Arguments::instance()};
 
-    gg::envsel::ArgumentParser argsParser{args, "Project Selector", argc, argv};
+    gg::envsel::ArgumentParser argsParser{args, "Environment Selector", argc, argv};
 
     if (!argsParser.parse()) {
         exit(gg::envsel::ExitReason::EXIT_ERROR);
@@ -29,7 +26,7 @@ static void initLogging() {
 
     gg::envsel::Arguments &args{gg::envsel::Arguments::instance()};
 
-    gg::envsel::initializeLogging(args.loggingFilename(), false);
+    gg::envsel::initializeLogging(args.loggingFilename(), args.logggingConsole());
 }
 
 static int runApp(int argc, char *argv[]) {
@@ -49,6 +46,8 @@ int main(int argc, char *argv[]) {
     parseArguments(argc, argv);
 
     initLogging();
+
+    LOG(TRACE) << "Parsed arguments: " << gg::envsel::Arguments::instance();
 
     return runApp(argc, argv);
 }

@@ -1,7 +1,3 @@
-//
-// Created by gantzm on 10/20/18.
-//
-
 #include "ToString.h"
 
 namespace  gg {

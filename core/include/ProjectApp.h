@@ -3,7 +3,6 @@
 #include "NonCopyable.h"
 
 #include <nlohmann/json.hpp>
-#include <easylogging++.h>
 
 #include <string>
 #include <vector>
@@ -25,19 +24,19 @@ public:
 
     virtual ~ProjectApp();
 
-    const std::string &applicationId() const;
+    const std::string & applicationId() const;
 
-    const std::string &defaultInstallationId() const;
+    const std::string & defaultInstallationId() const;
 
-    const std::string &currentInstalltionId() const;
+    const std::string & currentInstalltionId() const;
 
     ProjectApp & currentInstallationId(const std::string & id);
 
-    friend void from_json(const nlohmann::json &json, ProjectApp &item);
+    friend void from_json(const nlohmann::json & json, ProjectApp & item);
 
-    friend void to_json(nlohmann::json &j, const ProjectApp &item);
+    friend void to_json(nlohmann::json & j, const ProjectApp & item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const ProjectApp &environmentApp);
+    friend std::ostream & operator<<(std::ostream & stream, const ProjectApp & environmentApp);
 
 private:
     std::string m_applicationId;

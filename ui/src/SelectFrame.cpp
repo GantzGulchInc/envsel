@@ -1,13 +1,8 @@
-/*
- * AppFrame.cpp
- *
- *  Created on: Oct 12, 2018
- *      Author: gantzm
- */
-
 #include "SelectFrame.h"
 #include "SelectionTab.h"
 #include "Directives.h"
+
+#include "easylogging++.h"
 
 namespace gg {
 namespace envsel {

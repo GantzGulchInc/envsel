@@ -5,7 +5,7 @@
 namespace gg {
 namespace envsel {
 
-void initializeLogging(const std::string &filename, bool enableConsoleLogging);
+void initializeLogging(const std::string & filename, bool enableConsoleLogging);
 
 }
 }

@@ -27,17 +27,18 @@ public:
 
     virtual ~ApplicationInstallation();
 
-    const std::string &id() const;
+    const std::string & id() const;
 
-    const std::string &name() const;
+    const std::string & name() const;
 
-    const ScriptVariableList &variables() const;
+    void addVariables(VariableDictionary & dictionary) const;
 
-    friend void from_json(const nlohmann::json &json, ApplicationInstallation &item);
 
-    friend void to_json(nlohmann::json &j, const ApplicationInstallation &item);
+    friend void from_json(const nlohmann::json & json, ApplicationInstallation & item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const ApplicationInstallation &applicationInstallation);
+    friend void to_json(nlohmann::json & j, const ApplicationInstallation & item);
+
+    friend std::ostream & operator<<(std::ostream & stream, const ApplicationInstallation & applicationInstallation);
 
 private:
     std::string m_id;

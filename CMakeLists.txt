@@ -4,6 +4,7 @@ cmake_policy(VERSION 3.12)
 
 project(EnvSel VERSION 1.0.1 LANGUAGES CXX)
 
+# set(CMAKE_CXX_CLANG_TIDY clang-tidy checks=-,readability-)
 
 #
 # Build flags and configuration
@@ -12,11 +13,13 @@ set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_COLOR_MAKEFILE ON)
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY  true)
 
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
 # Third party libraries
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 
 #
 # CLI11 Command line parser
@@ -55,6 +58,9 @@ add_subdirectory("ThirdParty/googletest")
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
+#
+# Enable testing: We have unit tests!
+#
 enable_testing()
 
 #
@@ -67,10 +73,7 @@ add_subdirectory("core")
 #
 add_subdirectory("ui")
 
-
 #
 # EnvSel::Test
 #
 add_subdirectory("test")
-
-# add_test(NAME TestMain COMMAND TestMain)

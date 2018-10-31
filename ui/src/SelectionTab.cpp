@@ -1,10 +1,8 @@
-//
-// Created by gantzm on 10/18/18.
-//
-
 #include "SelectionTab.h"
 #include "IO.h"
 #include "Directives.h"
+
+#include "easylogging++.h"
 
 #include <iomanip>
 #include <map>
@@ -154,19 +152,11 @@ void SelectionTab::onSelect(wxCommandEvent &UNUSED(event)) {
 
     for (auto a : m_comboBoxes) {
 
-        CLOG(TRACE, TAG) << "Looking up selection.";
-
         ApplicationInstallation *installation = reinterpret_cast<ApplicationInstallation *>(a->GetClientData(a->GetSelection()));
-
-        CLOG(TRACE, TAG) << "Got it.";
 
         if (installation) {
 
-            CLOG(TRACE, TAG) << "Selected: " << *installation;
-
-            for (auto &v : installation->variables()) {
-                variables[v->name()] = v->value();
-            }
+            installation->addVariables(variables);
 
         } else {
 

@@ -1,7 +1,9 @@
-#include "Domain.h"
+#include "Application.h"
 #include "IO.h"
 #include "ToString.h"
 #include "JsonHelper.h"
+
+#include "easylogging++.h"
 
 #include <iostream>
 #include <regex>

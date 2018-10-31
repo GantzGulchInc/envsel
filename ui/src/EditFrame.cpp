@@ -1,9 +1,8 @@
-//
-// Created by gantzm on 10/23/18.
-//
 
 #include "EditFrame.h"
 #include "ToString.h"
+
+#include "easylogging++.h"
 
 #include <wx/wx.h>
 #include <wx/treectrl.h>

@@ -27,19 +27,20 @@ public:
 
     virtual ~Application();
 
-    const std::string &id() const;
+    const std::string & id() const;
 
-    const std::string &name() const;
+    const std::string & name() const;
 
-    const ApplicationInstallationList &installations() const;
+    const ApplicationInstallationList & installations() const;
 
     ApplicationInstallation * findInstallation(const std::string & id);
 
-    friend void from_json(const nlohmann::json &json, Application &item);
 
-    friend void to_json(nlohmann::json &j, const Application &item);
+    friend void from_json(const nlohmann::json & json, Application & item);
 
-    friend std::ostream &operator<<(std::ostream &stream, const Application &application);
+    friend void to_json(nlohmann::json & j, const Application & item);
+
+    friend std::ostream & operator<<(std::ostream & stream, const Application & application);
 
 private:
     std::string m_id;
@@ -48,7 +49,6 @@ private:
 };
 
 typedef std::vector<std::unique_ptr<Application>> ApplicationList;
-
 
 
 }
