@@ -475,20 +475,19 @@
         }
       ]
     },
-		{
-			"id": "script-bash",
-			"name": "Bash Prompt",
-			"ifSet": "_curEnv",
-			"commands": [
-				{
-					"command": "print",
-					"args": [
-						"export PS1='(\\e[93m#{_curEnv}\\e[39m)\\n\\[\\e]0;\\u@\\h: \\w\\a\\]${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ '"
-					]
-				}
-			]
-		}
-	],
+    {
+      "id": "script-bash",
+      "name": "Bash Prompt",
+      "ifSet": "_curEnv",
+      "commands": [
+        {
+          "command": "print",
+          "args": [
+            "export PS1='(\\e[93m#{_curEnv}\\e[39m)\\n\\[\\e]0;\\u@\\h: \\w\\a\\]${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ '"
+          ]
+        }
+      ]
+    }
   ],
   "projects": [
     {
