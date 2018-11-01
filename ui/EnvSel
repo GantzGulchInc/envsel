@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=/tmp/script.$$
 
-EnvSel select --output ${SCRIPT_NAME}
+envsel select --output ${SCRIPT_NAME}
 
 RC=$?
 

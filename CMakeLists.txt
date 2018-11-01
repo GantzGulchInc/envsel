@@ -9,6 +9,10 @@ project(EnvSel VERSION 1.0.1 LANGUAGES CXX)
 #
 # Build flags and configuration
 #
+# set(CMAKE_INSTALL_PREFIX /usr/local)
+set(CMAKE_INSTALL_PREFIX /tmp/envsel)
+
+
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_COLOR_MAKEFILE ON)
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY  true)
@@ -37,7 +41,7 @@ add_subdirectory("ThirdParty/easyloggingpp" EXCLUDE_FROM_ALL)
 # nlohman json
 #
 option(JSON_BuildTests "" OFF)
-add_subdirectory("ThirdParty/json")
+add_subdirectory("ThirdParty/json" EXCLUDE_FROM_ALL)
 
 #
 # wxWidgets
@@ -48,7 +52,7 @@ include("${wxWidgets_USE_FILE}")
 #
 # googletest
 #
-add_subdirectory("ThirdParty/googletest")
+add_subdirectory("ThirdParty/googletest" EXCLUDE_FROM_ALL)
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -77,3 +81,5 @@ add_subdirectory("ui")
 # EnvSel::Test
 #
 add_subdirectory("test")
+
+

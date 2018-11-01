@@ -53,6 +53,7 @@ target_link_libraries(envselcore
         nlohmann_json
         )
 
+# install(TARGETS envselcore DESTINATION lib)
 
 # get_cmake_property(_variableNames VARIABLES)
 # list (SORT _variableNames)

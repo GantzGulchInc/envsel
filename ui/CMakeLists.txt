@@ -52,6 +52,9 @@ target_link_libraries(envsel
         ${wxWidgets_LIBRARIES}
         )
 
+install(TARGETS envsel DESTINATION bin)
+install(PROGRAMS EnvSel DESTINATION bin)
+
 
 # get_cmake_property(_variableNames VARIABLES)
 # list (SORT _variableNames)
