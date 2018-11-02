@@ -26,7 +26,7 @@ public:
 
     virtual ~ScriptCommand();
 
-    const std::string & operation() const;
+    const std::string & command() const;
 
     const std::vector<std::string> & arguments() const;
 

@@ -5,7 +5,6 @@
 
 #include "easylogging++.h"
 
-#include <iostream>
 #include <regex>
 
 using nlohmann::json;
@@ -13,7 +12,7 @@ using nlohmann::json;
 namespace gg {
 namespace envsel {
 
-static const char *TAG = "Domain";
+static const char * TAG = "Domain";
 
 
 
@@ -37,15 +36,19 @@ Project::~Project() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-const std::string &Project::name() const {
+const std::string & Project::id() const {
+    return m_id;
+}
+
+const std::string & Project::name() const {
     return m_name;
 }
 
-const ProjectAppList &Project::apps() const {
+const ProjectAppList & Project::apps() const {
     return m_projectApps;
 }
 
-void from_json(const nlohmann::json &json, Project &item) {
+void from_json(const nlohmann::json & json, Project & item) {
 
     json.at(Project::F_ID).get_to(item.m_id);
     json.at(Project::F_NAME).get_to(item.m_name);
@@ -53,7 +56,7 @@ void from_json(const nlohmann::json &json, Project &item) {
     JsonHelper::from_json(json.at(Project::F_APPS), item.m_projectApps);
 }
 
-void to_json(nlohmann::json &j, const Project &item) {
+void to_json(nlohmann::json & j, const Project & item) {
 
     j = {
             {Project::F_ID,   item.m_id},
@@ -63,7 +66,7 @@ void to_json(nlohmann::json &j, const Project &item) {
 
 }
 
-std::ostream &operator<<(std::ostream &stream, const Project &environment) {
+std::ostream & operator<<(std::ostream & stream, const Project & environment) {
 
     ToString(stream, "Project") //
             .field<>("m_id", environment.m_id) //
@@ -72,7 +75,6 @@ std::ostream &operator<<(std::ostream &stream, const Project &environment) {
 
     return stream;
 }
-
 
 
 }

@@ -184,7 +184,7 @@ wxTreeItemId EditFrame::createScriptsNode(wxTreeCtrl *treeCtrl, wxTreeItemId roo
             TreeClientPtr *commandPtr = new TreeClientPtr{TreeClientType::SCRIPT_COMMAND, command.get(),
                                                           std::bind(&EditFrame::scriptCommandPopup, this, std::placeholders::_1)};
 
-            treeCtrl->AppendItem(scriptId, command->operation(), -1, -1, commandPtr);
+            treeCtrl->AppendItem(scriptId, command->command(), -1, -1, commandPtr);
 
 
         }

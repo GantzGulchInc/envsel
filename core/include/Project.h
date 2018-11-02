@@ -26,6 +26,8 @@ public:
 
     virtual ~Project();
 
+    const std::string & id() const;
+
     const std::string & name() const;
 
     const ProjectAppList & apps() const;

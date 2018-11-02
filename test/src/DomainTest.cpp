@@ -20,12 +20,12 @@ TEST_F(DomainTest, ParseScriptVariableJson) {
 
     nlohmann::json json = nlohmann::json::parse(jsonString);
 
-    ScriptVariable sv;
+    ScriptVariable item;
 
-    json.get_to(sv);
+    json.get_to(item);
 
-    EXPECT_EQ(sv.name(), "name1");
-    EXPECT_EQ(sv.value(), "value1");
+    EXPECT_EQ(item.name(), "name1");
+    EXPECT_EQ(item.value(), "value1");
 
 }
 
@@ -38,12 +38,12 @@ TEST_F(DomainTest, ParseScriptVariableJsonEmptyValues) {
 
     nlohmann::json json = nlohmann::json::parse(jsonString);
 
-    ScriptVariable sv;
+    ScriptVariable item;
 
-    json.get_to(sv);
+    json.get_to(item);
 
-    EXPECT_EQ(sv.name(), "");
-    EXPECT_EQ(sv.value(), "");
+    EXPECT_EQ(item.name(), "");
+    EXPECT_EQ(item.value(), "");
 
 }
 
@@ -139,6 +139,103 @@ TEST_F(DomainTest, ParseApplicationInstallationJson) {
     EXPECT_EQ(item.variables()[1]->value(), "value 11b");
 }
 
+/**
+ * Project
+ */
+TEST_F(DomainTest, ParseProjectJson) {
+
+    std::string jsonString(R"(
+{
+  "id": "proj-1",
+  "name": "Project 1",
+  "applications": [
+    {
+      "applicationId": "jdk",
+      "defaultInstallationId": "jdk-11"
+    },
+    {
+      "applicationId": "eclipse",
+      "defaultInstallationId": "eclipse-neon"
+    }
+  ]
+}
+)");
+
+    nlohmann::json json = nlohmann::json::parse(jsonString);
+
+    Project item;
+
+    json.get_to(item);
+
+    EXPECT_EQ(item.id(), "proj-1");
+    EXPECT_EQ(item.name(), "Project 1");
+
+    EXPECT_EQ(item.apps()[0]->applicationId(), "jdk");
+
+    EXPECT_EQ(item.apps()[1]->defaultInstallationId(), "eclipse-neon");
+}
+
+
+/**
+ * ProjectApp
+ */
+TEST_F(DomainTest, ParseProjectAppJson) {
+
+    std::string jsonString(R"(
+{
+  "applicationId": "jdk",
+  "defaultInstallationId": "jdk-11"
+}
+)");
+
+    nlohmann::json json = nlohmann::json::parse(jsonString);
+
+    ProjectApp item;
+
+    json.get_to(item);
+
+    EXPECT_EQ(item.applicationId(), "jdk");
+    EXPECT_EQ(item.defaultInstallationId(), "jdk-11");
+}
+
+
+/**
+ * Script
+ */
+TEST_F(DomainTest, ParseScriptJson) {
+
+    std::string jsonString(R"(
+{
+  "id": "script-jdk",
+  "name": "Script JDK",
+  "ifSet": "JAVA_HOME",
+  "commands": [
+    {
+      "command": "print",
+      "args": [ "arg1.1", "arg1.2", "arg1.3" ]
+    },
+    {
+      "command": "print",
+      "args": [ "arg2.1", "arg2.2", "arg2.3" ]
+    }
+  ]
+}
+)");
+
+    nlohmann::json json = nlohmann::json::parse(jsonString);
+
+    Script item;
+
+    json.get_to(item);
+
+    EXPECT_EQ(item.id(), "script-jdk");
+    EXPECT_EQ(item.name(), "Script JDK");
+    EXPECT_EQ(item.ifSet(), "JAVA_HOME");
+
+    EXPECT_EQ(item.commands()[0]->command(), "print");
+
+    EXPECT_EQ(item.commands()[1]->arguments()[1], "arg2.2");
+}
 
 
 

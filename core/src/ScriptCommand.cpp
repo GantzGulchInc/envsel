@@ -34,7 +34,7 @@ ScriptCommand::~ScriptCommand() {
 }
 
 
-const std::string &ScriptCommand::operation() const {
+const std::string &ScriptCommand::command() const {
     return m_command;
 }
 
