@@ -28,7 +28,7 @@ set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY  true)
 #
 # CLI11 Command line parser
 #
-add_subdirectory("ThirdParty/CLI11")
+add_subdirectory("ThirdParty/CLI11" EXCLUDE_FROM_ALL)
 
 #
 # Easy Logging++

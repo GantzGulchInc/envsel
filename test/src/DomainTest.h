@@ -9,12 +9,12 @@ namespace gg {
 namespace envsel {
 namespace test {
 
-class ScriptVariableTest : public gg::envsel::test::EnvSelTest {
+class DomainTest : public gg::envsel::test::EnvSelTest {
 
 protected:
-    ScriptVariableTest() : EnvSelTest() {};
+    DomainTest() : EnvSelTest() {};
 
-    ~ScriptVariableTest() {};
+    ~DomainTest() {};
 
 };
 

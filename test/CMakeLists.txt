@@ -8,9 +8,9 @@ project(EnvSel::Test)
 #
 add_executable(envseltest
         src/Test.cpp
-        src/ScriptVariableTest.cpp
         src/EnvSelTest.cpp
-        src/EnvSelTest.h)
+        src/DomainTest.cpp
+        )
 
 target_include_directories(envseltest
         PUBLIC

@@ -31,6 +31,8 @@ public:
 
     const std::string & name() const;
 
+    ScriptVariableList & variables();
+
     void addVariables(VariableDictionary & dictionary) const;
 
 

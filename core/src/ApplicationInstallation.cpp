@@ -1,19 +1,15 @@
 #include "Domain.h"
-#include "IO.h"
 #include "ToString.h"
 #include "JsonHelper.h"
 
 #include "easylogging++.h"
-
-#include <iostream>
-#include <regex>
 
 using nlohmann::json;
 
 namespace gg {
 namespace envsel {
 
-static const char *TAG = "Domain";
+static const char * TAG = "Domain";
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -35,17 +31,21 @@ ApplicationInstallation::~ApplicationInstallation() {
     CLOG(TRACE, TAG) << "Called";
 }
 
-const std::string &ApplicationInstallation::id() const {
+const std::string & ApplicationInstallation::id() const {
     return m_id;
 }
 
-const std::string &ApplicationInstallation::name() const {
+const std::string & ApplicationInstallation::name() const {
     return m_name;
+}
+
+ScriptVariableList & ApplicationInstallation::variables() {
+    return m_variables;
 }
 
 void ApplicationInstallation::addVariables(VariableDictionary & dictionary) const {
 
-    for(auto & variable : m_variables){
+    for (auto & variable : m_variables) {
 
         dictionary[variable->name()] = variable->value();
 
@@ -53,7 +53,7 @@ void ApplicationInstallation::addVariables(VariableDictionary & dictionary) cons
 
 }
 
-void from_json(const nlohmann::json &json, ApplicationInstallation &item) {
+void from_json(const nlohmann::json & json, ApplicationInstallation & item) {
 
     json.at(ApplicationInstallation::F_ID).get_to(item.m_id);
     json.at(ApplicationInstallation::F_NAME).get_to(item.m_name);
@@ -61,7 +61,7 @@ void from_json(const nlohmann::json &json, ApplicationInstallation &item) {
     JsonHelper::from_json(json.at(ApplicationInstallation::F_VARIABLES), item.m_variables);
 }
 
-void to_json(nlohmann::json &j, const ApplicationInstallation &item) {
+void to_json(nlohmann::json & j, const ApplicationInstallation & item) {
 
     j = {
             {ApplicationInstallation::F_ID,        item.m_id},
@@ -70,7 +70,7 @@ void to_json(nlohmann::json &j, const ApplicationInstallation &item) {
     };
 }
 
-std::ostream &operator<<(std::ostream &stream, const ApplicationInstallation &applicationInstallation) {
+std::ostream & operator<<(std::ostream & stream, const ApplicationInstallation & applicationInstallation) {
 
 
     ToString(stream, "ApplicationInstallation") //
@@ -80,7 +80,6 @@ std::ostream &operator<<(std::ostream &stream, const ApplicationInstallation &ap
 
     return stream;
 }
-
 
 
 }

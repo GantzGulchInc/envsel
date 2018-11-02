@@ -10,7 +10,6 @@ add_library(envselcore
         src/EnvSelLogging.cpp
         src/Environments.cpp
         src/IO.cpp
-        src/NonCopyable.cpp
         src/Project.cpp
         src/ProjectApp.cpp
         src/Script.cpp
@@ -52,12 +51,4 @@ target_link_libraries(envselcore
         CLI11::CLI11
         nlohmann_json
         )
-
-# install(TARGETS envselcore DESTINATION lib)
-
-# get_cmake_property(_variableNames VARIABLES)
-# list (SORT _variableNames)
-# foreach (_variableName ${_variableNames})
-#    message(STATUS "MLG Variable: ${_variableName}=${${_variableName}}")
-# endforeach()
 

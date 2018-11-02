@@ -8,7 +8,7 @@ public:
 
     NonCopyable() {};
 
-    ~NonCopyable() {};
+    virtual ~NonCopyable() {};
 
     // No copy constructor
     NonCopyable(const NonCopyable &) = delete;
