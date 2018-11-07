@@ -61,7 +61,6 @@ void from_json(const nlohmann::json &json, Application &item) {
 
     from_json(json, reinterpret_cast<AbstractDomain&>(item) );
 
-    // json.at(Application::F_ID).get_to(item.id());
     json.at(Application::F_NAME).get_to(item.m_name);
 
     JsonHelper::from_json(json.at(Application::F_INSTALLATIONS), item.m_installations);
@@ -70,7 +69,6 @@ void from_json(const nlohmann::json &json, Application &item) {
 void to_json(nlohmann::json &j, const Application &item) {
 
     j = {
-            {Application::F_ID,            item.id()},
             {Application::F_NAME,          item.m_name},
             {Application::F_INSTALLATIONS, JsonHelper::to_json(item.m_installations)}
     };

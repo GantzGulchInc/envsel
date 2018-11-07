@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ScriptVariable.h"
+#include "AbstractDomain.h"
 #include "NonCopyable.h"
 
 #include <nlohmann/json.hpp>
@@ -16,18 +17,15 @@ namespace envsel {
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ApplicationInstallation
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class ApplicationInstallation : public NonCopyable {
+class ApplicationInstallation : public AbstractDomain {
 public:
 
-    static const std::string F_ID;
     static const std::string F_NAME;
     static const std::string F_VARIABLES;
 
     ApplicationInstallation();
 
     virtual ~ApplicationInstallation();
-
-    const std::string & id() const;
 
     const std::string & name() const;
 
@@ -43,7 +41,6 @@ public:
     friend std::ostream & operator<<(std::ostream & stream, const ApplicationInstallation & applicationInstallation);
 
 private:
-    std::string m_id;
     std::string m_name;
     ScriptVariableList m_variables;
 

@@ -54,7 +54,7 @@ bool App::runSelect() {
 
     m_model.m_environments.load(m_arguments.inputFilename());
 
-    SelectFrame *frame = new SelectFrame(m_model, "Select", wxPoint(50, 50), wxSize(800, 600));
+    SelectFrame *frame = new SelectFrame(m_model, "Select", wxDefaultPosition, wxSize(800, 600));
     frame->Show();
     return true;
 }
@@ -63,7 +63,7 @@ bool App::runEdit() {
 
     m_model.m_environments.load(m_arguments.inputFilename());
 
-    EditFrame *frame = new EditFrame(m_model, "Edit", wxPoint(50, 50), wxSize(450, 340));
+    EditFrame *frame = new EditFrame(m_model, "Edit", wxDefaultPosition, wxSize(800, 600));
     frame->Show();
     return true;
 }
@@ -72,7 +72,7 @@ bool App::runCheck() {
 
     m_model.m_environments.load(m_arguments.inputFilename());
 
-    SelectFrame *frame = new SelectFrame(m_model, "Check", wxPoint(50, 50), wxSize(450, 340));
+    SelectFrame *frame = new SelectFrame(m_model, "Check", wxDefaultPosition, wxSize(800, 600));
     frame->Show();
     return true;
 }

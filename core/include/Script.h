@@ -2,6 +2,7 @@
 
 #include "ScriptVariable.h"
 #include "ScriptCommand.h"
+#include "AbstractDomain.h"
 #include "NonCopyable.h"
 
 #include <nlohmann/json.hpp>
@@ -17,10 +18,9 @@ namespace envsel {
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Script
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class Script : public NonCopyable {
+class Script : public AbstractDomain {
 public:
 
-    static const std::string F_ID;
     static const std::string F_NAME;
     static const std::string F_IFSET;
     static const std::string F_COMMANDS;
@@ -28,8 +28,6 @@ public:
     Script();
 
     virtual ~Script();
-
-    const std::string & id() const;
 
     const std::string & name() const;
 
@@ -46,7 +44,6 @@ public:
     friend std::ostream & operator<<(std::ostream & stream, const Script & script);
 
 private:
-    std::string m_id;
     std::string m_name;
     std::string m_ifSet;
     ScriptCommandList m_commands;
