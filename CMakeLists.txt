@@ -10,8 +10,8 @@ project(EnvSel VERSION 1.0.1 LANGUAGES CXX)
 #
 # Build flags and configuration
 #
-# set(CMAKE_INSTALL_PREFIX /usr/local)
-set(CMAKE_INSTALL_PREFIX /tmp/envsel)
+set(CMAKE_INSTALL_PREFIX /usr/local)
+# set(CMAKE_INSTALL_PREFIX /tmp/envsel)
 
 
 set(CMAKE_VERBOSE_MAKEFILE OFF)
