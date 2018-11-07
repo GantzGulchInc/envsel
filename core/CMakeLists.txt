@@ -5,6 +5,7 @@ project(EnvSel::Core LANGUAGES CXX)
 # set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
 
 add_library(envselcore
+        src/AbstractDomain.cpp
         src/Application.cpp
         src/ApplicationInstallation.cpp
         src/EnvSelLogging.cpp
@@ -37,7 +38,7 @@ target_include_directories(envselcore
 
 target_compile_features(envselcore
         PUBLIC
-        cxx_std_17
+        cxx_std_11
         )
 
 target_compile_options(envselcore

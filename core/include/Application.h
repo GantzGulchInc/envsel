@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AbstractDomain.h"
 #include "ApplicationInstallation.h"
 #include "NonCopyable.h"
 
@@ -16,18 +17,15 @@ namespace envsel {
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Application
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class Application : public NonCopyable {
+class Application : public AbstractDomain {
 public:
 
-    static const std::string F_ID;
     static const std::string F_NAME;
     static const std::string F_INSTALLATIONS;
 
     Application();
 
     virtual ~Application();
-
-    const std::string & id() const;
 
     const std::string & name() const;
 
@@ -43,7 +41,6 @@ public:
     friend std::ostream & operator<<(std::ostream & stream, const Application & application);
 
 private:
-    std::string m_id;
     std::string m_name;
     ApplicationInstallationList m_installations;
 };

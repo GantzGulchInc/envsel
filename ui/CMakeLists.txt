@@ -37,7 +37,7 @@ target_include_directories(envsel
 
 target_compile_features(envsel
         PUBLIC
-        cxx_std_17
+        cxx_std_11
         )
 
 target_compile_options(envsel

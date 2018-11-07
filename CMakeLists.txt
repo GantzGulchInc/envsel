@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 cmake_policy(VERSION 3.12)
+cmake_policy(SET CMP0048 NEW)
 
 project(EnvSel VERSION 1.0.1 LANGUAGES CXX)
 

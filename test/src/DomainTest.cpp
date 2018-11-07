@@ -3,7 +3,9 @@
 
 #include "Domain.h"
 
-#include <nlohmann/json.hpp>
+#include "easylogging++.h"
+
+#include "nlohmann/json.hpp"
 
 #include <string>
 
@@ -101,6 +103,18 @@ TEST_F(DomainTest, ParseApplicationJson) {
     EXPECT_EQ(item.installations()[0]->id(), "jdk-11");
 
     EXPECT_EQ(item.installations()[1]->id(), "jdk-10");
+
+    nlohmann::json json2 = item;
+
+    std::string v;
+
+    EXPECT_EQ(json2[AbstractDomain::F_ID].get<std::string>(), "jdk");
+
+    EXPECT_EQ(json2[Application::F_NAME].get<std::string>(), "Java Development Kit");
+
+    EXPECT_EQ(json2[Application::F_INSTALLATIONS][1][ApplicationInstallation::F_ID].get<std::string>(), "jdk-10");
+
+
 }
 
 /**
