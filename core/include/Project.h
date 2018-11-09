@@ -35,7 +35,7 @@ public:
 
     friend void to_json(nlohmann::json & j, const Project & item);
 
-    friend std::ostream & operator<<(std::ostream & stream, const Project & environment);
+    friend std::ostream & operator<<(std::ostream & stream, const Project & item);
 
 private:
     std::string m_name;

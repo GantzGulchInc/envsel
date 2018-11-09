@@ -112,15 +112,15 @@ void to_json(nlohmann::json &j, const Environments &item) {
 
 }
 
-std::ostream &operator<<(std::ostream &stream, const Environments &environments) {
+std::ostream &operator<<(std::ostream &stream, const Environments &item) {
 
     CLOG(TRACE,TAG) << "called.";
 
     ToString(stream, "Environments") //
-            .field("m_id", environments.id()) //
-            .field("m_projects", environments.m_projects) //
-            .field("m_scripts", environments.m_scripts) //
-            .field("m_applications", environments.m_applications); //
+            .field("m_id", item.id()) //
+            .field("m_projects", item.m_projects) //
+            .field("m_scripts", item.m_scripts) //
+            .field("m_applications", item.m_applications); //
 
     CLOG(TRACE,TAG) << "done.";
 

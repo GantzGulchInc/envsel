@@ -64,13 +64,13 @@ void to_json(nlohmann::json &j, const ScriptVariable &item) {
     to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
 }
 
-std::ostream &operator<<(std::ostream &stream, const ScriptVariable &scriptVariable) {
+std::ostream &operator<<(std::ostream &stream, const ScriptVariable &item) {
 
 
     ToString(stream, "ScriptVariable") //
-            .field("m_id", scriptVariable.id()) //
-            .field("m_name", scriptVariable.m_name) //
-            .field("m_value", scriptVariable.m_value); //
+            .field("m_id", item.id()) //
+            .field("m_name", item.m_name) //
+            .field("m_value", item.m_value); //
 
     return stream;
 }

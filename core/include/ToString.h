@@ -9,13 +9,17 @@
 namespace gg {
 namespace envsel {
 
-
 class ToString {
 
 public:
-    ToString(std::ostream & stream, const std::string & className);
+    ToString(std::ostream & stream, const std::string & className) : m_stream{stream}, fieldCount{0} {
+        m_stream << className << "[";
+    }
 
-    virtual ~ToString();
+
+    ~ToString() {
+        m_stream << "]";
+    }
 
     template<class T>
     ToString & field(const std::string & fieldName, const T & value) {

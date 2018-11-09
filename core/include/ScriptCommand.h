@@ -38,7 +38,7 @@ public:
 
     friend void to_json(nlohmann::json & j, const ScriptCommand & item);
 
-    friend std::ostream & operator<<(std::ostream & stream, const ScriptCommand & scriptOperation);
+    friend std::ostream & operator<<(std::ostream & stream, const ScriptCommand & item);
 
 private:
     std::string m_command;

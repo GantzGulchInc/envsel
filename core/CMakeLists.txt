@@ -16,7 +16,6 @@ add_library(envselcore
         src/Script.cpp
         src/ScriptCommand.cpp
         src/ScriptVariable.cpp
-        src/ToString.cpp
         )
 
 add_library(EnvSel::Core ALIAS envselcore)

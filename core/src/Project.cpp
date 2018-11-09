@@ -48,7 +48,6 @@ void from_json(const nlohmann::json & json, Project & item) {
     from_json(json, reinterpret_cast<AbstractDomain&>(item) );
 
     json.at(Project::F_NAME).get_to(item.m_name);
-
     json.at(Project::F_APPS).get_to(item.m_projectApps);
 }
 
@@ -62,12 +61,12 @@ void to_json(nlohmann::json & j, const Project & item) {
     to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
 }
 
-std::ostream & operator<<(std::ostream & stream, const Project & environment) {
+std::ostream & operator<<(std::ostream & stream, const Project & item) {
 
     ToString(stream, "Project") //
-            .field<>("m_id", environment.id()) //
-            .field("m_name", environment.m_name) //
-            .field("m_projectApps", environment.m_projectApps); //
+            .field("m_id", item.id()) //
+            .field("m_name", item.m_name) //
+            .field("m_projectApps", item.m_projectApps); //
 
     return stream;
 }

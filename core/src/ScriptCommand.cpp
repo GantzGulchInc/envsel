@@ -101,12 +101,12 @@ void to_json(nlohmann::json &j, const ScriptCommand &item) {
     to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
 }
 
-std::ostream &operator<<(std::ostream &stream, const ScriptCommand &scriptOperation) {
+std::ostream &operator<<(std::ostream &stream, const ScriptCommand &item) {
 
     ToString(stream, "ScriptCommand") //
-            .field("m_id", scriptOperation.id()) //
-            .field("m_command", scriptOperation.m_command) //
-            .field("m_arguments", scriptOperation.m_arguments); //
+            .field("m_id", item.id()) //
+            .field("m_command", item.m_command) //
+            .field("m_arguments", item.m_arguments); //
 
     return stream;
 }

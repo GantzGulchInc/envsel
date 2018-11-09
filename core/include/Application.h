@@ -38,7 +38,7 @@ public:
 
     friend void to_json(nlohmann::json & j, const Application & item);
 
-    friend std::ostream & operator<<(std::ostream & stream, const Application & application);
+    friend std::ostream & operator<<(std::ostream & stream, const Application & item);
 
 private:
     std::string m_name;

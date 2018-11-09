@@ -47,7 +47,7 @@ public:
 
     friend void to_json(nlohmann::json & j, const Environments & item);
 
-    friend std::ostream & operator<<(std::ostream & stream, const Environments & environments);
+    friend std::ostream & operator<<(std::ostream & stream, const Environments & item);
 
 private:
     ApplicationList m_applications;

@@ -63,8 +63,6 @@ void from_json(const nlohmann::json &json, Application &item) {
 
     json.at(Application::F_NAME).get_to(item.m_name);
     json.at(Application::F_INSTALLATIONS).get_to(item.m_installations);
-
-    //JsonHelper::from_json(json.at(Application::F_INSTALLATIONS), item.m_installations);
 }
 
 void to_json(nlohmann::json &j, const Application &item) {
@@ -77,12 +75,12 @@ void to_json(nlohmann::json &j, const Application &item) {
     to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
 }
 
-std::ostream &operator<<(std::ostream &stream, const Application &application) {
+std::ostream &operator<<(std::ostream &stream, const Application &item) {
 
     ToString(stream, "Application") //
-            .field("m_id", application.id()) //
-            .field("m_name", application.m_name) //
-            .field("m_installations", application.m_installations); //
+            .field("m_id", item.id()) //
+            .field("m_name", item.m_name) //
+            .field("m_installations", item.m_installations); //
 
     return stream;
 }

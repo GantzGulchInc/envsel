@@ -75,13 +75,13 @@ void to_json(nlohmann::json &j, const ProjectApp &item) {
     to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
 }
 
-std::ostream &operator<<(std::ostream &stream, const ProjectApp &environmentApp) {
+std::ostream &operator<<(std::ostream &stream, const ProjectApp &item) {
 
     ToString(stream, "ProjectApp") //
-            .field("m_id", environmentApp.id()) //
-            .field("m_applicationId", environmentApp.m_applicationId) //
-            .field("m_defaultInstallationId", environmentApp.m_defaultInstallationId) //
-            .field("m_currentInstallationId", environmentApp.m_currentInstallationId); //
+            .field("m_id", item.id()) //
+            .field("m_applicationId", item.m_applicationId) //
+            .field("m_defaultInstallationId", item.m_defaultInstallationId) //
+            .field("m_currentInstallationId", item.m_currentInstallationId); //
 
     return stream;
 }

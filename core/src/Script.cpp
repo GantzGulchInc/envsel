@@ -84,13 +84,13 @@ void to_json(nlohmann::json &j, const Script &item) {
 
 }
 
-std::ostream &operator<<(std::ostream &stream, const Script &script) {
+std::ostream &operator<<(std::ostream &stream, const Script &item) {
 
     ToString(stream, "Script") //
-            .field("m_id", script.id()) //
-            .field("m_name", script.m_name) //
-            .field("m_ifSet", script.m_ifSet) //
-            .field("m_commands", script.m_commands); //
+            .field("m_id", item.id()) //
+            .field("m_name", item.m_name) //
+            .field("m_ifSet", item.m_ifSet) //
+            .field("m_commands", item.m_commands); //
 
     return stream;
 }
