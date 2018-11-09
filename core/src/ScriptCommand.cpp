@@ -1,7 +1,7 @@
 #include "ScriptCommand.h"
 #include "IO.h"
 #include "ToString.h"
-#include "JsonHelper.h"
+#include "Json.h"
 
 #include "easylogging++.h"
 
@@ -23,7 +23,7 @@ const std::string ScriptCommand::F_COMMAND{"command"};
 const std::string ScriptCommand::F_ARGUMENTS{"args"};
 
 ScriptCommand::ScriptCommand() :
-        m_command{""} {
+        AbstractDomain{}, m_command{""} {
 
     CLOG(TRACE, TAG) << "Called";
 }
@@ -84,6 +84,8 @@ void ScriptCommand::execute(const VariableDictionary &variables, std::vector<std
 
 void from_json(const nlohmann::json &json, ScriptCommand &item) {
 
+    from_json(json, reinterpret_cast<AbstractDomain&>(item) );
+
     json.at(ScriptCommand::F_COMMAND).get_to(item.m_command);
     json.at(ScriptCommand::F_ARGUMENTS).get_to(item.m_arguments);
 
@@ -95,11 +97,14 @@ void to_json(nlohmann::json &j, const ScriptCommand &item) {
             {ScriptCommand::F_COMMAND,   item.m_command},
             {ScriptCommand::F_ARGUMENTS, item.m_arguments}
     };
+
+    to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
 }
 
 std::ostream &operator<<(std::ostream &stream, const ScriptCommand &scriptOperation) {
 
     ToString(stream, "ScriptCommand") //
+            .field("m_id", scriptOperation.id()) //
             .field("m_command", scriptOperation.m_command) //
             .field("m_arguments", scriptOperation.m_arguments); //
 

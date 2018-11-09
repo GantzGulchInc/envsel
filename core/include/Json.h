@@ -6,7 +6,6 @@
 
 namespace gg {
 namespace envsel {
-namespace JsonHelper {
 
 
 template<class T>
@@ -23,6 +22,7 @@ void from_json(const nlohmann::json & json, std::vector<std::unique_ptr<T>> & ve
 
 }
 
+
 template<class T>
 nlohmann::json to_json(const std::vector<std::unique_ptr<T>> & vec) {
 
@@ -35,6 +35,5 @@ nlohmann::json to_json(const std::vector<std::unique_ptr<T>> & vec) {
     return json;
 }
 
-}
 }
 }

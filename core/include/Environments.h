@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AbstractDomain.h"
 #include "Application.h"
 #include "Script.h"
 #include "Project.h"
@@ -19,7 +20,7 @@ namespace envsel {
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Environments
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class Environments : public NonCopyable {
+class Environments : public AbstractDomain {
 public:
 
     static const std::string F_APPLICATIONS;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AbstractDomain.h"
 #include "NonCopyable.h"
 
 #include <nlohmann/json.hpp>
@@ -16,7 +17,7 @@ typedef std::map<std::string, std::string> VariableDictionary;
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ScriptVariable
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class ScriptVariable : public NonCopyable {
+class ScriptVariable : public AbstractDomain {
 public:
 
     static const std::string F_NAME;

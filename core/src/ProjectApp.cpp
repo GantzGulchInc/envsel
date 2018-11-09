@@ -1,7 +1,7 @@
 #include "ProjectApp.h"
 #include "IO.h"
 #include "ToString.h"
-#include "JsonHelper.h"
+#include "Json.h"
 
 #include "easylogging++.h"
 
@@ -26,7 +26,7 @@ const std::string ProjectApp::F_DEFAULT_INSTALLATION_ID{"defaultInstallationId"}
 
 
 ProjectApp::ProjectApp() :
-        m_applicationId{""}, m_defaultInstallationId{""} {
+        AbstractDomain{}, m_applicationId{""}, m_defaultInstallationId{""} {
 
     CLOG(TRACE, TAG) << "Called";
 }
@@ -58,6 +58,8 @@ ProjectApp &ProjectApp::currentInstallationId(const std::string &id) {
 
 void from_json(const nlohmann::json &json, ProjectApp &item) {
 
+    from_json(json, reinterpret_cast<AbstractDomain&>(item) );
+
     json.at(ProjectApp::F_APPLICATION_ID).get_to(item.m_applicationId);
     json.at(ProjectApp::F_DEFAULT_INSTALLATION_ID).get_to(item.m_defaultInstallationId);
 
@@ -70,11 +72,13 @@ void to_json(nlohmann::json &j, const ProjectApp &item) {
             {ProjectApp::F_DEFAULT_INSTALLATION_ID, item.m_defaultInstallationId}
     };
 
+    to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
 }
 
 std::ostream &operator<<(std::ostream &stream, const ProjectApp &environmentApp) {
 
     ToString(stream, "ProjectApp") //
+            .field("m_id", environmentApp.id()) //
             .field("m_applicationId", environmentApp.m_applicationId) //
             .field("m_defaultInstallationId", environmentApp.m_defaultInstallationId) //
             .field("m_currentInstallationId", environmentApp.m_currentInstallationId); //

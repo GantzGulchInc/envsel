@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AbstractDomain.h"
 #include "ScriptVariable.h"
 #include "NonCopyable.h"
 
@@ -16,7 +17,7 @@ namespace envsel {
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * ScriptCommand
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class ScriptCommand : public NonCopyable {
+class ScriptCommand : public AbstractDomain {
 public:
 
     static const std::string F_COMMAND;

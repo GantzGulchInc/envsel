@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "IO.h"
 #include "ToString.h"
-#include "JsonHelper.h"
+#include "Json.h"
 
 #include "easylogging++.h"
 
@@ -62,15 +62,16 @@ void from_json(const nlohmann::json &json, Application &item) {
     from_json(json, reinterpret_cast<AbstractDomain&>(item) );
 
     json.at(Application::F_NAME).get_to(item.m_name);
+    json.at(Application::F_INSTALLATIONS).get_to(item.m_installations);
 
-    JsonHelper::from_json(json.at(Application::F_INSTALLATIONS), item.m_installations);
+    //JsonHelper::from_json(json.at(Application::F_INSTALLATIONS), item.m_installations);
 }
 
 void to_json(nlohmann::json &j, const Application &item) {
 
     j = {
             {Application::F_NAME,          item.m_name},
-            {Application::F_INSTALLATIONS, JsonHelper::to_json(item.m_installations)}
+            {Application::F_INSTALLATIONS, to_json(item.m_installations)}
     };
 
     to_json(j, reinterpret_cast<const AbstractDomain&>(item) );

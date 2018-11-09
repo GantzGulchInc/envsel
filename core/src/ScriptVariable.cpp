@@ -2,7 +2,7 @@
 
 #include "IO.h"
 #include "ToString.h"
-#include "JsonHelper.h"
+#include "Json.h"
 
 #include "easylogging++.h"
 
@@ -46,6 +46,8 @@ const std::string &ScriptVariable::value() {
 
 void from_json(const nlohmann::json &json, ScriptVariable &item) {
 
+    from_json(json, reinterpret_cast<AbstractDomain&>(item) );
+
     json.at(ScriptVariable::F_NAME).get_to(item.m_name);
     json.at(ScriptVariable::F_VALUE).get_to(item.m_value);
 
@@ -58,12 +60,15 @@ void to_json(nlohmann::json &j, const ScriptVariable &item) {
             {ScriptVariable::F_NAME,  item.m_name},
             {ScriptVariable::F_VALUE, item.m_value}
     };
+
+    to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
 }
 
 std::ostream &operator<<(std::ostream &stream, const ScriptVariable &scriptVariable) {
 
 
     ToString(stream, "ScriptVariable") //
+            .field("m_id", scriptVariable.id()) //
             .field("m_name", scriptVariable.m_name) //
             .field("m_value", scriptVariable.m_value); //
 

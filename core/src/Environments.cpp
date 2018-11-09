@@ -1,7 +1,7 @@
 #include "Environments.h"
 #include "IO.h"
 #include "ToString.h"
-#include "JsonHelper.h"
+#include "Json.h"
 
 #include "easylogging++.h"
 
@@ -23,7 +23,7 @@ const std::string Environments::F_APPLICATIONS{"applications"};
 const std::string Environments::F_SCRIPTS{"scripts"};
 const std::string Environments::F_PROJECTS{"projects"};
 
-Environments::Environments() {
+Environments::Environments() : AbstractDomain{} {
     CLOG(TRACE, TAG) << "Called";
 }
 
@@ -90,9 +90,11 @@ void from_json(const nlohmann::json &json, Environments &item) {
 
     CLOG(TRACE, TAG) << "called.";
 
-    JsonHelper::from_json(json.at(Environments::F_PROJECTS), item.m_projects);
-    JsonHelper::from_json(json.at(Environments::F_SCRIPTS), item.m_scripts);
-    JsonHelper::from_json(json.at(Environments::F_APPLICATIONS), item.m_applications);
+    from_json(json, reinterpret_cast<AbstractDomain&>(item) );
+
+    json.at(Environments::F_PROJECTS).get_to(item.m_projects);
+    json.at(Environments::F_SCRIPTS).get_to(item.m_scripts);
+    json.at(Environments::F_APPLICATIONS).get_to(item.m_applications);
 
     CLOG(TRACE, TAG) << "done.";
 }
@@ -100,11 +102,13 @@ void from_json(const nlohmann::json &json, Environments &item) {
 void to_json(nlohmann::json &j, const Environments &item) {
 
     j = {
-            {Environments::F_PROJECTS, JsonHelper::to_json(item.m_projects)},
-            {Environments::F_SCRIPTS,      JsonHelper::to_json(item.m_scripts)},
-            {Environments::F_APPLICATIONS, JsonHelper::to_json(item.m_applications)}
+            {Environments::F_PROJECTS, to_json(item.m_projects)},
+            {Environments::F_SCRIPTS,      to_json(item.m_scripts)},
+            {Environments::F_APPLICATIONS, to_json(item.m_applications)}
 
     };
+
+    to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
 
 }
 
@@ -113,6 +117,7 @@ std::ostream &operator<<(std::ostream &stream, const Environments &environments)
     CLOG(TRACE,TAG) << "called.";
 
     ToString(stream, "Environments") //
+            .field("m_id", environments.id()) //
             .field("m_projects", environments.m_projects) //
             .field("m_scripts", environments.m_scripts) //
             .field("m_applications", environments.m_applications); //

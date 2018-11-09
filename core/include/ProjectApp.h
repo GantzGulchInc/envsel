@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AbstractDomain.h"
 #include "NonCopyable.h"
 
 #include <nlohmann/json.hpp>
@@ -14,7 +15,7 @@ namespace envsel {
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * EnvironmentApp
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-class ProjectApp : public NonCopyable {
+class ProjectApp : public AbstractDomain {
 public:
 
     static const std::string F_APPLICATION_ID;

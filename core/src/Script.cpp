@@ -1,7 +1,7 @@
 #include "Script.h"
 #include "IO.h"
 #include "ToString.h"
-#include "JsonHelper.h"
+#include "Json.h"
 
 #include "easylogging++.h"
 
@@ -68,8 +68,8 @@ void from_json(const nlohmann::json &json, Script &item) {
 
     json.at(Script::F_NAME).get_to(item.m_name);
     json.at(Script::F_IFSET).get_to(item.m_ifSet);
+    json.at(Script::F_COMMANDS).get_to(item.m_commands);
 
-    JsonHelper::from_json(json.at(Script::F_COMMANDS), item.m_commands);
 }
 
 void to_json(nlohmann::json &j, const Script &item) {
@@ -77,7 +77,7 @@ void to_json(nlohmann::json &j, const Script &item) {
     j = {
             {Script::F_NAME,     item.m_name},
             {Script::F_IFSET,    item.m_ifSet},
-            {Script::F_COMMANDS, JsonHelper::to_json(item.m_commands)}
+            {Script::F_COMMANDS, to_json(item.m_commands)}
     };
 
     to_json(j, reinterpret_cast<const AbstractDomain&>(item) );
