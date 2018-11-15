@@ -48,6 +48,19 @@ private:
 
 typedef std::vector<std::unique_ptr<ApplicationInstallation>> ApplicationInstallationList;
 
+class ApplicationInstallationIdPredicate {
+
+public:
+    ApplicationInstallationIdPredicate(const std::string & id);
+
+    virtual ~ApplicationInstallationIdPredicate() = default;
+
+    bool operator()(std::unique_ptr<ApplicationInstallation> & item);
+
+private:
+    const std::string m_id;
+};
+
 
 }
 }

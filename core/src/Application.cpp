@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <regex>
+#include <algorithm>
 
 using nlohmann::json;
 
@@ -45,16 +46,13 @@ const ApplicationInstallationList &Application::installations() const {
 
 ApplicationInstallation * Application::findInstallation(const std::string & id){
 
-    for(auto & appInst : m_installations ) {
+    auto i = std::find_if(std::begin(m_installations), std::end(m_installations), ApplicationInstallationIdPredicate(id) );
 
-        if( appInst->id() == id ) {
-            return appInst.get();
-        }
-
+    if( i != std::end(m_installations) ) {
+        return i->get();
     }
 
     return nullptr;
-
 }
 
 void from_json(const nlohmann::json &json, Application &item) {

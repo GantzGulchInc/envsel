@@ -79,6 +79,15 @@ std::ostream & operator<<(std::ostream & stream, const ApplicationInstallation &
     return stream;
 }
 
+ApplicationInstallationIdPredicate::ApplicationInstallationIdPredicate(const std::string & id) : m_id(id) {
+
+}
+
+bool ApplicationInstallationIdPredicate::operator()(std::unique_ptr<ApplicationInstallation> & item) {
+    return item->id() == m_id;
+}
+
+
 
 }
 }

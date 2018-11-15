@@ -28,7 +28,7 @@ target_include_directories(envseltest
 
 target_compile_features(envseltest
         PUBLIC
-        cxx_std_11
+        cxx_std_17
         )
 
 target_compile_options(envseltest

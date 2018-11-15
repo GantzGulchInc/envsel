@@ -37,7 +37,7 @@ target_include_directories(envselcore
 
 target_compile_features(envselcore
         PUBLIC
-        cxx_std_11
+        cxx_std_17
         )
 
 target_compile_options(envselcore

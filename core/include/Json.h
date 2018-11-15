@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 
 #include <string>
+#include <memory>
 
 namespace gg {
 namespace envsel {
@@ -13,7 +14,7 @@ void from_json(const nlohmann::json & json, std::vector<std::unique_ptr<T>> & ve
 
     for (auto & eJson : json) {
 
-        std::unique_ptr<T> ptr(new T{});
+        auto ptr = std::make_unique<T>();
 
         eJson.get_to<T>(*ptr);
 
